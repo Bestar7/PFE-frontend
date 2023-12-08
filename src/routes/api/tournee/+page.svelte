@@ -12,8 +12,17 @@
      * @type {string}
      */
      let datePicked;
-    function handleDateSearch(){
-        console.log(datePicked) // TODO search tournee for this date GET /Tournee/{date}
+    function handleDateSearch(){ // TODO search tournee for this date GET /Tournee/{date}
+        selectedTab = tabs.TourneeDate
+        console.log("selectedTab", selectedTab, datePicked)
+    }
+    function handleDefault(){ // TODO search tournee for this date GET /Tournee/{Date.Now()}
+        selectedTab = tabs.TourneeDefault
+        console.log("selectedTab", selectedTab)
+    }
+    function handleSuppl(){ // TODO ???
+        selectedTab = tabs.TourneeSupplement
+        console.log("selectedTab", selectedTab)
     }
 
     const tabs = {
@@ -39,20 +48,28 @@
     </div>
     <div>
         <!--TODO Button or a:link ??-->
-        <button on:click={()=>console.log("Tournées par défaut")}>Tournées par défaut</button>
+        <button on:click={handleDefault}>Tournées par défaut</button>
     </div>
     <div>
         <!--TODO Button or a:link ??-->
-        <button on:click={()=>console.log("Suppléments")}>Suppléments</button>
+        <button on:click={handleSuppl}>Suppléments</button>
     </div>
 </div>
 
-{#if selectedTab===tabs.TourneeDate || selectedTab===tabs.TourneeDefault}
+{#if selectedTab===tabs.TourneeDefault}
+    <h2>Tournée classico classique pour Date.Now()</h2>
     {#each testListTournee as tournee (tournee.id)}
         <Tournee {...tournee} supprimerTournee={ () => supprimerTournee(tournee.id) }/>
     {/each}
+
+{:else if selectedTab===tabs.TourneeDate}
+    <h2>Tournée pour tel(todo) date</h2>
+    {#each testListTournee as tournee (tournee.id)}
+        <Tournee {...tournee} supprimerTournee={ () => supprimerTournee(tournee.id) }/>
+    {/each}
+
 {:else if selectedTab===tabs.TourneeSupplement}
-    <p>todo</p><!--TODO-->
+    <h2>Suppléments Onion Chef !</h2><!--TODO-->
 {:else}
     <p>ERROR</p><!--TODO-->
 {/if}
