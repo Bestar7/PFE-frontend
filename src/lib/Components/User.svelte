@@ -9,13 +9,9 @@
   export let role
 
   /**
-   * 
-   * @param {string} cookiedUser 
+   * @type {(name : string) => void}
    */
-  function connectAs(cookiedUser){ // TODO id instead ? what about admin (not in DB)?
-    document.cookie = `auth=${cookiedUser} ;` // TODO rename?/export (auth) (in connexion/+page.svelte too)
-    console.log(`Connecting as ${cookiedUser}`, document.cookie)
-  }
+  export let connectAs;
 </script>
 
 <div>
