@@ -9,11 +9,19 @@
     document.cookie = "auth=e ; Max-Age=-99999999;"// TODO rename?/export (auth) (in User.svelte too)
     history.back()
   }
+
+  /**
+   * @param {string} cookiedUser 
+   */
+   function connect(cookiedUser){ // TODO id instead ? what about admin (not in DB)?
+    document.cookie = `auth=${cookiedUser} ;` // TODO rename?/export (auth) (in connexion/+page.svelte too)
+    console.log(`Connecting as ${cookiedUser}`, document.cookie)
+  }
 </script>
 
 <div>
   {#each usersTest as user}
-    <User {...user} />
+    <User {...user} connectAs={() => connect(user.name)}/>
   {/each}
 </div><br>
 
