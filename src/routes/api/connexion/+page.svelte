@@ -1,9 +1,12 @@
 <script>
   import User from "$lib/Components/User.svelte";
-  import { onMount } from "svelte";
+  //import { writable } from "svelte/store";
 
   // TODO : GET /users THEN sort by Admin first then delivery
   const usersTest = [{name:"Admin", role:"admin"},{name:"Tom", role:"delivery"},{name:"Fred", role:"delivery"}]
+
+  //$: obsCookie = document.cookie // TODO update the HTML with changes to the cookie
+  //let obsCookie2 = writable(obsCookie)
 
   function logOut(){
     document.cookie = "auth=e ; Max-Age=-99999999;"// TODO rename?/export (auth) (in User.svelte too)
@@ -18,20 +21,26 @@
     console.log(`Connecting as ${cookiedUser}`, document.cookie)
   }
 
+  /** @type {string} */
+  let email
+  /** @type {string} */
+  let password
+  /** @type {boolean} */
+  let rememberMe // TODO ne marche pas, genre pas un boolean ??
   function submitConnexionForm(){
-    console.log("form submitted") // TODO get values, send value rememberMe ?? cookie=... : void
+    console.log("FIELDS : ", email, password, rememberMe)
   }
 </script>
 
-<form on:submit={submitConnexionForm}>
+<form on:submit|preventDefault={submitConnexionForm}>
   <label for="email">Email</label>
-  <input type="email" id="email" required>
+  <input type="email" id="email" bind:value={email} required>
 
   <label for="password">Mot de passe</label>
-  <input type="password" id="password" required>
+  <input type="password" id="password" bind:value={password} required>
 
   <label for="rememberMe">Se souvenir de moi</label>
-  <input type="checkbox" id="rememberMe">
+  <input type="checkbox" id="rememberMe" bind:value={rememberMe}>
 
   <button type="submit">Connexion</button>
 </form>
