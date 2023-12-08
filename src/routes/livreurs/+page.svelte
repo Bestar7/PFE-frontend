@@ -9,7 +9,7 @@
 
 <ul class = "livreurs">
 	{#each livreurs as { nom, tournee }}
-		<li><a href="livreurs/{tournee}">{nom}</a></li>
+		<li><a href="livreurs/{tournee}">{nom} </a> {tournee}</li>
 	{/each}
 </ul>
 
