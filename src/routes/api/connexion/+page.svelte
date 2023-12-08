@@ -1,6 +1,6 @@
 <script>
   import {resetAuth, setAuth, authStore} from "$lib/Auth/auth"
-  $: auth = $authStore != ""
+  $: auth = ($authStore != "")
 
   function logout(){
     resetAuth()
@@ -12,7 +12,7 @@
   /** @type {string} */
   let password
   /** @type {boolean} */
-  let rememberMe // TODO ne marche pas, genre pas un boolean ??
+  let rememberMe = false // TODO : true => localStorage / false => sessionStorage
   function login(){
     setAuth(email)// TODO take the appropriate field
     console.log("FIELDS : ", email, password, rememberMe)
@@ -27,12 +27,12 @@
   <input type="password" id="password" bind:value={password} required>
 
   <label for="rememberMe">Se souvenir de moi</label>
-  <input type="checkbox" id="rememberMe" bind:value={rememberMe}>
+  <input type="checkbox" id="rememberMe" bind:checked={rememberMe}>
 
   <button type="submit">Connexion</button>
 </form>
 
-{#if auth} <!--TODO check this cndt (like useState) ex right after connecting-->
+{#if auth}
   <button on:click={ logout }>Se déconnecter</button>
 {/if}
 <button on:click={() => history.back() }>Retour</button>

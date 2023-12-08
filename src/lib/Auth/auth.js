@@ -1,5 +1,5 @@
 // TODO + de test (console.log du contenu du cookie) + que se passe-il si on a plusieurs cookies ??? dans connexion
-
+// TODO use localStorage && sessionStorage
 import { writable } from 'svelte/store';
 let authStore = writable(document.cookie);
 
