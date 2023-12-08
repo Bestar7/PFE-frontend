@@ -18,3 +18,5 @@
 {#each testListTournee as tournee (tournee.id)}
     <Tournee {...tournee} supprimerTournee={ () => supprimerTournee(tournee.id) }/>
 {/each}
+
+<button on:click={() => history.back()}>Retour</button>
