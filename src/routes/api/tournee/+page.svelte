@@ -1,4 +1,5 @@
 <script>
+    import Navbar from "$lib/Components/Navbar.svelte";
     import Tournee from "$lib/Components/Tournee.svelte";
 
     /**
@@ -30,7 +31,7 @@
         TourneeDefault: "TourneeDefault",
         TourneeSupplement : "TourneeSupplement"
     }
-    let selectedTab = tabs.TourneeDate; // TODO changer de 'tab' (if-elseif-else) avec les changements de valeur selected
+    let selectedTab = tabs.TourneeDate;
 
     let testListTournee = [ // TODO GET THIS LIST FROM THE DATABASE
         // TODO changes depending on the selected tab
@@ -40,6 +41,7 @@
     ]
 </script>
 
+<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <div>
     <div>
         <form>
