@@ -144,8 +144,8 @@
           <td>
             {caisses} 
           <button  on:click={() => /*todo incrementer*/console.log('hello')}>+</button>
-          <button on:click={() => /*todo decrementer*/console.log('bye')}>-</button>
-
+          <button on:click={() => /***todo decrementer*/console.log('bye')}>-</button>
+            
           </td>
           <td>
             {unites} 
