@@ -1,13 +1,14 @@
 <script>
     import Navbar from "$lib/Components/Navbar.svelte";
-    /*
+    
     import { onMount } from "svelte";
-    let name = "loadin...";
-    onMount(async () => {
-        const response = await fetch('/api/helloWorld');
-        const json = await response.json();
-        name = json.name
-    }) */ // TODO a supprimer, juste là comme exemple d'utilisation de data loading requis pour l'affichage d'une page
+    const endpoint= "http://localhost:9000/articles";
+    let posts=[];
+    onMount(async function(){
+        const response= await fetch(endpoint);
+        const data= await response.json();
+        console.log(data);
+    });
 </script>
 
 <Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
