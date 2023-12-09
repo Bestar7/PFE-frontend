@@ -1,9 +1,12 @@
 <script>
+    import Navbar from '$lib/Components/Navbar.svelte';
 
     import { livreurs } from './data.js';
     export let data ;
 	
 </script>
+
+<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <div class="centered">
 <h1> ceci est la page des livreurs</h1>
 

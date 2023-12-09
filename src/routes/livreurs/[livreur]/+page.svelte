@@ -6,20 +6,8 @@ import {livreurs} from '../data';
 
   import HelloWorld from "$lib/Components/HelloWorld.svelte";
   import { onMount } from "svelte";
-  import ItemLine from '$lib/Components/ItemLine.svelte';
 
-
-  export function load({ params }) {
-	const livreur = livreurs.find((livreur) => livreur.nom === params.nom);
-
-	if (!livreur) throw error(404);
-
-	return {
-		livreur
-	};
-
-
-}
+  import Navbar from '$lib/Components/Navbar.svelte';
   
   let name = "loadin...";
   onMount(async () => {
@@ -42,6 +30,8 @@ import {livreurs} from '../data';
   }
 
 </script>
+
+<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <Livreur {name}/>
 
 <form on:submit|preventDefault={handleSubmit}>
