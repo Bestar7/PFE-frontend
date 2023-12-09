@@ -25,7 +25,6 @@
      console.log("2 eme ",articlesStore);
 
   function saveChanges() {
-    // Ajoutez ici la logique pour sauvegarder les modifications
     console.log('Modifications sauvegardées!');
   }
 
