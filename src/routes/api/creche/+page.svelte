@@ -1,5 +1,6 @@
 <script>
   import ItemLine from "$lib/Components/ItemLine.svelte";
+    import ItemsStock from "$lib/Components/ItemsStock.svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
   import { onMount } from "svelte";
 
@@ -46,13 +47,13 @@
     <label for="crecheAddress">Addresse</label><br>
     <input type="text" id="crecheAddress" placeholder="rue des champs, 12" required><br>
   </div><br>
-  
+
   <div class="defaultOrder">
     <!--TODO : add liste d'article de commande par défaut via un GET /article-->
-    {#each ListItemTesting as item}
-      <ItemLine {...item} /> <!--TODO click sur les buttons -> 'required' alert si les champs requis sont vide-->
-    {/each}
+    <ItemsStock ListItems={ListItemTesting}/>
   </div><br>
+
+
 
   <div class="cmdBtn">
     <button on:click={onClickSauvegarder} >Sauvegarder</button>
