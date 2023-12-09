@@ -1,4 +1,5 @@
-<script> 
+<script>
+ 
     let data = [
     { article :"langes S" ,caisses: 1, unites: 0 },
     { article :"langes L",caisses: 4, unites: 0 },
@@ -7,6 +8,21 @@
     { article :"Gants de toilette",caisses: 3, unites: 0 },
     { article :"Sacs poubelle",caisses: 0, unites: 60 },
   ];
+  import { onMount } from "svelte";
+  import {readable} from 'svelte/store';
+  import { articlesStore } from "../store";
+
+
+  
+    /**
+   * @type {Object}
+   */
+    onMount(async () => {
+      const response = await fetch('http://localhost:9000/articles');
+      const articles = await response.json();
+      articlesStore.set(articles);
+    });
+     console.log("2 eme ",articlesStore);
 
   function saveChanges() {
     // Ajoutez ici la logique pour sauvegarder les modifications
@@ -136,19 +152,20 @@
       </tr>
     </thead>
     <tbody>
-      {#each data as { article,caisses, unites, ...rest }, index (caisses)}
+        
+      {#each $articlesStore as article  (article)}
         <tr>
           <td> 
-            {article}
+            {article.libelle}
+            {article.taille !== undefined ? ` - ${article.taille}` : ''}
           </td>
           <td>
-            {caisses} 
+          <!-- {caisse}--> 
           <button  on:click={() => /*todo incrementer*/console.log('hello')}>+</button>
           <button on:click={() => /***todo decrementer*/console.log('bye')}>-</button>
             
           </td>
           <td>
-            {unites} 
             <button on:click={() => /*todo decrementer*/ console.log('hello')}>+</button>
             <button on:click={() => /*todo incrementer*/console.log('bye')}>-</button>
 
