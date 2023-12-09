@@ -1,5 +1,6 @@
 <script>
   import ItemLine from "$lib/Components/ItemLine.svelte";
+  import Navbar from "$lib/Components/Navbar.svelte";
   import { onMount } from "svelte";
 
   // TODO replace with content from GET/creche/defaultOrder (or other name)
@@ -33,6 +34,7 @@
 </script>
 
 
+<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <form>
   <div class="administrative">
     <label for="crecheName">Nom de la crèche</label><br>

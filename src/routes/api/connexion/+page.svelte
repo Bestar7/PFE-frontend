@@ -1,5 +1,6 @@
 <script>
   import {resetAuth, setAuth, authStore} from "$lib/Auth/auth"
+  import Navbar from "$lib/Components/Navbar.svelte";
   $: auth = ($authStore != "")
 
   function logout(){
@@ -19,6 +20,7 @@
   }
 </script>
 
+<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <form on:submit|preventDefault={login}>
   <label for="email">Email</label>
   <input type="email" id="email" bind:value={email} required>
