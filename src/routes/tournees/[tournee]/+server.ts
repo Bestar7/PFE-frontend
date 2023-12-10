@@ -3,20 +3,20 @@ import { host } from '$lib/Api/config';
 
 const apiRoute = "tournees";
 const id = 7
-/**
- * @returns {Promise<{ name: string }>}
- */
-export async function GET() {
-  try {
+
+async function getOneTournee() {
+    try {
       const reponse = await fetch(`${host}/${apiRoute}/${id}`);
-      console.log("response", reponse);
       if (reponse.ok) {
-          const json = await reponse.json();
-          return jsonResponse({ name : json.fact })
+        const json = await reponse.json();
+        return jsonResponse(json)
       } else {
-          throw new Error(reponse.statusText);
+        throw new Error(reponse.statusText);
       }
-  } catch (error) {
-      return jsonResponse({ name : "KO" })
+    } catch (error) {
+      console.log("error in /supplement/+server.ts", error) // TODO handle error
+    }
   }
+export async function GET() {
+  return getOneTournee();
 }

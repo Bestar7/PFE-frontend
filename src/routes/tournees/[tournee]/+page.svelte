@@ -1,21 +1,19 @@
 <script>
   import { onMount } from "svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
-
-  onMount(async ()=> {
+  let tournee;
+  onMount(() => {
     getInfosTournee();
-  })
-    async function getInfosTournee(){
-        const response = await fetch("/");
-        console.log(response);
+  });
+  async function getInfosTournee() {
+    const response = await fetch("/tournees");
+    console.log(response);
 
-        const data = await response.json();
-        console.log(data);
-    }
-
+    const data = await response.json();
+    tournee=data;
+  }
+  console.log(tournee);
 </script>
-
-
 
 <Navbar />
 
@@ -45,4 +43,3 @@
     </div>
   </div>
 </body>
-
