@@ -9,7 +9,6 @@
     { article :"Sacs poubelle",caisses: 0, unites: 60 },
   ];
   import { onMount } from "svelte";
-  import {readable} from 'svelte/store';
   import { articlesStore } from "../store";
 
 

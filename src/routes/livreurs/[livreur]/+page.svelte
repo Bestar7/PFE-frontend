@@ -1,20 +1,15 @@
-<script> 
-  import Livreur from '$lib/Components/Livreur.svelte';
-import {currentLivreur } from '../../../store';
-import {error} from '@sveltejs/kit';
-import {livreurs} from '../data';
-
-  import HelloWorld from "$lib/Components/HelloWorld.svelte";
+<script>
+  import Livreur from "$lib/Components/Livreur.svelte";
   import { onMount } from "svelte";
 
-  import Navbar from '$lib/Components/Navbar.svelte';
-  
+  import Navbar from "$lib/Components/Navbar.svelte";
+
   let name = "loadin...";
   onMount(async () => {
-      const response = await fetch('/api/livreur');
-      const json = await response.json();
-      name = json.name
-  })
+    const response = await fetch("/api/livreur");
+    const json = await response.json();
+    name = json.name;
+  });
 
   let livreur = {
     nom: "Nom existant",
@@ -23,16 +18,14 @@ import {livreurs} from '../data';
     isAdmin: false,
   };
 
-
   function handleSubmit() {
     // Vous pouvez traiter les données ici (envoyer à un serveur, mettre à jour la base de données, etc.)
     console.log("Données soumises :", livreur);
   }
-
 </script>
 
-<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-<Livreur {name}/>
+<Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+<Livreur {name} />
 
 <form on:submit|preventDefault={handleSubmit}>
   <label>
@@ -56,9 +49,5 @@ import {livreurs} from '../data';
     <input type="radio" bind:group={livreur.isAdmin} value={false} /> Non
   </label>
 
-
   <button type="submit">Soumettre</button>
 </form>
-
-
-

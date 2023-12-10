@@ -2,17 +2,13 @@
     import Navbar from "$lib/Components/Navbar.svelte";
     import Tournee from "$lib/Components/Tournee.svelte";
 
-    /**
-     * @param {number} id
-     */
+    /** @param {number} id */
     function supprimerTournee(id) {
         testListTournee = testListTournee.filter(tournee => tournee.id !== id);
     }
 
-    /**
-     * @type {string}
-     */
-     let datePicked;
+    /** @type {string}*/
+    let datePicked;
     function handleDateSearch(){ // TODO search tournee for this date GET /Tournee/{date}
         selectedTab = tabs.TourneeDate
         console.log("selectedTab", selectedTab, datePicked)
