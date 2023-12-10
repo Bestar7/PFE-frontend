@@ -1,40 +1,44 @@
 <script>
   import Navbar from "$lib/Components/Navbar.svelte";
   import Tournee from "$lib/Components/Tournee.svelte";
-  import { tourneesStore } from "../../store";
+  import { onMount } from "svelte";
+
   /**
    * @param {number} id
    */
   function supprimerTournee(id) {
     testListTournee = testListTournee.filter((tournee) => tournee.id !== id);
   }
+  onMount(()=> {
+    getTourneesDate()
+  });
+
+
+  let tournees=[];
+  let datePicked = "2023-12-13";
+  async function getTourneesDate() {
+    const response = await fetch("tournee");
+    console.log(response);
+    const tourneesResponse = await response.json();
+    tournees = tourneesResponse;
+    console.log(tournees);
+  };
 
   /**
    * @type {string}
    */
-  let datePicked;
-  function handleDateSearch() {
-    // TODO search tournee for this date GET /Tournee/{date}
-    onMount(async () => {
-      const response = await fetch(
-        "http://localhost:9000/tournees/date/2023-12-31"
-      );
-      const tournees = await response.json();
-      tourneesStore.set(tournees);
-    });
 
-    console.log("tournee du 32-12", tourneesStore);
+  function handleDateSearch() {
+    getTourneesDate();
+    // TODO search tournee for this date GET /Tournee/{date}
+    
+
     selectedTab = tabs.TourneeDate;
     console.log("selectedTab", selectedTab, datePicked);
   }
   function handleDefault() {
     // TODO search tournee for this date GET /Tournee/{Date.Now()}
     selectedTab = tabs.TourneeDefault;
-    console.log("selectedTab", selectedTab);
-  }
-  function handleSuppl() {
-    // TODO ???
-    selectedTab = tabs.TourneeSupplement;
     console.log("selectedTab", selectedTab);
   }
 
@@ -44,7 +48,7 @@
     TourneeSupplement: "TourneeSupplement",
   };
   function eventHandler() {
-    window.location.href="/"
+    window.location.href = "/";
   }
   let selectedTab = tabs.TourneeDate;
 
@@ -57,76 +61,60 @@
   ];
 </script>
 
-<body>
-  <div class="container">
-    <Navbar />
-    <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-    <div class="centered">
+<div class="container">
+  <Navbar />
+  <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+  <div class="centered">
+    <div>
       <div>
-        <div>
-          <form>
-            <input
-              type="date"
-              name="dateTournee"
-              on:change={handleDateSearch}
-              bind:value={datePicked}
-            />
-          </form>
-        </div>
-        <div class="button">
-          <!--TODO Button or a:link ??-->
-          <button on:click={handleDefault}>Tournées par défaut</button>
-        </div>
-
-        {#if selectedTab === tabs.TourneeDefault}
-          <h2>Tournée classico classique pour Date.Now()</h2>
-          {#each testListTournee as tournee (tournee.id)}
-            <Tournee
-              {...tournee}
-              supprimerTournee={() => supprimerTournee(tournee.id)}
-            />
-          {/each}
-        {:else if selectedTab === tabs.TourneeDate}
-          <h2>Tournée pour tel(todo) date</h2>
-
-          {#each testListTournee as tournee (tournee)}
-          <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
-            <div class="tab-infos" on:click={() =>eventHandler()}> <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
-              <div class="left-column">
-                <ul class="flex-container">
-                  <label for="nom"> Tournee : </label>
-                  <span id="nom"> {tournee.nomTournee}</span>
-                </ul>
-                <ul class="flex-container">
-                  <label for="livreur"> Livreur : </label>
-                  <span id="livreur"> {tournee.livreur}</span>
-                </ul>
-              </div>
-              <div class="left-column">
-                <ul class="flex-container">
-                  <label for="date"> Date : </label>
-                  <span id="date"> {tournee.nomTournee}</span>
-                </ul>
-                <ul class="flex-container">
-                  <label for="statut"> Statut : </label>
-                  <span id="statut">En cours</span>
-                </ul>
-              </div>
-            </div>
-          {/each}
-        {:else if selectedTab === tabs.TourneeSupplement}
-          <h2>Suppléments Onion Chef !</h2>
-          <!--TODO-->
-        {:else}
-          <p>ERROR</p>
-          <!--TODO-->
-        {/if}
+        <form>
+          <input
+            type="date"
+            name="dateTournee"
+            on:change={handleDateSearch}
+            bind:value={datePicked}
+          />
+        </form>
       </div>
-    </div>
-    <button on:click={() => history.back()}>Retour</button>
-  </div>
-</body>
+      <div class="button">
+        <!--TODO Button or a:link ??-->
+        <button on:click={handleDefault}>Tournées par défaut</button>
+      </div>
 
+      
+        <h2>Tournée du {datePicked}</h2>
+
+        {#each tournees as tournee (tournee)}
+          <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
+          <table class="tab-infos" onclick={() => eventHandler()}>
+            <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
+            <div class="left-column">
+              <ul class="flex-container">
+                <label for="nom"> Tournee : </label>
+                <span id="nom"> {tournee.nom}</span>
+              </ul>
+              <ul class="flex-container">
+                <label for="livreur"> Livreur : </label>
+                <span id="livreur"> {tournee.prenom_livreur}</span>
+              </ul>
+            </div>
+            <div class="left-column">
+              <ul class="flex-container">
+                <label for="date"> Date : </label>
+                <span id="date"> {tournee.date}</span>
+              </ul>
+              <ul class="flex-container">
+                <label for="statut"> Statut : </label>
+                <span id="statut">{tournee.statut}</span>
+              </ul>
+            </div>
+          </table>
+        {/each}
+      
+    </div>
+  </div>
+  <button on:click={() => history.back()}>Retour</button>
+</div>
 <foot>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -163,7 +151,6 @@
     .right-column {
       width: 100%;
       margin-top: 10px;
-
     }
 
     .flex-container {
