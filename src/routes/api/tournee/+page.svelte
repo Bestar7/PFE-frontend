@@ -163,6 +163,7 @@
     .right-column {
       width: 100%;
       margin-top: 10px;
+
     }
 
     .flex-container {

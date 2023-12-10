@@ -11,11 +11,13 @@
   import { readable } from "svelte/store";
   import { articlesStore } from "../../store";
 
+
   /**
    * @type {Object}
    */
   onMount(async () => {
     const response = await fetch("http://localhost:9000/articles");
+
     const articles = await response.json();
     articlesStore.set(articles);
   });
@@ -46,6 +48,7 @@
     <title>Formulaire avec mise en page</title>
     <style>
     table {
+
     border-collapse: collapse;
     width: 400px;
     margin: 20px;
@@ -55,11 +58,12 @@
     flex-direction: column;
     align-items: center;
   }
-  .data-table{
-    margin-bottom:20px;
+  .data-table {
+    margin-bottom: 20px;
   }
 
-  th, td {
+  th,
+  td {
     padding: 10px;
     border: 1px solid #ddd;
   }
@@ -72,6 +76,7 @@
   tr:nth-child(even) {
     background-color: #f2f2f2;
   }
+
   .buttons {
     display: flex;
     justify-content: space-around; /* Ajustement de l'espacement entre les boutons */
@@ -190,3 +195,4 @@
     </div>
   </body>
 </html>
+

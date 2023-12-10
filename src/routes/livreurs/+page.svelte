@@ -1,37 +1,42 @@
 <script>
-    import Navbar from '$lib/Components/Navbar.svelte';
+	import Navbar from "$lib/Components/Navbar.svelte";
 
-    import { livreurs } from './data.js';
-    export let data ;
-	
+	const livreurs = [ // TODO remplacer par un GET /livreurs
+    {
+        nom: 'tom',
+        tournee: '1',
+    },
+    {
+        nom: 'john',
+        tournee: '2'
+    },
+    {
+        nom: 'jean',
+        tournee: '3'
+    }
+];
 </script>
 
-<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+<Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <div class="centered">
-<h1> ceci est la page des livreurs</h1>
+	<h1>ceci est la page des livreurs</h1>
 
-<ul class = "livreurs">
-	{#each livreurs as { nom, tournee }}
-		<li><a href="livreurs/{tournee}">{nom} </a> {tournee}</li>
-	{/each}
-</ul>
+	<ul class="livreurs">
+		{#each livreurs as { nom, tournee }}
+			<li><a href="livreurs/{tournee}">{nom} </a> {tournee}</li>
+		{/each}
+	</ul>
 
-<form method="POST"> 
-	<label> 
-	  ajouter un livreur:
-	  <input 
-		type="text"
-		name= "nom"
-		autocomplete="off"
-	  /> 
-
-	</label>
-	<button aria-label="adding" >ajouter </button>
-
-  </form>
-
+	<form method="POST">
+		<label>
+			ajouter un livreur:
+			<input type="text" name="nom" autocomplete="off" />
+		</label>
+		<button aria-label="adding">ajouter </button>
+	</form>
 </div>
-  <style>
+
+<style>
 	.centered {
 		max-width: 20em;
 		margin: 0 auto;
@@ -48,7 +53,6 @@
 	span {
 		flex: 1;
 	}
-	
 
 	button {
 		border: none;
@@ -68,5 +72,3 @@
 		opacity: 0.5;
 	}
 </style>
-
-
