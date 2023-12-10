@@ -17,7 +17,7 @@
   let tournees=[];
   let datePicked = "2023-12-13";
   async function getTourneesDate() {
-    const response = await fetch("tournee");
+    const response = await fetch("tournees");
     console.log(response);
     const tourneesResponse = await response.json();
     tournees = tourneesResponse;
