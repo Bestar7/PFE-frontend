@@ -1,7 +1,7 @@
 <script> 
 
 import { onMount } from "svelte";
-import { articlesStore } from "../commandes/store";
+import { articlesStore } from "../store";
 import Navbar from "$lib/Components/Navbar.svelte";
 onMount(async () => {
       const response = await fetch('http://localhost:9000/articles');
