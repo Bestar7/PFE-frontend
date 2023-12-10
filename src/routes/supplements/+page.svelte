@@ -1,53 +1,35 @@
-<script> 
+<script>
+  import { onMount } from "svelte";
+  import Navbar from "$lib/Components/Navbar.svelte";
+  /** @typedef {import("$lib/Model/Article").Article} Article */
+  
+  
+  /** @type {Article[]} */
+  let listArticles = []
 
-import { onMount } from "svelte";
-import { articlesStore } from "../store";
-import Navbar from "$lib/Components/Navbar.svelte";
-onMount(async () => {
-      const response = await fetch('http://localhost:9000/articles');
-      const articles = await response.json();
-      articles.sort((a, b) => a.id_article - b.id_article);
-      articlesStore.set(articles);
-      console.log(articles);
-});
-console.log(articlesStore);
+  onMount(() => {
+    fillListArticles()
+  });
 
-let selectedArticleId = 1; 
+  async function fillListArticles(){
+    const response = await fetch("/supplements"); // aussi ok : "" si +server.ts est dans le meme dossier que cette page
 
-async function savePourcentage(id_article,nouvelleValeur) {
+    /** @type {Article[]}*/
+    const articles = await response.json()
 
-    try {
-      console.log(nouvelleValeur);
-      const response = await fetch(
-        `http://localhost:9000/articles/${id_article}/modifierPourcentage`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            new_pourcentage: nouvelleValeur,
-            // Ajoutez d'autres données si nécessaire
-          }),
-        },
-      );
+    articles.sort((a, b) => a.id_article - b.id_article)
+    listArticles = articles;
+  }
 
-      console.log(response);
-      console.log(response.json);
-
-      if (response.ok) {
-        console.log("Modifications sauvegardées avec succès !");
-        // Mettez à jour les articles après la modification
-        // updateArticles();
-      } else {
-        const errorText = await response.text();
-        console.error("Erreur lors de la sauvegarde :", errorText);
-      }
-    } catch (error) {
-      const errorText = await response.text();
-      console.error("Erreur lors de la requête :", errorText);
-    }
-    // Ajoutez ici la logique pour sauvegarder les modifications
+  /**
+  * @param {number} id_article
+  * @param {number} nouvelleValeur
+  */
+  function savePourcentage(id_article, nouvelleValeur) {
+    fetch("/supplements", {
+        method: 'POST',
+        body: JSON.stringify({ id_article, nouvelleValeur }),
+    })
   }
 </script>
 
@@ -62,7 +44,7 @@ async function savePourcentage(id_article,nouvelleValeur) {
         </tr>
       </thead>
       <tbody>
-        {#each $articlesStore as article (article)}
+        {#each listArticles as article (article)}
           <tr>
             <td>
               {article.libelle}
@@ -73,8 +55,7 @@ async function savePourcentage(id_article,nouvelleValeur) {
               <button
                 on:click={() =>
                   savePourcentage(article.id_article, article.pourcentage)}
-                >Save</button
-              >
+              >Save</button>
             </td>
           </tr>
         {/each}
