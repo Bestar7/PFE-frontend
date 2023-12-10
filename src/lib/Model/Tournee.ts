@@ -3,7 +3,7 @@
  * @param {number} id_livreur 
  * @param {string} nom 
  * @param {string} date 
- * @param {number} statut 
+ * @param {string} statut 
  * @returns {Tournee} - une tournee.
  */
 function createTournee(id_livreur: number, nom: string, date: string, statut: string) {
