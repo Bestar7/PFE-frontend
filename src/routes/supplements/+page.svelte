@@ -12,10 +12,8 @@
   });
 
   async function fillListArticles(){
-    const response = await fetch("/supplements"); // aussi ok : "" si +server.ts est dans le meme dossier que cette page
-    console.log(response);
     /** @type {Article[]}*/
-    const articles = await response.json()
+    const articles =  await (await fetch("/supplements")).json(); // aussi ok : "" si +server.ts est dans le meme dossier que cette page<
 
     articles.sort((a, b) => a.id_article - b.id_article)
     listArticles = articles;
