@@ -1,4 +1,4 @@
-import { json } from '@sveltejs/kit'
+import { json as jsonResponse } from '@sveltejs/kit'
 
 const url = "http://localhost";
 const port = 8080;
@@ -14,7 +14,8 @@ export async function GET() {
         const reponse = await fetch("https://catfact.ninja/fact") // working url
         if (reponse.ok) {
             const json = await reponse.json();
-            return await new Response(JSON.stringify({ name : json.fact })) // TODO json.???
+            //return await new Response(JSON.stringify({ name : json.fact })) // TODO json.???
+            return jsonResponse({ name : json.fact })
         } else {
             throw new Error(reponse.statusText);
         }
