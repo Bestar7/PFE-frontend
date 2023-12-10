@@ -1,6 +1,5 @@
 <script>
   import Navbar from "$lib/Components/Navbar.svelte";
-  import Tournee from "$lib/Components/Tournee.svelte";
   import { onMount } from "svelte";
 
   /**
@@ -34,8 +33,9 @@
     TourneeDefault: "TourneeDefault",
     TourneeSupplement: "TourneeSupplement",
   };
-  function eventHandler() {
-    window.location.href = "/";
+  function eventHandler(id_tournee) {
+    console.log(id_tournee);
+    window.location.href = `/tournees/${id_tournee}`;
   }
   let selectedTab = tabs.TourneeDate;
 
@@ -72,9 +72,7 @@
         </thead>
         <tbody>
         {#each tournees as tournee (tournee)}
-        <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
-        <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
-          <tr onclick={() => eventHandler()}>
+          <tr on:click={() => eventHandler(tournee.id_tournee)}>
             <td>{tournee.nom}</td>
             <td>{tournee.prenom_livreur}</td>
             <td>{tournee.date}</td>
