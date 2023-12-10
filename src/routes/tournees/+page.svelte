@@ -47,8 +47,9 @@
     TourneeDefault: "TourneeDefault",
     TourneeSupplement: "TourneeSupplement",
   };
-  function eventHandler() {
-    window.location.href = "/";
+  function eventHandler(id_tournee) {
+    console.log(id_tournee);
+   window.location.href = `/tournees/${id_tournee}`;
   }
   let selectedTab = tabs.TourneeDate;
 
@@ -86,7 +87,7 @@
 
         {#each tournees as tournee (tournee)}
           <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
-          <table class="tab-infos" onclick={() => eventHandler()}>
+          <table class="tab-infos" on:click={() =>eventHandler(tournee.id_tournee)}>
             <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
             <div class="left-column">
               <ul class="flex-container">
