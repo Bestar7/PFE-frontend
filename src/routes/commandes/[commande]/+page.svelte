@@ -1,54 +1,49 @@
 <script>
-  let data = [
-    { article: "langes S", caisses: 1, unites: 0 },
-    { article: "langes L", caisses: 4, unites: 0 },
-    { article: "langes XL", caisses: 7, unites: 0 },
-    { article: "Inserts", caisses: 2, unites: 0 },
-    { article: "Gants de toilette", caisses: 3, unites: 0 },
-    { article: "Sacs poubelle", caisses: 0, unites: 60 },
+ 
+    let data = [
+    { article :"langes S" ,caisses: 1, unites: 0 },
+    { article :"langes L",caisses: 4, unites: 0 },
+    { article :"langes XL",caisses: 7, unites: 0 },
+    { article :"Inserts",caisses: 2, unites: 0 },
+    { article :"Gants de toilette",caisses: 3, unites: 0 },
+    { article :"Sacs poubelle",caisses: 0, unites: 60 },
   ];
   import { onMount } from "svelte";
-  import { readable } from "svelte/store";
-  import { articlesStore } from "../../store";
+  import {readable} from 'svelte/store';
+  import { articlesStore } from "../store";
 
 
-  /**
+  
+    /**
    * @type {Object}
    */
-  onMount(async () => {
-    const response = await fetch("http://localhost:9000/articles");
-
-    const articles = await response.json();
-    articlesStore.set(articles);
-  });
-  console.log("2 eme ", articlesStore);
+    onMount(async () => {
+      const response = await fetch('http://localhost:9000/articles');
+      const articles = await response.json();
+      articlesStore.set(articles);
+    });
+     console.log("2 eme ",articlesStore);
 
   function saveChanges() {
-    console.log("Modifications sauvegardées!");
+    // Ajoutez ici la logique pour sauvegarder les modifications
+    console.log('Modifications sauvegardées!');
   }
 
   function cancelChanges() {
     // Ajoutez ici la logique pour annuler les modifications
-    console.log("Modifications annulées!");
+    console.log('Modifications annulées!');
   }
 
-  let creche = {
-    id: 1,
-    nom: "enghien",
-    status: "livré",
-    ordre: 1,
-    date: "ajd",
-  };
+
+   let creche = {id:1,nom:"enghien", status:"livré",ordre:1,date: 'ajd'};
 </script>
-
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulaire avec mise en page</title>
-    <style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire avec mise en page</title>
+  <style>
     table {
-
     border-collapse: collapse;
     width: 400px;
     margin: 20px;
@@ -58,12 +53,11 @@
     flex-direction: column;
     align-items: center;
   }
-  .data-table {
-    margin-bottom: 20px;
+  .data-table{
+    margin-bottom:20px;
   }
 
-  th,
-  td {
+  th, td {
     padding: 10px;
     border: 1px solid #ddd;
   }
@@ -76,7 +70,6 @@
   tr:nth-child(even) {
     background-color: #f2f2f2;
   }
-
   .buttons {
     display: flex;
     justify-content: space-around; /* Ajustement de l'espacement entre les boutons */
@@ -95,8 +88,8 @@
 
     .tab-infos {
       display: flex;
-      justify-content: space-between; /* Ajustez selon vos besoins */
-      width: 500px;
+      
+      width: 400px;
     }
 
     .left-column, .right-column {
@@ -104,10 +97,6 @@
       margin-top: 10px; /* Ajout d'une marge entre les colonnes */
 
 
-    }
-    .flex-container {
-        display: flex;
-        justify-content: space-between; /* Ajustez selon vos besoins */
     }
     
 
@@ -118,81 +107,81 @@
       display: inline-block;
       margin-bottom: 8px;
     }
-    </style>
-  </head>
+  </style>
+</head>
 
-  <body>
-    <div class="container">
-      <div class="tab-infos">
-        <div class="left-column">
-          <ul class= "flex-container">
-            <label for="tournee"> Tournee : </label>
-            <span id="tournee"> {creche.id}</span>
-          </ul>
-          <ul class= "flex-container">
-            <label for="creche"> Creche : </label>
-            <span id="creche"> {creche.nom}</span>
-          </ul>
-        </div>
-        <div class="right-column">
-          <ul class= "flex-container">
+ 
+<body> 
+<div class="container">
+<div class="tab-infos"> 
+    <div class= "left-column"> 
+        <ul>
+        <label for="tournee"> Tournee : </label>
+        <span id = "tournee"> {creche.id}</span>
+        </ul>
+        <ul>
+        <label for ="creche"> Creche : </label>
+        <span id = "creche"> {creche.nom}</span>
+        </ul>
+
+    </div>
+    <div class= "right-column">
+        
+        <ul>  
             <label for="date"> Date : </label>
-            <span id="date"> {creche.date}</span>
-          </ul>
-          <ul class= "flex-container">
+             <span id="date"> {creche.date}</span>
+        </ul>
+        <ul> 
+            
             <label for="ordre"> Ordre : </label>
             <span id="ordre"> {creche.ordre}</span>
-          </ul>
-        </div>
-      </div>
+        </ul>
+         
 
-      <div class="data-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Article</th>
-              <th>Caisses</th>
-              <th>Unités</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each $articlesStore as article (article)}
-              <tr>
-                <td>
-                  {article.libelle}
-                  {article.taille !== undefined ? ` - ${article.taille}` : ""}
-                </td>
-                <td>
-                  <!-- {caisse}-->
-                  <button
-                    on:click={() => /*todo incrementer*/ console.log("hello")}
-                    >+</button
-                  >
-                  <button
-                    on:click={() => /***todo decrementer*/ console.log("bye")}
-                    >-</button
-                  >
-                </td>
-                <td>
-                  <button
-                    on:click={() => /*todo decrementer*/ console.log("hello")}
-                    >+</button
-                  >
-                  <button
-                    on:click={() => /*todo incrementer*/ console.log("bye")}
-                    >-</button
-                  >
-                </td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-      </div>
-      <div class="buttons">
-        <button on:click={() => saveChanges()}> Sauvegarder </button>
-        <button on:click={() => cancelChanges()}> Annuler</button>
-      </div>
     </div>
-  </body>
-</html>
+</div>
 
+
+<div class="data-table">
+<table>
+    <thead>
+      <tr>
+        <th>Article</th>
+        <th>Caisses</th>
+        <th>Unités</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+      {#each $articlesStore as article  (article)}
+        <tr>
+          <td> 
+            {article.libelle}
+            {article.taille !== undefined ? ` - ${article.taille}` : ''}
+          </td>
+          <td>
+          <!-- {caisse}--> 
+          <button  on:click={() => /*todo incrementer*/console.log('hello')}>+</button>
+          <button on:click={() => /***todo decrementer*/console.log('bye')}>-</button>
+            
+          </td>
+          <td>
+            <button on:click={() => /*todo decrementer*/ console.log('hello')}>+</button>
+            <button on:click={() => /*todo incrementer*/console.log('bye')}>-</button>
+
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+
+  </div>
+  <div class="buttons">
+    <button on:click={() => saveChanges()}> Sauvegarder </button>
+    <button on:click={()=> cancelChanges()}> Annuler</button>
+  </div>
+
+  </div>
+
+</body>
+</html>

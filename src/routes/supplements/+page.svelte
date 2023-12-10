@@ -8,7 +8,9 @@ onMount(async () => {
       const articles = await response.json();
       articles.sort((a, b) => a.id_article - b.id_article);
       articlesStore.set(articles);
+      console.log(articles);
 });
+console.log(articlesStore);
 
 let selectedArticleId = 1; 
 

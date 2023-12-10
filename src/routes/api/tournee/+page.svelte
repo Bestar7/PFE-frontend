@@ -1,6 +1,7 @@
 <script>
   import Navbar from "$lib/Components/Navbar.svelte";
   import Tournee from "$lib/Components/Tournee.svelte";
+  import { onMount } from "svelte";
   import { tourneesStore } from "../../store";
   /**
    * @param {number} id
@@ -9,18 +10,31 @@
     testListTournee = testListTournee.filter((tournee) => tournee.id !== id);
   }
 
+  let datePicked= '2023-12-13';
+  onMount(async () => {
+      const response = await fetch(
+        `http://localhost:9000/tournees/date/${datePicked}`
+      );
+      const tournees = await response.json();
+      tourneesStore.set(tournees);
+      console.log(tournees);
+    });
+
+  
+
   /**
    * @type {string}
    */
-  let datePicked;
+  
   function handleDateSearch() {
     // TODO search tournee for this date GET /Tournee/{date}
     onMount(async () => {
       const response = await fetch(
-        "http://localhost:9000/tournees/date/2023-12-31"
+        "http://localhost:9000/tournees/date/2023-12-13"
       );
       const tournees = await response.json();
       tourneesStore.set(tournees);
+      console.log(tournees);
     });
 
     console.log("tournee du 32-12", tourneesStore);
@@ -57,7 +71,7 @@
   ];
 </script>
 
-<body>
+
   <div class="container">
     <Navbar />
     <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
@@ -80,36 +94,37 @@
 
         {#if selectedTab === tabs.TourneeDefault}
           <h2>Tournée classico classique pour Date.Now()</h2>
-          {#each testListTournee as tournee (tournee.id)}
+         {#each testListTournee as tournee (tournee.id)}
             <Tournee
               {...tournee}
               supprimerTournee={() => supprimerTournee(tournee.id)}
             />
           {/each}
-        {:else if selectedTab === tabs.TourneeDate}
-          <h2>Tournée pour tel(todo) date</h2>
+        {:else  if selectedTab === tabs.TourneeDate}
+          <h2>Tournée du {datePicked} </h2>
 
-          {#each testListTournee as tournee (tournee)}
+          {#each $tourneesStore as tournee (tournee)}
           <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
             <div class="tab-infos" on:click={() =>eventHandler()}> <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
               <div class="left-column">
                 <ul class="flex-container">
+                    <td> {tournee.date}</td>
                   <label for="nom"> Tournee : </label>
-                  <span id="nom"> {tournee.nomTournee}</span>
+                  <span id="nom"> {tournee.id_tournee}</span>
                 </ul>
                 <ul class="flex-container">
                   <label for="livreur"> Livreur : </label>
-                  <span id="livreur"> {tournee.livreur}</span>
+                  <span id="livreur"> {tournee.id_livreur}</span>
                 </ul>
               </div>
               <div class="left-column">
                 <ul class="flex-container">
                   <label for="date"> Date : </label>
-                  <span id="date"> {tournee.nomTournee}</span>
+                  <span id="date"> {tournee.date}</span>
                 </ul>
                 <ul class="flex-container">
                   <label for="statut"> Statut : </label>
-                  <span id="statut">En cours</span>
+                  <span id="statut">{tournee.statut}</span>
                 </ul>
               </div>
             </div>
@@ -125,8 +140,6 @@
     </div>
     <button on:click={() => history.back()}>Retour</button>
   </div>
-</body>
-
 <foot>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
