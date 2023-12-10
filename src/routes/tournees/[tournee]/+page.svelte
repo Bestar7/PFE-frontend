@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
+  let tourneeTab=[];
   let tournee;
   onMount(() => {
     getInfosTournee();
@@ -10,9 +11,12 @@
     console.log(response);
 
     const data = await response.json();
-    tournee=data;
+    tourneeTab=data;
+    console.log(tourneeTab);
+    tournee= tourneeTab[0];
+
   }
-  console.log(tournee);
+  console.log("ici", tournee);
 </script>
 
 <Navbar />
