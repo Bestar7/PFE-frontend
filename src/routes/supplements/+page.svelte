@@ -1,15 +1,19 @@
-<script>
-  import { onMount } from "svelte";
-  import { articlesStore } from "../commandes/store";
-  import Navbar from "$lib/Components/Navbar.svelte";
-  onMount(async () => {
-    const response = await fetch("http://localhost:9000/articles");
-    const articles = await response.json();
-    articles.sort((a, b) => a.id_article - b.id_article);
-    articlesStore.set(articles);
-  });
+<script> 
 
-  async function savePourcentage(id_article, nouvelleValeur) {
+import { onMount } from "svelte";
+import { articlesStore } from "../store";
+import Navbar from "$lib/Components/Navbar.svelte";
+onMount(async () => {
+      const response = await fetch('http://localhost:9000/articles');
+      const articles = await response.json();
+      articles.sort((a, b) => a.id_article - b.id_article);
+      articlesStore.set(articles);
+});
+
+let selectedArticleId = 1; 
+
+async function savePourcentage(id_article,nouvelleValeur) {
+
     try {
       console.log(nouvelleValeur);
       const response = await fetch(

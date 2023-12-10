@@ -1,12 +1,23 @@
 <script>
+  let data = [
+    { article: "langes S", caisses: 1, unites: 0 },
+    { article: "langes L", caisses: 4, unites: 0 },
+    { article: "langes XL", caisses: 7, unites: 0 },
+    { article: "Inserts", caisses: 2, unites: 0 },
+    { article: "Gants de toilette", caisses: 3, unites: 0 },
+    { article: "Sacs poubelle", caisses: 0, unites: 60 },
+  ];
   import { onMount } from "svelte";
-  import { articlesStore } from "../store";
+  import { readable } from "svelte/store";
+  import { articlesStore } from "../../store";
+
 
   /**
    * @type {Object}
    */
   onMount(async () => {
-    const response = await fetch('http://localhost:9000/articles');
+    const response = await fetch("http://localhost:9000/articles");
+
     const articles = await response.json();
     articlesStore.set(articles);
   });
@@ -30,76 +41,14 @@
   };
 </script>
 
-<div class="container">
-  <div class="tab-infos">
-    <div class="left-column">
-      <ul>
-        <label for="tournee"> Tournee : </label>
-        <span id="tournee"> {creche.id}</span>
-      </ul>
-      <ul>
-        <label for="creche"> Creche : </label>
-        <span id="creche"> {creche.nom}</span>
-      </ul>
-    </div>
-    <div class="right-column">
-      <ul>
-        <label for="date"> Date : </label>
-        <span id="date"> {creche.date}</span>
-      </ul>
-      <ul>
-        <label for="ordre"> Ordre : </label>
-        <span id="ordre"> {creche.ordre}</span>
-      </ul>
-    </div>
-  </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulaire avec mise en page</title>
+    <style>
+    table {
 
-  <div class="data-table">
-    <table>
-      <thead>
-        <tr>
-          <th>Article</th>
-          <th>Caisses</th>
-          <th>Unités</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each $articlesStore as article (article)}
-          <tr>
-            <td>
-              {article.libelle}
-              {article.taille !== undefined ? ` - ${article.taille}` : ""}
-            </td>
-            <td>
-              <!-- {caisse}-->
-              <button on:click={() => /*todo incrementer*/ console.log("hello")}
-                >+</button
-              >
-              <button on:click={() => /***todo decrementer*/ console.log("bye")}
-                >-</button
-              >
-            </td>
-            <td>
-              <button on:click={() => /*todo decrementer*/ console.log("hello")}
-                >+</button
-              >
-              <button on:click={() => /*todo incrementer*/ console.log("bye")}
-                >-</button
-              >
-            </td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
-  </div>
-  <div class="buttons">
-    <button on:click={() => saveChanges()}> Sauvegarder </button>
-    <button on:click={() => cancelChanges()}> Annuler</button>
-  </div>
-</div>
-
-<style>
-  table {
     border-collapse: collapse;
     width: 400px;
     margin: 20px;
@@ -135,33 +84,115 @@
     margin-top: 20px; /* Ajout d'une marge en haut des boutons */
   }
 
-  body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-    align-items: center;
-    margin: 0;
-  }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      align-items:center
+      margin: 0;
+    }
 
-  .tab-infos {
-    display: flex;
+    .tab-infos {
+      display: flex;
+      justify-content: space-between; /* Ajustez selon vos besoins */
+      width: 500px;
+    }
 
-    width: 400px;
-  }
+    .left-column, .right-column {
+      width: 100%;
+      margin-top: 10px; /* Ajout d'une marge entre les colonnes */
 
-  .left-column,
-  .right-column {
-    width: 100%;
-    margin-top: 10px; /* Ajout d'une marge entre les colonnes */
-  }
 
-  .date-input {
-    width: 100%;
-  }
-  label,
-  span {
-    display: inline-block;
-    margin-bottom: 8px;
-  }
-</style>
+    }
+    .flex-container {
+        display: flex;
+        justify-content: space-between; /* Ajustez selon vos besoins */
+    }
+    
+
+    .date-input {
+      width: 100%;
+    }
+    label, span {
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="tab-infos">
+        <div class="left-column">
+          <ul class= "flex-container">
+            <label for="tournee"> Tournee : </label>
+            <span id="tournee"> {creche.id}</span>
+          </ul>
+          <ul class= "flex-container">
+            <label for="creche"> Creche : </label>
+            <span id="creche"> {creche.nom}</span>
+          </ul>
+        </div>
+        <div class="right-column">
+          <ul class= "flex-container">
+            <label for="date"> Date : </label>
+            <span id="date"> {creche.date}</span>
+          </ul>
+          <ul class= "flex-container">
+            <label for="ordre"> Ordre : </label>
+            <span id="ordre"> {creche.ordre}</span>
+          </ul>
+        </div>
+      </div>
+
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Article</th>
+              <th>Caisses</th>
+              <th>Unités</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each $articlesStore as article (article)}
+              <tr>
+                <td>
+                  {article.libelle}
+                  {article.taille !== undefined ? ` - ${article.taille}` : ""}
+                </td>
+                <td>
+                  <!-- {caisse}-->
+                  <button
+                    on:click={() => /*todo incrementer*/ console.log("hello")}
+                    >+</button
+                  >
+                  <button
+                    on:click={() => /***todo decrementer*/ console.log("bye")}
+                    >-</button
+                  >
+                </td>
+                <td>
+                  <button
+                    on:click={() => /*todo decrementer*/ console.log("hello")}
+                    >+</button
+                  >
+                  <button
+                    on:click={() => /*todo incrementer*/ console.log("bye")}
+                    >-</button
+                  >
+                </td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+      <div class="buttons">
+        <button on:click={() => saveChanges()}> Sauvegarder </button>
+        <button on:click={() => cancelChanges()}> Annuler</button>
+      </div>
+    </div>
+  </body>
+</html>
+
