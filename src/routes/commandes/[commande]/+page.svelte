@@ -10,17 +10,28 @@
   import { onMount } from "svelte";
   import { readable } from "svelte/store";
   import { articlesStore } from "../../store";
-
+  let commande;
   /**
    * @type {Object}
    */
   onMount(async () => {
-    const response = await fetch("http://localhost:9000/articles");
-    const articles = await response.json();
-    articlesStore.set(articles);
+    await getCommande();
   });
-  console.log("2 eme ", articlesStore);
 
+  async function getCommande() {
+    try {
+      const response = await fetch("");
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+
+      commande = await response.json();
+      console.log(commande.id_commande);
+    } catch (error) {
+      console.error("Erreur lors de la récupération de la commande:", error);
+    }
+  }
   function saveChanges() {
     // Ajoutez ici la logique pour sauvegarder les modifications
     console.log("Modifications sauvegardées!");
@@ -119,7 +130,13 @@
         <div class="left-column">
           <ul>
             <label for="tournee"> Tournee : </label>
-            <span id="tournee"> {creche.id}</span>
+            <span id="tournee"
+              >{commande
+                ? commande.tournee
+                  ? commande.tournee.nom
+                  : commande.tournee.id_tournee
+                : ""}
+            </span>
           </ul>
           <ul>
             <label for="creche"> Creche : </label>
@@ -129,56 +146,65 @@
         <div class="right-column">
           <ul>
             <label for="date"> Date : </label>
-            <span id="date"> {creche.date}</span>
+            <span id="date"> {commande ? commande.tournee.date : " "}</span>
           </ul>
           <ul>
             <label for="ordre"> Ordre : </label>
-            <span id="ordre"> {creche.ordre}</span>
+            <span id="ordre"> {commande ? commande.ordre : ""}</span>
+          </ul>
+          <ul>
+            <label for="statut"> Statut : </label>
+            <span id="statu"> {commande ? commande.statut : ""}</span>
           </ul>
         </div>
       </div>
 
       <div class="data-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Article</th>
-              <th>Caisses</th>
-              <th>Unités</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each $articlesStore as article (article)}
+        {#if commande && commande.lignes_commande}
+          <table>
+            <thead>
               <tr>
-                <td>
-                  {article.libelle}
-                  {article.taille !== undefined ? ` - ${article.taille}` : ""}
-                </td>
-                <td>
-                  <!-- {caisse}-->
-                  <button
-                    on:click={() => /*todo incrementer*/ console.log("hello")}
-                    >+</button
-                  >
-                  <button
-                    on:click={() => /***todo decrementer*/ console.log("bye")}
-                    >-</button
-                  >
-                </td>
-                <td>
-                  <button
-                    on:click={() => /*todo decrementer*/ console.log("hello")}
-                    >+</button
-                  >
-                  <button
-                    on:click={() => /*todo incrementer*/ console.log("bye")}
-                    >-</button
-                  >
-                </td>
+                <th>Article</th>
+                <th>Caisses</th>
+                <th>Unités</th>
               </tr>
-            {/each}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {#each commande.lignes_commande as ligne (ligne.id_article)}
+                <tr>
+                  <td>
+                    {ligne ? ligne.id_article : ""}
+                  </td>
+                  <td>
+                    {ligne.nb_caisses}
+                    <!-- {caisse}-->
+                    <button
+                      on:click={() => /*todo incrementer*/ console.log("hello")}
+                      >+</button
+                    >
+                    <button
+                      on:click={() => /***todo decrementer*/ console.log("bye")}
+                      >-</button
+                    >
+                  </td>
+                  <td>
+                    {ligne.nb_unites}
+                    <button
+                      on:click={() => /*todo decrementer*/ console.log("hello")}
+                      >+</button
+                    >
+                    <button
+                      on:click={() => /*todo incrementer*/ console.log("bye")}
+                      >-</button
+                    >
+                  </td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        {:else}
+          <p>Aucune ligne de commande disponible.</p>
+        {/if}
       </div>
       <div class="buttons">
         <button on:click={() => saveChanges()}> Sauvegarder </button>
