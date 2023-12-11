@@ -1,64 +1,48 @@
 <script>
-  import ItemLine from "$lib/Components/ItemLine.svelte";
-    import ItemsStock from "$lib/Components/ItemsStock.svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
   import { onMount } from "svelte";
+  import { crecheStore } from "./store";
+  import { get } from 'svelte/store'
+  import { goto } from "$app/navigation";
 
   // TODO replace with content from GET/creche/defaultOrder (or other name)
-  const ListItemTesting = [{label:"langes", qty:42}, {label:"guants", qty:421}];
 
-  onMount(()=>{
-    // TODO GET all info from creche (-> lazy loading)
-    // @ts-ignore
-    document.querySelector(`#crecheName`).value = "value from GET"
-    // @ts-ignore
-    document.querySelector(`#crecheCity`).value = "value from GET"
-    // @ts-ignore
-    document.querySelector(`#crecheAddress`).value = "value from GET"
+  let listCreche = []
+
+  onMount(async ()=>{
+    await getAllCreche()
+    //console.log("onMount", listCreche)
+    console.log("onMount", get(crecheStore))
   })
 
-  function onClickSauvegarder(){
-    // TODO PUT (modify) requeste or POST (create)
-    // THEN
-    history.back();
+  async function getAllCreche(){
+    listCreche = await (await fetch("")).json()
   }
 
-  function onClickAnnuler(){
-    history.back();
+  function selectOneCreche(creche){
+    crecheStore.set(creche)
+    console.log("get", get(crecheStore))
+    //document.location.href = `/api/creche/${creche.id_creche}` //TODO verifier le path
+    goto(`/api/creche/${creche.id_creche}`)
   }
 
-  function onClickSupprimer(){
-    // TODO recup l'id de la creche et supprimer via requete
-    // THEN
-    history.back();
-  }
 </script>
 
 
 <Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-<form>
-  <div class="administrative">
-    <label for="crecheName">Nom de la crèche</label><br>
-    <input type="text" id="crecheName" placeholder="Les p'tits Choux" required><br>
-
-    <label for="crecheCity">Ville</label><br>
-    <input type="text" id="crecheCity" placeholder="Leuven" required><br>
-
-    <label for="crecheAddress">Addresse</label><br>
-    <input type="text" id="crecheAddress" placeholder="rue des champs, 12" required><br>
-  </div><br>
-
-  <div class="defaultOrder">
-    <!--TODO : add liste d'article de commande par défaut via un GET /article-->
-    <ItemsStock ListItems={ListItemTesting}/>
-  </div><br>
-
-
-
-  <div class="cmdBtn">
-    <button on:click={onClickSauvegarder} >Sauvegarder</button>
-    <button on:click={onClickAnnuler}     >Annuler</button>
-    <button on:click={onClickSupprimer}   >Supprimer</button>
-  </div>
-  
-</form>
+<table>
+  <thead>
+    <th>nom</th>
+    <th>rue</th>
+    <th>ville</th>
+  </thead>
+  <tbody>
+    {#each listCreche as creche}
+    <tr on:click={()=>selectOneCreche(creche)}>
+      <td>{creche.nom}</td>
+      <td>{creche.rue}</td>
+      <td>{creche.ville}</td>
+    </tr>
+    {/each}
+  </tbody>
+</table>
