@@ -10,6 +10,8 @@ async function getTourneesDate(date: String) {
     const reponse = await fetch(`${host}/${apiRoute}/date/2023-12-13`);
     if (reponse.ok) {
       const json = await reponse.json();
+      console.log("les tournees sont ",json)
+
       return jsonResponse(json)
     } else {
       throw new Error(reponse.statusText);

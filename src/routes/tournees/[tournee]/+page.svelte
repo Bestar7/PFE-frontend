@@ -1,9 +1,10 @@
 <script>
   import { onMount } from "svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
+
   let tournee;
   let datePicked = "2023-12-13";
-
+  let commandesTournee = [];
   onMount(async () => {
      await getInfosTournee()
   });
@@ -17,14 +18,30 @@
     }
 
     tournee = await response.json();
+    console.log(tournee);
+
+    return tournee;
   } catch (error) {
     console.error("Erreur lors de la récupération des informations de la tournée:", error);
+  }
+}
+async function getCommandesTournee(){
+  try {
+    console.log("On exécute la fonction getCommandesTournee ");
+    const response = await fetch("/api/commandes");
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP: ${response.status}`);
+    }
+
+    commandesTournee = await response.json();
+  } catch (error) {
+    console.error("Erreur lors de la récupération des commandes de la tournée:", error);
   }
 }
 
   function handleTourneeInfos(){
     getInfosTournee();
-    console.log(tournee);
+    console.log("handle" , tournee);
   }
 </script>
 
@@ -60,13 +77,45 @@
       <div class="right-column">
         <ul>
           <label for="date"> Date : </label>
-          <span id="date"> </span>
+          <span id="date">{tournee ?tournee.date : ''} </span>
         </ul>
         <ul>
           <label for="ordre"> Statut : </label>
-          <span id="ordre">tournee</span>
+          <span id="ordre">{tournee ?tournee.statut : ''}</span>
         </ul>
       </div>
     </div>
   </div>
+  <table> 
+  <tbody>
+    {#each commandesTournee as commande (commande)}
+      <tr>
+        <td>
+          {commande.id_commande}
+        </td>
+        <td>
+          <!-- {caisse}-->
+          <button
+            on:click={() => /*todo incrementer*/ console.log("hello")}
+            >+</button
+          >
+          <button
+            on:click={() => /***todo decrementer*/ console.log("bye")}
+            >-</button
+          >
+        </td>
+        <td>
+          <button
+            on:click={() => /*todo decrementer*/ console.log("hello")}
+            >+</button
+          >
+          <button
+            on:click={() => /*todo incrementer*/ console.log("bye")}
+            >-</button
+          >
+        </td>
+      </tr>
+    {/each}
+  </tbody>
+</table>
 </body>
