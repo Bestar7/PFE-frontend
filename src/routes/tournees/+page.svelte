@@ -2,6 +2,7 @@
   import Navbar from "$lib/Components/Navbar.svelte";
   import Tournee from "$lib/Components/Tournee.svelte";
   import { onMount } from "svelte";
+  let tournees=[];
 
   /**
    * @param {number} id
@@ -14,15 +15,13 @@
   });
 
 
-  let tournees=[];
   let datePicked = "2023-12-13";
   async function getTourneesDate() {
-    const response = await fetch("tournee");
-    console.log(response);
+    const response = await fetch("tournees");
     const tourneesResponse = await response.json();
     tournees = tourneesResponse;
-    console.log(tournees);
   };
+  
 
   /**
    * @type {string}
@@ -34,7 +33,6 @@
     
 
     selectedTab = tabs.TourneeDate;
-    console.log("selectedTab", selectedTab, datePicked);
   }
   function handleDefault() {
     // TODO search tournee for this date GET /Tournee/{Date.Now()}
@@ -47,8 +45,9 @@
     TourneeDefault: "TourneeDefault",
     TourneeSupplement: "TourneeSupplement",
   };
-  function eventHandler() {
-    window.location.href = "/";
+  function eventHandler(id_tournee) {
+    console.log(id_tournee);
+   window.location.href = `/tournees/${id_tournee}`;
   }
   let selectedTab = tabs.TourneeDate;
 
@@ -86,7 +85,7 @@
 
         {#each tournees as tournee (tournee)}
           <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
-          <table class="tab-infos" onclick={() => eventHandler()}>
+          <table class="tab-infos" on:click={() =>eventHandler(tournee.id_tournee)}>
             <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
             <div class="left-column">
               <ul class="flex-container">
