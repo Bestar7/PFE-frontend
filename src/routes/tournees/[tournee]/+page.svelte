@@ -1,41 +1,40 @@
+
 <script>
   import { onMount } from "svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
 
   let tournee;
   let datePicked = "2023-12-13";
-  let commandesTournee = [];
+  let resumeTournee = [];
   onMount(async () => {
      await getInfosTournee()
+     await getResumeTournee();
   });
 
   async function getInfosTournee() {
   try {
-    console.log("On exécute la fonction getInfosTournee ");
     const response = await fetch("");
     if (!response.ok) {
       throw new Error(`Erreur HTTP: ${response.status}`);
     }
 
     tournee = await response.json();
-    console.log(tournee);
 
     return tournee;
   } catch (error) {
     console.error("Erreur lors de la récupération des informations de la tournée:", error);
   }
 }
-async function getCommandesTournee(){
+async function getResumeTournee(){
   try {
-    console.log("On exécute la fonction getCommandesTournee ");
-    const response = await fetch("/api/commandes");
+    const response = await fetch("/api/resumeTournee");
     if (!response.ok) {
       throw new Error(`Erreur HTTP: ${response.status}`);
     }
 
-    commandesTournee = await response.json();
+    resumeTournee = await response.json();
   } catch (error) {
-    console.error("Erreur lors de la récupération des commandes de la tournée:", error);
+    console.error("Erreur lors de la récupération des resumes de la tournée:", error);
   }
 }
 
@@ -88,34 +87,21 @@ async function getCommandesTournee(){
   </div>
   <table> 
   <tbody>
-    {#each commandesTournee as commande (commande)}
+    {#each resumeTournee as article (article)}
       <tr>
         <td>
-          {commande.id_commande}
+          {article.libelle}
+          {article.taille !== undefined ? ` - ${article.taille}` : ""}
+
         </td>
         <td>
-          <!-- {caisse}-->
-          <button
-            on:click={() => /*todo incrementer*/ console.log("hello")}
-            >+</button
-          >
-          <button
-            on:click={() => /***todo decrementer*/ console.log("bye")}
-            >-</button
-          >
+          caisses: {article.nb_caisses}
+          unités : {article.nb_unites}
         </td>
-        <td>
-          <button
-            on:click={() => /*todo decrementer*/ console.log("hello")}
-            >+</button
-          >
-          <button
-            on:click={() => /*todo incrementer*/ console.log("bye")}
-            >-</button
-          >
-        </td>
+       
       </tr>
     {/each}
   </tbody>
 </table>
+
 </body>

@@ -7,7 +7,7 @@ const id = 4
 async function getOneTournee() {
     try {
       console.log("on passe bien ici ")
-      const reponse = await fetch(`http://localhost:9000/tournees/1`);
+      const reponse = await fetch(`http://localhost:9000/tournees/1/resume`);
       if (reponse.ok) {
         const json = await reponse.json();
         console.log("la tournee est ", json);
