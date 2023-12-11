@@ -22,12 +22,7 @@
   async function getAllCrecheInfo(){// TODO separer les infos normal et lignes_par_defaut
     const data = await (await fetch("")).json()
     console.log("get All", data)
-    creche = data.creche
-    articles = data.articles
-    crecheDefaultOrder = creche.lignes_par_defaut
-    
-    //listItem = data.lignes_par_defaut
-    console.log("listItem", listItem)
+    listItem = data.lignes_par_defaut
   }
 
   function onClickSauvegarder(){
@@ -61,20 +56,28 @@
     <input type="text" placeholder="rue des champs, 12" bind:value={crecheStreet} id="crecheStreet" required><br>
   </div><br>
 
-  <div class="defaultOrder">
-    <!--TODO : add liste d'article de commande par défaut via un GET /article-->
-    <!--<ItemsStock ListItems={listItem}/>-->
-    {#each articles as article}
-      <p><!--TODO absolument DEGEULASSE, le backend doit renvoyer le libelle de l'article dans la commande...-->
-        {article.libelle} {#if article.taille != undefined}{article.taille}{/if}<br>
-        {#each crecheDefaultOrder as orderSQL}
-          {#if orderSQL.id_article == article.id_article}{orderSQL.nb_caisse}{/if}
+  <form class="defaultOrder">
+    <table>
+      <thead>
+        <th>libellé</th>
+        <th>taille</th>
+        <th>caisses</th>
+        <th>unités</th>
+      </thead>
+      <tbody>
+        {#each listItem as item}
+        <tr>
+          <td>{item.article.libelle}</td>
+          <td>{item.article.taille == undefined ? '' : item.article.taille}</td>
+          <td>{item.nb_caisses}</td>
+          <!--TODO add input inside <tr> and bind value ???
+            on:click:Sauvegarder, tout envoyer en POST en bind:value de chaque input-->
+          <td>{item.nb_unites}</td> <!--TODO la meme ici-->
+        </tr>
         {/each}
-      </p>
-    {/each}
-  </div><br>
-
-
+      </tbody>
+    </table>
+  </form><br>
 
   <div class="cmdBtn">
     <button on:click={onClickSauvegarder} >Sauvegarder</button>
