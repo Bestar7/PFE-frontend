@@ -53,8 +53,8 @@
           </span>
         </ul>
         <ul>
-          <label for="creche"> Creche : </label>
-          <span id="creche"> </span>
+          <label for="creche"> Livreur : </label>
+          <span id="creche">{tournee ?tournee.nom_livreur + " " + tournee.prenom_livreur: ''} </span>
         </ul>
       </div>
       <div class="right-column">
@@ -63,8 +63,8 @@
           <span id="date"> </span>
         </ul>
         <ul>
-          <label for="ordre"> Ordre : </label>
-          <span id="ordre"></span>
+          <label for="ordre"> Statut : </label>
+          <span id="ordre">tournee</span>
         </ul>
       </div>
     </div>
