@@ -2,6 +2,7 @@
   import Navbar from "$lib/Components/Navbar.svelte";
   import Tournee from "$lib/Components/Tournee.svelte";
   import { onMount } from "svelte";
+  let tournees=[];
 
   /**
    * @param {number} id
@@ -14,15 +15,12 @@
   });
 
 
-  let tournees=[];
   let datePicked = "2023-12-13";
   async function getTourneesDate() {
-    console.log("on exexcute la fonction getTourneesDate ");
     const response = await fetch("tournees");
     const tourneesResponse = await response.json();
     tournees = tourneesResponse;
   };
-  console.log(tournees);
   
 
   /**
@@ -35,7 +33,6 @@
     
 
     selectedTab = tabs.TourneeDate;
-    console.log("selectedTab", selectedTab, datePicked);
   }
   function handleDefault() {
     // TODO search tournee for this date GET /Tournee/{Date.Now()}

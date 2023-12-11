@@ -4,17 +4,23 @@
   let tournee;
   let datePicked = "2023-12-13";
 
-  onMount(() => {
-    getInfosTournee()
+  onMount(async () => {
+     await getInfosTournee()
   });
 
   async function getInfosTournee() {
-    console.log("on exexcute la fonction getInfosTournee ");
+  try {
+    console.log("On exécute la fonction getInfosTournee ");
     const response = await fetch("");
-    const data = await response.json();
-    tournee = data;
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP: ${response.status}`);
+    }
 
+    tournee = await response.json();
+  } catch (error) {
+    console.error("Erreur lors de la récupération des informations de la tournée:", error);
   }
+}
 
   function handleTourneeInfos(){
     getInfosTournee();
@@ -43,12 +49,12 @@
           <!-- pourquoi ici la tournées undefined alors que ca fonctionne bien, dans /tournees on fait exactement la meme chose : en sortant de
           la fonction async le tournes[] est aussi vite mais dans le html il marche POURQUOI ? ²-->
           <span id="tournee">
-          
+            {tournee ? tournee.id_tournee: ''}
           </span>
         </ul>
         <ul>
           <label for="creche"> Creche : </label>
-          <span id="creche"> {tournee.id_livreur}</span>
+          <span id="creche"> </span>
         </ul>
       </div>
       <div class="right-column">
