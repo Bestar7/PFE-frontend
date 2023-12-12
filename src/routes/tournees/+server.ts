@@ -6,7 +6,6 @@ const apiRoute = "tournees";
 async function getTourneesDate(date: String) {
 
   try {
-    console.log("on ne devrait pas passer par ici");
     const reponse = await fetch(`${host}/${apiRoute}/date/2023-12-13`);
     if (reponse.ok) {
       const json = await reponse.json();

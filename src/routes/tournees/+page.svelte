@@ -11,7 +11,8 @@
     testListTournee = testListTournee.filter((tournee) => tournee.id !== id);
   }
   onMount(()=> {
-    getTourneesDate()
+    getTourneesDate();
+    getCommandesTournee(1);
   });
 
 
@@ -21,7 +22,11 @@
     const tourneesResponse = await response.json();
     tournees = tourneesResponse;
   };
-  
+
+  /**
+   * affiche la liste des differentes commandes presentes dans la tournes (le nom des creches a livrer dans l'ordre )
+   */
+ 
 
   /**
    * @type {string}
@@ -109,6 +114,7 @@
             </div>
           </table>
         {/each}
+
       
     </div>
   </div>
