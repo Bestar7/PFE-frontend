@@ -6,11 +6,10 @@ const id = 4
 
 async function getOneTournee() {
     try {
-      console.log("on passe bien ici ")
-      const reponse = await fetch(`http://localhost:9000/tournees/1/resume`);
+      let idTournee = sessionStorage.getItem('id');
+      const reponse = await fetch(`http://localhost:9000/tournees/${idTournee}`);
       if (reponse.ok) {
         const json = await reponse.json();
-        console.log("la tournee est ", json);
         return new Response(JSON.stringify(json), {
           headers: {
             'Content-Type': 'application/json'
