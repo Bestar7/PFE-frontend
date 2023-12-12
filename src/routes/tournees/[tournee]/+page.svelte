@@ -48,7 +48,7 @@
   async function supprimerCreche(idCommande) {
     commandes = commandes.filter(commande => commande.id_commande !== idCommande);
     // Mettez en œuvre la logique pour supprimer la crèche avec l'ID de commande donné
-    const response = await fetch(`/api/commandes/tournee/${tournee}`);
+    const response = await fetch(`/api/commandes/tournee/${tournee}`); // TODO delete
   }
 </script>
 
