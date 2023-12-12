@@ -5,6 +5,7 @@
   let role = "livreur";
   let commande;
   let responseUpdatedCommande;
+  
   let updatedCommande = {
     new_ordre: 1000,
     new_statut: "en attente",
@@ -53,12 +54,15 @@
   onMount(async () => {
     //TODO attention pour l'instant hardcodage de id car pas de page COMMANDES, faire que quand on clique sur une commande pour la modifier
     // on rajoute dans le localStrorage
-    await getCommande(1);
+    const idCommande = sessionStorage.getItem('id');
+    await getCommande(idCommande);
+
+  console.log("id recup ", idCommande);
   });
 
-  async function getCommande(id) {
+  async function getCommande(idCommande) {
     try {
-      const response = await fetch(`http://localhost:9000/commandes/${id}`);
+      const response = await fetch(`http://localhost:9000/commandes/${idCommande}`);
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
@@ -73,11 +77,11 @@
   /**
    * modification d'une commande.
    */
-  async function updateCommande(updatedCommande, commandeId) {
+  async function updateCommande(updatedCommande, idCommande) {
     try {
       //aussi hardcodé car pas de localStore avec l'id dedans
       const response = await fetch(
-        "http://localhost:9000/commandes/1/modifier",
+        `http://localhost:9000/commandes/${idCommande}/modifier`,
         {
           method: "PUT",
           headers: {

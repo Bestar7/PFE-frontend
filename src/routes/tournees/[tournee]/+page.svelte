@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
   import Navbar from "$lib/Components/Navbar.svelte";
 
   let tournee;
@@ -7,6 +8,8 @@
   let resumeTournee = [];
   let commandes = [];
   onMount(async () => {
+    let idTournee = sessionStorage.getItem('idTournee');
+
     await getInfosTournee();
     await getResumeTournee();
     await getCommandesTournee(1);
@@ -14,7 +17,7 @@
 
   async function getInfosTournee() {
     try {
-      const response = await fetch("");
+      const response = await fetch(`http://localhost:9000/tournees/${idTournee}`);
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
@@ -69,6 +72,18 @@
     getInfosTournee();
     console.log("handle", tournee);
   }
+  function ouvrirDetailsCreche(idCommande) {
+      // Mettez en œuvre la logique pour ouvrir les
+      sessionStorage.setItem('id',idCommande);
+     
+     goto(`/commandes/${idCommande}`);
+     
+    }
+  
+    function supprimerCreche(idCommande) {
+      // Mettez en œuvre la logique pour supprimer la crèche avec l'ID de commande donné
+      
+    }
 </script>
 
 <Navbar />
@@ -148,18 +163,7 @@
       {/each}
     </tbody>
   </table>
-  
-  <script>
-    function ouvrirDetailsCreche(idCommande) {
-      // Mettez en œuvre la logique pour ouvrir les détails de la crèche avec l'ID de commande donné
-      console.log("Ouvrir les détails de la crèche avec l'ID:", idCommande);
-    }
-  
-    function supprimerCreche(idCommande) {
-      // Mettez en œuvre la logique pour supprimer la crèche avec l'ID de commande donné
-      console.log("Supprimer la crèche avec l'ID:", idCommande);
-    }
-  </script>
+
   
   <script>
     function supprimerCreche(idCommande) {

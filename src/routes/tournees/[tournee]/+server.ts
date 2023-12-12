@@ -6,7 +6,8 @@ const id = 4
 
 async function getOneTournee() {
     try {
-      const reponse = await fetch(`http://localhost:9000/tournees/1`);
+      let idTournee = sessionStorage.getItem('id');
+      const reponse = await fetch(`http://localhost:9000/tournees/${idTournee}`);
       if (reponse.ok) {
         const json = await reponse.json();
         return new Response(JSON.stringify(json), {

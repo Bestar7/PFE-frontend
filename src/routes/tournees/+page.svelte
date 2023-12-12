@@ -2,6 +2,7 @@
   import Navbar from "$lib/Components/Navbar.svelte";
   import Tournee from "$lib/Components/Tournee.svelte";
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
   let tournees=[];
 
   /**
@@ -12,7 +13,6 @@
   }
   onMount(()=> {
     getTourneesDate();
-    getCommandesTournee(1);
   });
 
 
@@ -51,8 +51,9 @@
     TourneeSupplement: "TourneeSupplement",
   };
   function eventHandler(id_tournee) {
+    sessionStorage.setItem('idTournee', id_tournee);
     console.log(id_tournee);
-   window.location.href = `/tournees/${id_tournee}`;
+   goto(`/tournees/${id_tournee}`);
   }
   let selectedTab = tabs.TourneeDate;
 
