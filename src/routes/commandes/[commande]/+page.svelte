@@ -1,26 +1,112 @@
 <script>
-  let data = [
-    { article: "langes S", caisses: 1, unites: 0 },
-    { article: "langes L", caisses: 4, unites: 0 },
-    { article: "langes XL", caisses: 7, unites: 0 },
-    { article: "Inserts", caisses: 2, unites: 0 },
-    { article: "Gants de toilette", caisses: 3, unites: 0 },
-    { article: "Sacs poubelle", caisses: 0, unites: 60 },
-  ];
   import { onMount } from "svelte";
   import { readable } from "svelte/store";
-  import { articlesStore } from "../../store";
-
+  import Navbar from "$lib/Components/Navbar.svelte";
+  let role = "livreur";
+  let commande;
+  let responseUpdatedCommande;
+  let updatedCommande = {
+    new_ordre: 1000,
+    new_statut: "en attente",
+    new_lignes_commande: [
+      {
+        id_commande: 1,
+        id_article: 1,
+        new_nb_caisses: 1,
+        new_nb_unites: 0,
+      },
+      {
+        id_commande: 1,
+        id_article: 2,
+        new_nb_caisses: 2,
+        new_nb_unites: 0,
+      },
+      {
+        id_commande: 1,
+        id_article: 3,
+        new_nb_caisses: 3,
+        new_nb_unites: 0,
+      },
+      {
+        id_commande: 1,
+        id_article: 4,
+        new_nb_caisses: 999,
+        new_nb_unites: 0,
+      },
+      {
+        id_commande: 1,
+        id_article: 5,
+        new_nb_caisses: 5,
+        new_nb_unites: 0,
+      },
+      {
+        id_commande: 1,
+        id_article: 6,
+        new_nb_caisses: 6,
+        new_nb_unites: 0,
+      },
+    ],
+  };
   /**
    * @type {Object}
    */
   onMount(async () => {
-    const response = await fetch("http://localhost:9000/articles");
-    const articles = await response.json();
-    articlesStore.set(articles);
+    //TODO attention pour l'instant hardcodage de id car pas de page COMMANDES, faire que quand on clique sur une commande pour la modifier
+    // on rajoute dans le localStrorage
+    await getCommande(1);
   });
-  console.log("2 eme ", articlesStore);
 
+  async function getCommande(id) {
+    try {
+      const response = await fetch(`http://localhost:9000/commandes/${id}`);
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+
+      commande = await response.json();
+      console.log(commande);
+    } catch (error) {
+      console.error("Erreur lors de la récupération de la commande:", error);
+    }
+  }
+  /**
+   * modification d'une commande.
+   */
+  async function updateCommande(updatedCommande, commandeId) {
+    try {
+      //aussi hardcodé car pas de localStore avec l'id dedans
+      const response = await fetch(
+        "http://localhost:9000/commandes/1/modifier",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            new_ordre: updatedCommande.new_ordre,
+            new_statut: updatedCommande.new_statut,
+            new_lignes_commande: updatedCommande.new_lignes_commande.map(
+              (ligne) => ({
+                id_commande: ligne.id_commande,
+                id_article: ligne.id_article,
+                new_nb_caisses: ligne.new_nb_caisses,
+                new_nb_unites: ligne.new_nb_unites,
+              })
+            ),
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+      console.log("reponse : ", response);
+      responseUpdatedCommande = await response.json();
+      console.log("Commande mise à jour :", responseUpdatedCommande);
+    } catch (error) {
+      console.error("Erreur lors de la modification de la commande:", error);
+    }
+  }
   function saveChanges() {
     // Ajoutez ici la logique pour sauvegarder les modifications
     console.log("Modifications sauvegardées!");
@@ -39,6 +125,107 @@
     date: "ajd",
   };
 </script>
+
+<body>
+  <div class="container">
+    <Navbar />
+
+    <div class="tab-infos">
+      <div class="left-column">
+        <ul>
+          <label for="tournee"> Tournee : </label>
+          <span id="tournee"
+            >{commande?.tournee?.nom ?? commande?.tournee?.id_tournee ?? ""}
+          </span>
+        </ul>
+        <ul>
+          <label for="creche"> Creche : </label>
+          <span id="creche"> {creche.nom}</span>
+        </ul>
+      </div>
+      <div class="right-column">
+        <ul>
+          <label for="date"> Date : </label>
+          <span id="ordre"> {commande ? commande.ordre : ""}</span>
+
+          <!--<span id="date"> {commande ? commande.tournee.date : " "}</span>-->
+        </ul>
+        <ul>
+          <label for="ordre"> Ordre : </label>
+          <span id="ordre"> {commande ? commande.ordre : ""}</span>
+        </ul>
+        <ul>
+          <label for="statut"> Statut : </label>
+          <span id="statu"> {commande ? commande.statut : ""}</span>
+        </ul>
+      </div>
+    </div>
+
+    <div class="data-table">
+      {#if commande && commande.statut !=="terminée"  }
+      {#if commande && commande.lignes_commande}
+        <table>
+          <thead>
+            <tr>
+              <th>Article</th>
+              <th>Caisses</th>
+              <th>Unités</th>
+            </tr>
+          </thead>
+
+          
+
+          <tbody>
+            {#each commande.lignes_commande as ligne, index (index)}
+              {#if ligne !== undefined}
+                <tr key={index}>
+                  <td>
+                    {ligne.article.libelle || ""}{ligne.article.taille || ""}
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      bind:value={updatedCommande.new_lignes_commande[index]
+                        .new_nb_caisses}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      bind:value={updatedCommande.new_lignes_commande[index]
+                        .new_nb_unites}
+                    />
+                  </td>
+                </tr>
+              {/if}
+            {/each}
+            <button
+              on:click={() => /*todo modifier la commande*/ {
+                console.log("la nouvelle commande est : " ,updatedCommande);
+                updateCommande(updatedCommande, 1);
+              }}
+            >
+              Update
+            </button>
+          </tbody>
+
+          <!-- ... (reste du code) ... -->
+        </table>
+      {:else}
+        <p>Aucune ligne de commande disponible.</p>
+      {/if}
+    {:else}
+        <p> cette commande a deja été livree, impossible de la modifier</p>
+      {/if}
+    </div>
+    {#if role !== "livreur"}
+      <div class="buttons">
+        <button on:click={() => saveChanges()}> Sauvegarder </button>
+        <button on:click={() => cancelChanges()}> Annuler</button>
+      </div>
+    {/if}
+  </div>
+</body>
 
 <html lang="en">
   <head>
@@ -112,78 +299,4 @@
     }
     </style>
   </head>
-
-  <body>
-    <div class="container">
-      <div class="tab-infos">
-        <div class="left-column">
-          <ul>
-            <label for="tournee"> Tournee : </label>
-            <span id="tournee"> {creche.id}</span>
-          </ul>
-          <ul>
-            <label for="creche"> Creche : </label>
-            <span id="creche"> {creche.nom}</span>
-          </ul>
-        </div>
-        <div class="right-column">
-          <ul>
-            <label for="date"> Date : </label>
-            <span id="date"> {creche.date}</span>
-          </ul>
-          <ul>
-            <label for="ordre"> Ordre : </label>
-            <span id="ordre"> {creche.ordre}</span>
-          </ul>
-        </div>
-      </div>
-
-      <div class="data-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Article</th>
-              <th>Caisses</th>
-              <th>Unités</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each $articlesStore as article (article)}
-              <tr>
-                <td>
-                  {article.libelle}
-                  {article.taille !== undefined ? ` - ${article.taille}` : ""}
-                </td>
-                <td>
-                  <!-- {caisse}-->
-                  <button
-                    on:click={() => /*todo incrementer*/ console.log("hello")}
-                    >+</button
-                  >
-                  <button
-                    on:click={() => /***todo decrementer*/ console.log("bye")}
-                    >-</button
-                  >
-                </td>
-                <td>
-                  <button
-                    on:click={() => /*todo decrementer*/ console.log("hello")}
-                    >+</button
-                  >
-                  <button
-                    on:click={() => /*todo incrementer*/ console.log("bye")}
-                    >-</button
-                  >
-                </td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-      </div>
-      <div class="buttons">
-        <button on:click={() => saveChanges()}> Sauvegarder </button>
-        <button on:click={() => cancelChanges()}> Annuler</button>
-      </div>
-    </div>
-  </body>
 </html>
