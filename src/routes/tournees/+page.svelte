@@ -30,8 +30,6 @@
    * @param {Tournee} tournee
    */
   function selectTournee(tournee) {
-    sessionStorage.setItem("idTournee", tournee.id_tournee);
-    console.log("ici", sessionStorage.getItem("idTournee"));
     goto(`/tournees/${tournee.id_tournee}`);
   }
 </script>
