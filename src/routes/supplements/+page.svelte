@@ -12,13 +12,9 @@
   });
 
   async function fillListArticles(){
-    const response = await fetch("/api/supplements"); // aussi ok : "" si +server.ts est dans le meme dossier que cette page
-    console.log(response);
-    /** @type {Article[]}*/
-    const articles = await response.json()
-
-    articles.sort((a, b) => a.id_article - b.id_article)
-    listArticles = articles;
+    listArticles = await (await fetch("/api/supplements")).json();
+    listArticles.sort((a, b) => a.id_article - b.id_article);
+    console.log(listArticles);
   }
 
   /**
@@ -26,7 +22,7 @@
   * @param {number} nouvelleValeur
   */
   function savePourcentage(id_article, nouvelleValeur) {
-    fetch("/supplements", {
+    fetch(`/api/articles/${id_article}/modifierPourcentage`, {
         method: 'POST',
         body: JSON.stringify({ id_article, nouvelleValeur }),
     })
