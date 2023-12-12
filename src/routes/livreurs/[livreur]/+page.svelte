@@ -1,10 +1,9 @@
 <script>
-  import Livreur from "$lib/Components/Livreur.svelte";
   import { onMount } from "svelte";
 
   import Navbar from "$lib/Components/Navbar.svelte";
   import { page } from '$app/stores';
-    import UserModify from "$lib/Components/UserModify.svelte";
+  import UserModify from "$lib/Components/UserModify.svelte";
 
   let livreurInfo = {}
   const id = $page.params.livreur
