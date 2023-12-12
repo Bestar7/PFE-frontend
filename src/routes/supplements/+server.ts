@@ -35,9 +35,9 @@ async function savePourcentage(id_article: number, nouvelleValeur: number) { // 
           // Ajoutez d'autres données si nécessaire
         }),
       },
+
     );
 
-    console.log(response);
     console.log(response.json);
 
     if (response.ok) {
