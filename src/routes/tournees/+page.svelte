@@ -2,12 +2,19 @@
   import Navbar from "$lib/Components/Navbar.svelte";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+    import TourneeTableau from "$lib/Components/TourneeTableau.svelte";
 
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
    */
 
+  const tabs = {
+    TourneeDate: "TourneeDate",
+    TourneeDefault: "TourneeDefault",
+  };
+  let selectedTab = tabs.TourneeDate;
   let datePicked = new Date().toLocaleDateString("en-CA"); // = date.now() avec format YYY-MM-DD comme l'input du form
+  
 
   /** @type {Tournee[]} */
   let tournees = [];
@@ -19,18 +26,34 @@
   async function getTourneesDate() {
     const response = await fetch(`/api/tournees/date/${datePicked}`);
     tournees = await response.json();
+    console.log("getTourneesDate", tournees)
+  }
+  async function getTourneesDefault() {
+    const response = await fetch(`/api/tourneesParDefaut`);
+    tournees = await response.json();
+    console.log("getTourneesDefault", tournees)
   }
 
-  function handleDateChange() {
+  function selectHistory() {
+    selectedTab = tabs.TourneeDate;
     getTourneesDate();
     console.log("handleDateChange", tournees)
+  }
+  function selectDefault(){
+    selectedTab = tabs.TourneeDefault;
+    getTourneesDefault();
   }
 
   /**
    * @param {Tournee} tournee
    */
   function selectTournee(tournee) {
-    goto(`/tournees/${tournee.id_tournee}`);
+    if (selectedTab == tabs.TourneeDate)
+      goto(`/tournees/${tournee.id_tournee}`);
+    if (selectedTab == tabs.TourneeDefault)
+      goto(`/tournees/${tournee.id_tournee}`); // TODO autre page ou pas (et remove if-else) ???
+    else
+      console.log("error in /tournees/+page.svelte")//TODO handle error
   }
 </script>
 
@@ -38,23 +61,19 @@
 <div class="container"><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
   <div class="centered">
 
-    <input type="date" on:change={handleDateChange} bind:value={datePicked} />
+    <div class="tab-selection">
+      <input type="date" on:change={selectHistory} bind:value={datePicked} />
+      <button on:click={selectDefault}>Tournées par défaut</button>
+    </div>
 
+    {#if selectedTab==tabs.TourneeDate}
     <h2>Tournée du {datePicked}</h2>
+    {:else}
+    <h2>Tournée par défaut</h2>
+    {/if}
 
     <div class="show-tournees">
-      <table>
-        <tbody>
-          {#each tournees as tournee}
-          <tr on:click={()=>selectTournee(tournee)} class="tab-infos">
-            <td>{tournee.prenom_livreur} {tournee.nom_livreur}</td>
-            <td>{tournee.date}</td>
-            <td>{tournee.nom}</td>
-            <td>{tournee.statut}</td>
-          </tr>
-          {/each}
-        </tbody>
-      </table>
+      <TourneeTableau {tournees} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
     </div>
 
     <button on:click={() => history.back()}>Retour</button>
@@ -67,21 +86,5 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  .tab-infos {
-    border: 1px solid #ddd; /* Ajoute une bordure autour du conteneur */
-    padding: 10px; /* Ajoute de l'espace intérieur pour le contenu */
-    margin-bottom: 10px;
-    background-color: #f2f2f2; /* Ajoute une couleur de fond grise */
-    display: flex;
-    justify-content: space-between;
-    width: 500px;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 400px;
-    margin: 20px;
   }
 </style>
