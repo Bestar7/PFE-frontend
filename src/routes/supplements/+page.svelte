@@ -17,10 +17,6 @@
     console.log(listArticles);
   }
 
-  /**
-  * @param {number} id_article
-  * @param {number} nouvelleValeur
-  */
   function savePourcentage(id_article, nouvelleValeur) {
     fetch(`/api/articles/${id_article}/modifierPourcentage`, {
         method: 'POST',
@@ -88,14 +84,5 @@
 
   tr:nth-child(even) {
     background-color: #f2f2f2;
-  }
-
-  body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-    align-items: center;
-    margin: 0;
   }
 </style>
