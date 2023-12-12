@@ -6,45 +6,30 @@
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
    */
-  
-  const tabs = {
-    TourneeDate: "TourneeDate",
-    TourneeDefault: "TourneeDefault",
-    TourneeSupplement: "TourneeSupplement",
-  };
-  let selectedTab = tabs.TourneeDate;
+
   let datePicked = new Date().toLocaleDateString("en-CA"); // = date.now() avec format YYY-MM-DD comme l'input du form
 
   /** @type {Tournee[]} */
   let tournees = [];
   onMount(() => {
     getTourneesDate();
-    console.log("getTourneesDate", tournees);
+    console.log("onMount", tournees);
   });
 
   async function getTourneesDate() {
     const response = await fetch(`/api/tournees/date/${datePicked}`);
     tournees = await response.json();
   }
-  async function getTourneesDefault() {
-    const response = await fetch(`/api/tournees/default/${datePicked}`); //TODO verifier path
-    tournees = await response.json();
-  }
 
   function handleDateChange() {
     getTourneesDate();
-    selectedTab = tabs.TourneeDate;
-    console.log("tournee", tournees)
-  }
-  function handleDefault() {
-    getTourneesDefault();
-    selectedTab = tabs.TourneeDefault;
+    console.log("handleDateChange", tournees)
   }
 
   /**
    * @param {Tournee} tournee
    */
-  function eventHandler(tournee) {
+  function selectTournee(tournee) {
     sessionStorage.setItem("idTournee", tournee.id_tournee);
     console.log("ici", sessionStorage.getItem("idTournee"));
     goto(`/tournees/${tournee.id_tournee}`);
@@ -54,16 +39,16 @@
 <Navbar />
 <div class="container"><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
   <div class="centered">
-    <div class="tab-selection">
-      <input type="date" on:change={handleDateChange} bind:value={datePicked} />
-      <button on:click={handleDefault}>Tournées par défaut</button>
-    </div>
-    <div class="show-tournee">
-      <h2>Tournée du {datePicked}</h2>
+
+    <input type="date" on:change={handleDateChange} bind:value={datePicked} />
+
+    <h2>Tournée du {datePicked}</h2>
+
+    <div class="show-tournees">
       <table>
         <tbody>
           {#each tournees as tournee}
-          <tr on:click={()=>eventHandler(tournee)} class="tab-infos">
+          <tr on:click={()=>selectTournee(tournee)} class="tab-infos">
             <td>{tournee.prenom_livreur} {tournee.nom_livreur}</td>
             <td>{tournee.date}</td>
             <td>{tournee.nom}</td>
@@ -73,8 +58,9 @@
         </tbody>
       </table>
     </div>
+
+    <button on:click={() => history.back()}>Retour</button>
   </div>
-  <button on:click={() => history.back()}>Retour</button>
 </div>
 
 
