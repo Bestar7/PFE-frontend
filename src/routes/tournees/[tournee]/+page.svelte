@@ -16,7 +16,7 @@
 
     await getInfosTournee(idTournee);
     await getResumeTournee(idTournee);
-   // await getCommandesTournee(idTournee);
+    await getCommandesTournee(idTournee);
   });
 
   async function getInfosTournee(idTournee) {
@@ -27,7 +27,6 @@
       }
 
       tournee = await response.json();
-      console.log("tournee: ", tournee);
       return tournee;
     } catch (error) {
       console.error(
@@ -39,13 +38,13 @@
   async function getResumeTournee(idTournee) {
     try {
       //comment passer l'id a ce genre de route ? 
+      
       const response = await fetch(`http://localhost:9000/tournees/${idTournee}/resume`);
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
       resumeTournee = await response.json();
-      console.log("resume de la tournee", resumeTournee);
     } catch (error) {
       console.error(
         "Erreur lors de la récupération des resumes de la tournée:",
@@ -80,7 +79,7 @@
   }
   function ouvrirDetailsCreche(idCommande) {
       // Mettez en œuvre la logique pour ouvrir les
-      sessionStorage.setItem('idCreche',idCommande);
+      sessionStorage.setItem('idCommande',idCommande);
      
      goto(`/commandes/${idCommande}`);
      
@@ -156,7 +155,7 @@
       {#each commandes as commande (commande.id_commande)}
         <tr>
           <td>
-            <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.id_creche)}>
+            <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.id_commande)}>
               Creche: {commande.creche.nom} - Statut: {commande.statut}
             </button>
           </td>

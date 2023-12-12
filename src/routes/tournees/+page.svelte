@@ -62,7 +62,6 @@
   };
   function eventHandler(id_tournee) {
     sessionStorage.setItem("idTournee", id_tournee);
-    console.log("ici", sessionStorage.getItem("idTournee"));
     goto(`/tournees/${id_tournee}`);
   }
   let selectedTab = tabs.TourneeDate;
