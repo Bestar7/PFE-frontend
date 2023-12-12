@@ -1,39 +1,32 @@
 <script>
+  import { goto } from "$app/navigation";
 	import Navbar from "$lib/Components/Navbar.svelte";
+	import { onMount } from "svelte";
 
-	const livreurs = [ // TODO remplacer par un GET /livreurs
-    {
-        nom: 'tom',
-        tournee: '1',
-    },
-    {
-        nom: 'john',
-        tournee: '2'
-    },
-    {
-        nom: 'jean',
-        tournee: '3'
-    }
-];
+	let livreurs = ["ok","ok"];
+	onMount(async () => {
+    getAllLivreurs()
+  });
+
+  async function getAllLivreurs(){
+    //livreurs = (await fetch("/api/livreurs")).json(); // TODO uncomment when backend endpoint done and open
+  }
+
+	function addLivreur(){
+		goto("/livreurs/add")
+	}
 </script>
 
 <Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <div class="centered">
 	<h1>ceci est la page des livreurs</h1>
-
 	<ul class="livreurs">
-		{#each livreurs as { nom, tournee }}
-			<li><a href="livreurs/{tournee}">{nom} </a> {tournee}</li>
+		{#each livreurs as livreur}
+			<li><a href="livreurs/1">nom </a> tournee</li>
 		{/each}
 	</ul>
 
-	<form method="POST">
-		<label>
-			ajouter un livreur:
-			<input type="text" name="nom" autocomplete="off" />
-		</label>
-		<button aria-label="adding">ajouter </button>
-	</form>
+	<button on:click={addLivreur}>Ajouter</button>
 </div>
 
 <style>
@@ -42,33 +35,15 @@
 		margin: 0 auto;
 	}
 
-	label {
-		width: 100%;
-	}
-
-	input {
-		flex: 1;
-	}
-
-	span {
-		flex: 1;
-	}
-
 	button {
 		border: none;
 		background-size: 1rem 1rem;
 		cursor: pointer;
-		height: 100%;
-		aspect-ratio: 1;
 		opacity: 0.5;
 		transition: opacity 0.2s;
 	}
 
 	button:hover {
 		opacity: 1;
-	}
-
-	.saving {
-		opacity: 0.5;
 	}
 </style>
