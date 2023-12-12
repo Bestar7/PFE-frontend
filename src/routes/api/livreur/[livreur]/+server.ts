@@ -3,9 +3,9 @@ import { json as jsonResponse } from '@sveltejs/kit'
 
 const apiRoute = "utilisateurs";
 
-async function getAllLivreurs(){
+async function getLivreurInfo(id: string){
   try {
-    const reponse = await fetch(`${host}/${apiRoute}`);
+    const reponse = await fetch(`${host}/${apiRoute}/${id}`);
     if (reponse.ok) {
         const json = await reponse.json();
         return jsonResponse( json )
@@ -20,6 +20,6 @@ async function getAllLivreurs(){
 /**
  * @returns {Promise<{}>}
  */
-export async function GET() {
-  return getAllLivreurs()
+export async function GET({params}) {
+  return getLivreurInfo(params.livreur)
 }
