@@ -7,6 +7,7 @@
   // TODO replace with content from GET/creche/defaultOrder (or other name)
   let creche = get(crecheStore)
 
+  let crecheId = creche.id_creche;
   let crecheName = creche.nom;
   let crecheCity = creche.ville;
   let crecheStreet = creche.rue;
@@ -20,7 +21,7 @@
   let articles = []
   let crecheDefaultOrder = []
   async function getAllCrecheInfo(){// TODO separer les infos normal et lignes_par_defaut
-    const data = await (await fetch("")).json()
+    const data = await (await fetch(`/api/creche/${crecheId}`)).json()
     console.log("get All", data)
     listItem = data.lignes_par_defaut
   }
