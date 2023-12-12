@@ -1,5 +1,4 @@
 <script>
-    import HelloWorld from "$lib/Components/HelloWorld.svelte";
     import Navbar from "$lib/Components/Navbar.svelte";
     import { onMount } from "svelte";
 
@@ -12,5 +11,4 @@
 </script>
 
 <Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-<HelloWorld name={name}/>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
