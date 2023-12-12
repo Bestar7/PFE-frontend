@@ -9,13 +9,17 @@
   let commandes = [];
   onMount(async () => {
     let idTournee = sessionStorage.getItem('idTournee');
+    console.log("idTournee", idTournee);
 
-    await getInfosTournee();
-    await getResumeTournee();
-    await getCommandesTournee(1);
+    let idCreche= sessionStorage.getItem('idCreche');
+    console.log("idCreche", idCreche);
+
+    await getInfosTournee(idTournee);
+    await getResumeTournee(idTournee);
+   // await getCommandesTournee(idTournee);
   });
 
-  async function getInfosTournee() {
+  async function getInfosTournee(idTournee) {
     try {
       const response = await fetch(`http://localhost:9000/tournees/${idTournee}`);
       if (!response.ok) {
@@ -32,14 +36,16 @@
       );
     }
   }
-  async function getResumeTournee() {
+  async function getResumeTournee(idTournee) {
     try {
-      const response = await fetch("/api/resumeTournee");
+      //comment passer l'id a ce genre de route ? 
+      const response = await fetch(`http://localhost:9000/tournees/${idTournee}/resume`);
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
       resumeTournee = await response.json();
+      console.log("resume de la tournee", resumeTournee);
     } catch (error) {
       console.error(
         "Erreur lors de la récupération des resumes de la tournée:",
@@ -48,10 +54,10 @@
     }
   }
 
-  async function getCommandesTournee(id) {
+  async function getCommandesTournee(tournee) {
     try {
       const response = await fetch(
-        `http://localhost:9000/commandes/tournee/${id}`
+        `http://localhost:9000/commandes/tournee/${tournee}`
       );
 
       if (!response.ok) {
@@ -74,7 +80,7 @@
   }
   function ouvrirDetailsCreche(idCommande) {
       // Mettez en œuvre la logique pour ouvrir les
-      sessionStorage.setItem('id',idCommande);
+      sessionStorage.setItem('idCreche',idCommande);
      
      goto(`/commandes/${idCommande}`);
      
@@ -150,7 +156,7 @@
       {#each commandes as commande (commande.id_commande)}
         <tr>
           <td>
-            <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.id_commande)}>
+            <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.id_creche)}>
               Creche: {commande.creche.nom} - Statut: {commande.statut}
             </button>
           </td>

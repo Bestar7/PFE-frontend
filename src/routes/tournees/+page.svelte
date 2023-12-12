@@ -3,7 +3,7 @@
   import Tournee from "$lib/Components/Tournee.svelte";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  let tournees=[];
+  let tournees = [];
 
   /**
    * @param {number} id
@@ -11,22 +11,33 @@
   function supprimerTournee(id) {
     testListTournee = testListTournee.filter((tournee) => tournee.id !== id);
   }
-  onMount(()=> {
+  onMount(() => {
     getTourneesDate();
+    console.log(tournees);
   });
 
+  let currentDate = new Date();
+  let dateString = currentDate.toISOString().split("T")[0];
+  console.log("date ", dateString);
+  let datePicked =dateString;
 
-  let datePicked = "2023-12-13";
+
   async function getTourneesDate() {
-    const response = await fetch("tournees");
+    const response = await fetch(`/api/tournees/date/${datePicked}`);
+    console.log(response)
     const tourneesResponse = await response.json();
     tournees = tourneesResponse;
-  };
+  }
+  function handleDateChange(event) {
+    currentDate = new Date(event.target.value);
+    datePicked = currentDate.toISOString().split("T")[0];
+    console.log("nouvelle date ; ", datePicked);
+    getTourneesDate();
+  }
 
   /**
    * affiche la liste des differentes commandes presentes dans la tournes (le nom des creches a livrer dans l'ordre )
    */
- 
 
   /**
    * @type {string}
@@ -35,7 +46,6 @@
   function handleDateSearch() {
     getTourneesDate();
     // TODO search tournee for this date GET /Tournee/{date}
-    
 
     selectedTab = tabs.TourneeDate;
   }
@@ -51,9 +61,9 @@
     TourneeSupplement: "TourneeSupplement",
   };
   function eventHandler(id_tournee) {
-    sessionStorage.setItem('idTournee', id_tournee);
-    console.log(id_tournee);
-   goto(`/tournees/${id_tournee}`);
+    sessionStorage.setItem("idTournee", id_tournee);
+    console.log("ici", sessionStorage.getItem("idTournee"));
+    goto(`/tournees/${id_tournee}`);
   }
   let selectedTab = tabs.TourneeDate;
 
@@ -76,7 +86,7 @@
           <input
             type="date"
             name="dateTournee"
-            on:change={handleDateSearch}
+            on:change={handleDateChange}
             bind:value={datePicked}
           />
         </form>
@@ -86,37 +96,37 @@
         <button on:click={handleDefault}>Tournées par défaut</button>
       </div>
 
+      <h2>Tournée du {datePicked}</h2>
       
-        <h2>Tournée du {datePicked}</h2>
-
-        {#each tournees as tournee (tournee)}
-          <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
-          <table class="tab-infos" on:click={() =>eventHandler(tournee.id_tournee)}>
-            <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
-            <div class="left-column">
-              <ul class="flex-container">
-                <label for="nom"> Tournee : </label>
-                <span id="nom"> {tournee.nom}</span>
-              </ul>
-              <ul class="flex-container">
-                <label for="livreur"> Livreur : </label>
-                <span id="livreur"> {tournee.prenom_livreur}</span>
-              </ul>
-            </div>
-            <div class="left-column">
-              <ul class="flex-container">
-                <label for="date"> Date : </label>
-                <span id="date"> {tournee.date}</span>
-              </ul>
-              <ul class="flex-container">
-                <label for="statut"> Statut : </label>
-                <span id="statut">{tournee.statut}</span>
-              </ul>
-            </div>
-          </table>
-        {/each}
-
-      
+      {#each tournees as tournee (tournee)}
+        <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
+        <table
+          class="tab-infos"
+          on:click={() => eventHandler(tournee.id_tournee)}
+        >
+          <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
+          <div class="left-column">
+            <ul class="flex-container">
+              <label for="nom"> Tournee : </label>
+              <span id="nom"> {tournee.nom}</span>
+            </ul>
+            <ul class="flex-container">
+              <label for="livreur"> Livreur : </label>
+              <span id="livreur"> {tournee.prenom_livreur}</span>
+            </ul>
+          </div>
+          <div class="left-column">
+            <ul class="flex-container">
+              <label for="date"> Date : </label>
+              <span id="date"> {tournee.date}</span>
+            </ul>
+            <ul class="flex-container">
+              <label for="statut"> Statut : </label>
+              <span id="statut">{tournee.statut}</span>
+            </ul>
+          </div>
+        </table>
+      {/each}
     </div>
   </div>
   <button on:click={() => history.back()}>Retour</button>
