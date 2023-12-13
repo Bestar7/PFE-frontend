@@ -78,7 +78,6 @@
 
     <button on:click={() => history.back()}>Retour</button>
   </div>
-  <button on:click={() => history.back()}>Retour</button>
 </div>
 
 <style>
