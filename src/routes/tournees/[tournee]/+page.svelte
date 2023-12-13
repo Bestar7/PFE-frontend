@@ -38,10 +38,6 @@
     console.log("getCommandesTournee", commandes);
   }
 
-  function handleTourneeInfos() {
-    getInfosTournee();
-    console.log("handle", tournee);
-  }
   function ouvrirDetailsCreche(idCommande, idCreche) {
     //sessionStorage.setItem("idCreche", idCommande);
 
