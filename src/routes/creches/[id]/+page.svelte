@@ -2,11 +2,12 @@
   import Navbar from "$lib/Components/Navbar.svelte";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
+  import Order from "$lib/Components/Order.svelte";
 
   // TODO replace with content from GET/creche/defaultOrder (or other name)
   const idCreche = $page.params.id;
   let creche = {};
-  let listItem = []
+  let listItem = [];
 
   onMount(async ()=>{
     console.log($page.params)
@@ -55,28 +56,8 @@
     <input type="text" placeholder="rue des champs, 12" bind:value={creche.rue} id="crecheStreet" required><br>
   </div><br>
 
-  <form class="defaultOrder">
-    <table>
-      <thead>
-        <th>libellé</th>
-        <th>taille</th>
-        <th>caisses</th>
-        <th>unités</th>
-      </thead>
-      <tbody>
-        {#each listItem as item}
-        <tr>
-          <td>{item.article.libelle}</td>
-          <td>{item.article.taille == undefined ? '' : item.article.taille}</td>
-          <td>{item.nb_caisses}</td>
-          <!--TODO add input inside <tr> and bind value ???
-            on:click:Sauvegarder, tout envoyer en POST en bind:value de chaque input-->
-          <td>{item.nb_unites}</td> <!--TODO la meme ici-->
-        </tr>
-        {/each}
-      </tbody>
-    </table>
-  </form><br>
+  <Order {listItem}/>
+  <br>
 
   <div class="cmdBtn">
     <button on:click={onClickSauvegarder} >Sauvegarder</button>
