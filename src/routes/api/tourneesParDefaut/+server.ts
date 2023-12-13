@@ -1,3 +1,4 @@
+
 import { json as jsonResponse } from "@sveltejs/kit";
 import { host } from "$lib/Api/config";
 
@@ -22,5 +23,4 @@ async function getTourneesParDefaut(){
 
 export async function GET(){
     return getTourneesParDefaut();
-
 }

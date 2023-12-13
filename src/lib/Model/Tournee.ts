@@ -1,14 +1,24 @@
 /**
  * @function
- * @param {number} id_livreur 
- * @param {string} nom 
+ * @param {number} id_livreur
+ * @param {number} id_tournee
+ * @param {string} nom_livreur
+ * @param {string} prenom_livreur
+ * @param {string} nom
  * @param {string} date 
  * @param {string} statut 
  * @returns {Tournee} - une tournee.
  */
-function createTournee(id_livreur: number, nom: string, date: string, statut: string) {
+function createTournee(
+  id_livreur: number, id_tournee: number,
+  nom_livreur: string, prenom_livreur: string,
+  nom: string, date: string, statut: string
+) {
   return {
     id_livreur,
+    id_tournee,
+    nom_livreur,
+    prenom_livreur,
     nom,
     date,
     statut,
@@ -17,8 +27,11 @@ function createTournee(id_livreur: number, nom: string, date: string, statut: st
 
 interface Tournee {
   id_livreur: number,
-  nom: string, 
-  date: string, 
+  id_tournee: number,
+  nom_livreur: string,
+  prenom_livreur: string,
+  nom: string,
+  date: string,
   statut: string,
 }
 

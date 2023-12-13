@@ -5,9 +5,9 @@ import { get } from "svelte/store";
 const apiRoute="/commandes";
 
 
-async function getResumeTournee(){
+async function getResumeTournee(id:number){
     try{
-        const response = await fetch(`http://localhost:9000/tournees/1/resume`);
+        const response = await fetch(`http://localhost:9000/tournees/${id}/resume`);
         if (response.ok) {
             const json = await response.json();
             return jsonResponse(json)

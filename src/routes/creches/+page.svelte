@@ -16,14 +16,14 @@
   })
 
   async function getAllCreche(){
-    listCreche = await (await fetch("")).json()
+    listCreche = await (await fetch("/api/creches")).json()
   }
 
   function selectOneCreche(creche){
     crecheStore.set(creche)
     console.log("get", get(crecheStore))
     //document.location.href = `/api/creche/${creche.id_creche}` //TODO verifier le path
-    goto(`/api/creche/${creche.id_creche}`)
+    goto(`/creches/${creche.id_creche}`)
   }
 
 </script>

@@ -1,23 +1,22 @@
 import { host } from '$lib/Api/config';
 import { json as jsonResponse } from '@sveltejs/kit'
 
-/**
-* @typedef {import("$lib/Model/Article").Article} Article
-*/
 
-const apiRoute = "articles";
+const apiRoute = "tournees";
+async function getTourneesDate(date: String) {
 
-async function getAllArticle() {
   try {
-    const reponse = await fetch(`${host}/${apiRoute}`);
+    const reponse = await fetch(`${host}/${apiRoute}/date/2023-12-13`);
     if (reponse.ok) {
       const json = await reponse.json();
+      console.log("les tournees sont ",json)
+
       return jsonResponse(json)
     } else {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /supplement/+server.ts", error) // TODO handle error
+    console.log("error in /tournees/+server.ts", error) // TODO handle error
   }
 }
 
@@ -35,9 +34,9 @@ async function savePourcentage(id_article: number, nouvelleValeur: number) { // 
           // Ajoutez d'autres données si nécessaire
         }),
       },
-
     );
 
+    console.log(response);
     console.log(response.json);
 
     if (response.ok) {
@@ -56,16 +55,16 @@ async function savePourcentage(id_article: number, nouvelleValeur: number) { // 
   // Ajoutez ici la logique pour sauvegarder les modifications
 }
 
-/**
- * @returns {Promise<Article[]>}
- */
+
+ 
 export async function GET() {
-  return getAllArticle()
+const date= '2023-12-13';
+  return getTourneesDate(date);
 }
 
 /**
- * @returns {Promise<void>}
- */
+ 
+@returns {Promise<void>}*/
 export async function POST({ request, cookies }) {
   const { id_article, nouvelleValeur } = await request.json();
   return savePourcentage(id_article, nouvelleValeur)
