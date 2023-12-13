@@ -6,7 +6,7 @@
 
 <table>
   <tbody>
-    {#each commandes as commande (commande.id_commande)}
+    {#each commandes as commande}
       <tr>
         <td>
           <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.id_commande, commande.creche.id_creche)}>

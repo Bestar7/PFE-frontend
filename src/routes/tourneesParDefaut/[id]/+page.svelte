@@ -26,7 +26,7 @@
     console.log("getTourneeDefaut", commandes, idTournee);
   }
 
-  function ouvrirDetailsCreche(idCommande, idCreche) {
+  function ouvrirDetailsCreche(idCreche) {
     goto(`/creches/${idCreche}`); // TODO route correct
   }
 
