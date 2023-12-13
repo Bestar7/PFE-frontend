@@ -39,6 +39,7 @@
     getTourneesDate();
     console.log("handleDateChange", tournees)
   }
+
   function selectDefault(){
     selectedTab = tabs.TourneeDefault;
     getTourneesDefault();
@@ -56,14 +57,14 @@
       console.log("error in /tournees/+page.svelte")//TODO handle error
   }
 </script>
-
 <Navbar />
+
 <div class="container"><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
   <div class="centered">
 
     <div class="tab-selection">
       <input type="date" on:change={selectHistory} bind:value={datePicked} />
-      <button on:click={selectDefault}>Tournées par défaut</button>
+      <button on:click={() => goto(`/tourneesParDefaut`)}>Tournées par défaut</button>
     </div>
 
     {#if selectedTab==tabs.TourneeDate}
