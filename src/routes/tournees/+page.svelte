@@ -23,14 +23,6 @@
     console.log("onMount", tournees);
   });
 
-  let currentDate = new Date();
-  console.log(currentDate);
-  let dateString = currentDate.toISOString().split("T")[0];
-  console.log("date ", dateString);
-
-  let datePicked =dateString;
-
-
   async function getTourneesDate() {
     const response = await fetch(`/api/tournees/date/${datePicked}`);
     tournees = await response.json();
@@ -88,10 +80,6 @@
   </div>
   <button on:click={() => history.back()}>Retour</button>
 </div>
-<foot>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Formulaire avec mise en page</title>
 
 <style>
   .container {
