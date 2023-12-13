@@ -35,6 +35,7 @@
   async function getCommandesTournee(tournee) {
     const response = await fetch(`/api/commandes/tournee/${tournee}`);
     commandes = await response.json();
+    console.log("getCommandesTournee", commandes);
   }
 
   function handleTourneeInfos() {
@@ -42,7 +43,7 @@
     console.log("handle", tournee);
   }
   function ouvrirDetailsCreche(idCommande) {
-    sessionStorage.setItem("idCreche", idCommande);
+    //sessionStorage.setItem("idCreche", idCommande);
 
     goto(`/commandes/${idCommande}`);
   }
@@ -65,18 +66,18 @@
       </li>
 
       <li>
-        <label for="creche"> Livreur : </label>
+        <label for="creche"> Livreur : </label><!--TODO remplacer par uninput (déroulant ?) pour choisir un autre livreur-->
         <span id="creche">{tournee ? tournee.nom_livreur + " " + tournee.prenom_livreur : ""}</span>
       </li>
 
       <li>
         <label for="date"> Date : </label>
-        <input type="date" id="date" on:change={handleTourneeInfos} bind:value={tournee.date} />
+        <input type="date" id="date" on:change={()=>console.log(tournee.date)} bind:value={tournee.date} /><!--TODO pouvoir changer la date de la tournee-->
       </li>
 
       <li>
         <label for="ordre"> Statut : </label>
-        <span id="ordre">{tournee ? tournee.statut : ""}</span>
+        <span id="ordre">{tournee ? tournee.statut : ""}</span><!--seul le livreur change ça, pas admin-->
       </li>
 
     </ul>
@@ -107,18 +108,12 @@
         {#each commandes as commande (commande.id_commande)}
           <tr>
             <td>
-              <button
-                class="ligne-creche bouton-creche"
-                on:click={() => ouvrirDetailsCreche(commande.id_creche)}
-              >
+              <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.creche.id_creche)}>
                 Creche: {commande.creche.nom} - Statut: {commande.statut}
               </button>
             </td>
             <td>
-              <button
-                class="bouton-creche"
-                on:click={() => supprimerCreche(commande.id_commande)}
-              >
+              <button class="bouton-creche" on:click={() => supprimerCreche(commande.id_commande)}>
                 &#10006;
               </button>
             </td>
