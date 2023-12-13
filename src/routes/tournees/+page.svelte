@@ -5,6 +5,8 @@
   import { goto } from "$app/navigation";
   let tournees = [];
 
+  let admin= false;
+
   /**
    * @param {number} id
    */
@@ -17,8 +19,10 @@
   });
 
   let currentDate = new Date();
+  console.log(currentDate);
   let dateString = currentDate.toISOString().split("T")[0];
   console.log("date ", dateString);
+
   let datePicked =dateString;
 
 
@@ -66,17 +70,25 @@
   }
   let selectedTab = tabs.TourneeDate;
 
-  let testListTournee = [
-    // TODO GET THIS LIST FROM THE DATABASE
-    // TODO changes depending on the selected tab
-    { id: 1, nomTournee: "BXL", livreur: "Tom" },
-    { id: 2, nomTournee: "LLN", livreur: "Fred" },
-    { id: 3, nomTournee: "Leuven", livreur: "Paul" },
-  ];
+  
+  function definirLivreur() {
+    // Ici, vous pouvez mettre la logique pour attribuer un livreur
+    // Par exemple, vous pouvez ouvrir une boîte de dialogue de sélection de livreur
+    // ou effectuer une requête vers le serveur pour attribuer un livreur à une commande.
+    
+    // Pour cet exemple, nous allons simplement afficher un message dans la console
+    console.log("Livreur attribué !");
+    
+    // Ensuite, mettez à jour l'état
+    //isLivreurAttribue = true;
+    //livreur = "Nom du livreur attribué";
+  }
 </script>
-
 <div class="container">
   <Navbar />
+
+  {#if admin}
+
   <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
   <div class="centered">
     <div>
@@ -95,7 +107,7 @@
         <button on:click={handleDefault}>Tournées par défaut</button>
       </div>
 
-      <h2>Tournée du {datePicked}</h2>
+      <h2>Tournées du {datePicked}</h2>
       
       {#each tournees as tournee (tournee)}
         <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
@@ -129,7 +141,45 @@
     </div>
   </div>
   <button on:click={() => history.back()}>Retour</button>
+{:else}
+<div class="centered">
+  <div>
+    
+
+    <h2>Tournées du {datePicked}</h2>
+    
+    {#each tournees as tournee (tournee)}
+      <!-- warning car il n'aime pas que un div soit clickable, ok si c est un button mais alors il faut modifier CSS-->
+      <table
+        class="tab-infos"
+        on:click={() => eventHandler(tournee.id_tournee)}
+      >
+        <!-- TODO affihcer la bonne nouvelle page /tournees/id-->
+        <div class="left-column">
+          <ul class="flex-container">
+            <label for="nom"> Tournee : </label>
+            <span id="nom"> {tournee.nom}</span>
+          </ul>
+        </div>
+        <div class="right-column">
+          <div>
+              {#if tournee.prenom_livreur}
+              <ul class="flex-container">
+                <span id="livreur"> Prise par {tournee.nom}</span>
+              </ul>  
+            {:else}
+              <button on:click={definirLivreur} >Prendre</button>
+            {/if} 
+          </div>
+          
+        </div>
+      </table>
+    {/each}
+  </div>
 </div>
+{/if}
+</div>
+
 <foot>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
