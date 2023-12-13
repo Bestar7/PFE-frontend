@@ -23,6 +23,12 @@
     console.log("onMount", tournees);
   });
 
+  let currentDate = new Date();
+  let dateString = currentDate.toISOString().split("T")[0];
+  console.log("date ", dateString);
+  let datePicked =dateString;
+
+
   async function getTourneesDate() {
     const response = await fetch(`/api/tournees/date/${datePicked}`);
     tournees = await response.json();
