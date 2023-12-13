@@ -8,47 +8,47 @@
   let responseUpdatedCommande;
 
   var updatedCommande = {
-  "ordre": 1,
-  "statut": "en attente",
-  "lignes_commande": [
-    {
-      "id_commande": 3,
-      "id_article": 1,
-      "nb_caisses": 69,
-      "nb_unites": 0
-    },
-    {
-      "id_commande": 3,
-      "id_article": 2,
-      "nb_caisses": 69,
-      "nb_unites": 0
-    },
-    {
-      "id_commande": 3,
-      "id_article": 3,
-      "nb_caisses": 69,
-      "nb_unites": 0
-    },
-    {
-      "id_commande": 3,
-      "id_article": 4,
-      "nb_caisses": 69,
-      "nb_unites": 0
-    },
-    {
-      "id_commande": 3,
-      "id_article": 5,
-      "nb_caisses": 69,
-      "nb_unites": 0
-    },
-    {
-      "id_commande": 3,
-      "id_article": 6,
-      "nb_caisses": 69,
-      "nb_unites": 0  
-    }
-  ]
-};
+    ordre: 1,
+    statut: "en attente",
+    lignes_commande: [
+      {
+        id_commande: 3,
+        id_article: 1,
+        nb_caisses: 69,
+        nb_unites: 0,
+      },
+      {
+        id_commande: 3,
+        id_article: 2,
+        nb_caisses: 69,
+        nb_unites: 0,
+      },
+      {
+        id_commande: 3,
+        id_article: 3,
+        nb_caisses: 69,
+        nb_unites: 0,
+      },
+      {
+        id_commande: 3,
+        id_article: 4,
+        nb_caisses: 69,
+        nb_unites: 0,
+      },
+      {
+        id_commande: 3,
+        id_article: 5,
+        nb_caisses: 69,
+        nb_unites: 0,
+      },
+      {
+        id_commande: 3,
+        id_article: 6,
+        nb_caisses: 69,
+        nb_unites: 0,
+      },
+    ],
+  };
 
   /**
    * @type {Object}
@@ -56,35 +56,30 @@
   onMount(async () => {
     //TODO attention pour l'instant hardcodage de id car pas de page COMMANDES, faire que quand on clique sur une commande pour la modifier
     // on rajoute dans le localStrorage
-    const idCommande = sessionStorage.getItem('idCommande');
+    const idCommande = sessionStorage.getItem("idCommande");
     await getCommande(idCommande);
 
     console.log("id recup ", idCommande);
   });
 
-
-
   async function getCommande(idCommande) {
     try {
-      const response = await fetch(`http://localhost:9000/commandes/${idCommande}`);
+      const response = await fetch(`${host}/commandes/${idCommande}`);
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
       commande = await response.json();
-     
-      
-     
-  updatedCommande=commande;
-  
-      console.log("commande " , commande);
+
+      updatedCommande = commande;
+
+      console.log("commande ", commande);
       console.log("updatedCommande : ", updatedCommande);
     } catch (error) {
       console.error("Erreur lors de la récupération de la commande:", error);
     }
   }
-  
 
   function displayRequest(updatedCommande, idCommande) {
     const requestPayload = {
@@ -109,38 +104,31 @@
     // Appelez la fonction updateCommande pour envoyer réellement la requête
     updateCommande(updatedCommande, idCommande);
   }
-   /**
+  /**
    * modification d'une commande.
    */
-   async function updateCommande(updatedCommande, recu) {
+  async function updateCommande(updatedCommande, recu) {
     try {
       //POURQUOI L'idCOMMANDE EST NULL ALORS QU4ON LE PRENDS DANS LE SESSIONSTORE ??
       //console.log("l'id de la commande est", idCommande);
       //aussi hardcodé car pas de localStore avec l'id dedans
-      const response = await fetch(
-
-
-        `http://localhost:9000/commandes/2/modifier`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            new_ordre: updatedCommande.ordre,
-            new_statut: updatedCommande.statut,
-            new_lignes_commande: updatedCommande.lignes_commande.map(
-              (ligne) => ({
-                id_commande: ligne.id_commande,
-                //ligne.id_article undefined
-                id_article: 1,
-                new_nb_caisses: ligne.nb_caisses,
-                new_nb_unites: ligne.nb_caisses
-              })
-            ),
-          }),
-        }
-      );
+      const response = await fetch(`${host}/commandes/2/modifier`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          new_ordre: updatedCommande.ordre,
+          new_statut: updatedCommande.statut,
+          new_lignes_commande: updatedCommande.lignes_commande.map((ligne) => ({
+            id_commande: ligne.id_commande,
+            //ligne.id_article undefined
+            id_article: 1,
+            new_nb_caisses: ligne.nb_caisses,
+            new_nb_unites: ligne.nb_caisses,
+          })),
+        }),
+      });
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
@@ -151,7 +139,6 @@
       console.error("Erreur lors de la modification de la commande:", error);
     }
   }
-
 
   function saveChanges() {
     // Ajoutez ici la logique pour sauvegarder les modifications
@@ -186,7 +173,9 @@
         </ul>
         <ul>
           <label for="creche"> Creche : </label>
-          <span id="creche"> {commande?.creche?.nom ?? commande?.creche?.id_creche ?? ""}</span>
+          <span id="creche">
+            {commande?.creche?.nom ?? commande?.creche?.id_creche ?? ""}</span
+          >
         </ul>
       </div>
       <div class="right-column">
@@ -208,65 +197,62 @@
     </div>
 
     <div class="data-table">
-      {#if commande && commande.statut !=="terminée"  }
-      {#if commande && commande.lignes_commande}
-        <table>
-          <thead>
-            <tr>
-              <th>Article</th>
-              <th>Caisses</th>
-              <th>Unités</th>
-            </tr>
-          </thead>
+      {#if commande && commande.statut !== "terminée"}
+        {#if commande && commande.lignes_commande}
+          <table>
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th>Caisses</th>
+                <th>Unités</th>
+              </tr>
+            </thead>
 
-          
+            <tbody>
+              {#each commande.lignes_commande as ligne, index (index)}
+                {#if ligne !== undefined}
+                  <tr key={index}>
+                    <td>
+                      {ligne.article.libelle}{ligne.article.taille || ""}
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        bind:value={updatedCommande.lignes_commande[index]
+                          .nb_caisses}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        bind:value={updatedCommande.lignes_commande[index]
+                          .nb_unites}
+                      />
+                    </td>
+                  </tr>
+                {/if}
+              {/each}
+              <button
+                on:click={() => /*todo modifier la commande*/ {
+                  console.log("la nouvelle commande est : ", updatedCommande);
+                  displayRequest(updatedCommande, 0);
+                }}
+              >
+                Update
+              </button>
+            </tbody>
 
-          <tbody>
-            {#each commande.lignes_commande as ligne, index (index)}
-              {#if ligne !== undefined}
-                <tr key={index}>
-                  <td>
-                    {ligne.article.libelle }{ligne.article.taille || ""}
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      bind:value={updatedCommande.lignes_commande[index]
-                        .nb_caisses}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      bind:value={updatedCommande.lignes_commande[index]
-                        .nb_unites}
-                    />
-                  </td>
-                </tr>
-              {/if}
-            {/each}
-            <button
-              on:click={() => /*todo modifier la commande*/ {
-                console.log("la nouvelle commande est : " ,updatedCommande);
-                displayRequest(updatedCommande, 0);
-              }}
-            >
-              Update
-            </button>
-          </tbody>
-
-          <!-- ... (reste du code) ... -->
-        </table>
+            <!-- ... (reste du code) ... -->
+          </table>
+        {:else}
+          <p>Aucune ligne de commande disponible.</p>
+        {/if}
       {:else}
-        <p>Aucune ligne de commande disponible.</p>
-      {/if}
-    {:else}
-        <p> cette commande a deja été livree, impossible de la modifier</p>
+        <p>cette commande a deja été livree, impossible de la modifier</p>
       {/if}
     </div>
     {#if role !== "livreur"}
       <div class="buttons">
-        
         <button on:click={() => saveChanges()}> Sauvegarder </button>
         <button on:click={() => cancelChanges()}> Annuler</button>
       </div>

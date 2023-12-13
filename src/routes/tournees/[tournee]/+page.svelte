@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import Navbar from "$lib/Components/Navbar.svelte";
+  import { host } from "$lib/Api/config";
 
   let tournee;
   let datePicked = "2023-12-13";
@@ -21,7 +22,7 @@
 
   async function getInfosTournee(idTournee) {
     try {
-      const response = await fetch(`http://localhost:9000/tournees/${idTournee}`);
+      const response = await fetch(`${host}/tournees/${idTournee}`);
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
@@ -39,7 +40,7 @@
     try {
       //comment passer l'id a ce genre de route ? 
       
-      const response = await fetch(`http://localhost:9000/tournees/${idTournee}/resume`);
+      const response = await fetch(`${host}/tournees/${idTournee}/resume`);
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
@@ -56,7 +57,8 @@
   async function getCommandesTournee(tournee) {
     try {
       const response = await fetch(
-        `http://localhost:9000/commandes/tournee/${tournee}`
+        `${host}/commandes/tournee/${tournee}`
+
       );
 
       if (!response.ok) {

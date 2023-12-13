@@ -6,7 +6,7 @@ const apiRoute="/commandes";
 
 async function getCommandesTournee(){
     try{
-        const response = await fetch(`http://localhost:9000/commandes/tournee/3`);
+        const response = await fetch(`${host}/commandes/tournee/3`);
         if (response.ok) {
             const json = await response.json();
             return jsonResponse(json)

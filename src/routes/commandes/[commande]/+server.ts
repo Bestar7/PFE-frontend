@@ -31,7 +31,7 @@ export async function updateCommande(updatedCommande:{
     }[];
   }){
     console.log("on passe ici ");
-    fetch('http://localhost:9000/commandes/2/modifier', {
+    fetch(`${host}/commandes/2/modifier`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
