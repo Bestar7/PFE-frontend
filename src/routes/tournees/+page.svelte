@@ -51,7 +51,7 @@
     if (selectedTab == tabs.TourneeDate)
       goto(`/tournees/${tournee.id_tournee}`);
     if (selectedTab == tabs.TourneeDefault)
-      goto(`/tournees/${tournee.id_tournee}`); // TODO autre page ou pas (et remove if-else) ???
+      goto(`/tourneesParDefaut/${tournee.id_tournee_par_defaut}`); // TODO autre page ou pas (et remove if-else) ???
     else
       console.log("error in /tournees/+page.svelte")//TODO handle error
   }
