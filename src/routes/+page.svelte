@@ -2,6 +2,7 @@
     import Navbar from "$lib/Components/Navbar.svelte";
     import { onMount } from "svelte";
 
+
     let name = "loading...";
     onMount(async () => {
         const response = await fetch('/api/helloWorld');
