@@ -1,29 +1,27 @@
 <script>
   import Navbar from "$lib/Components/Navbar.svelte";
   import { onMount } from "svelte";
-  import { crecheStore } from "../store";
-  import { get } from 'svelte/store'
+  import { page } from "$app/stores";
 
   // TODO replace with content from GET/creche/defaultOrder (or other name)
-  let creche = get(crecheStore)
-
-  let crecheId = creche.id_creche;
-  let crecheName = creche.nom;
-  let crecheCity = creche.ville;
-  let crecheStreet = creche.rue;
-
+  const idCreche = $page.params.id;
+  let creche = {};
   let listItem = []
-  onMount(()=>{
+
+  onMount(async ()=>{
+    console.log($page.params)
     // TODO GET all info from creche (-> lazy loading)
-    getAllCrecheInfo()
+    await getAllCrecheInfo(idCreche)
+    console.log("creche", creche)
+    console.log("listItem", listItem)
   })
 
-  let articles = []
-  let crecheDefaultOrder = []
-  async function getAllCrecheInfo(){// TODO separer les infos normal et lignes_par_defaut
-    const data = await (await fetch(`/api/creche/${crecheId}`)).json()
-    console.log("get All", data)
-    listItem = data.lignes_par_defaut
+  async function getAllCrecheInfo(idCreche){// TODO separer les infos normal et lignes_par_defaut
+    const response = await (await fetch(`/api/creches/${idCreche}`)).json()
+    console.log("get All", response)
+    listItem = response.lignes_par_defaut
+    creche = response
+    delete creche.lignes_par_defaut
   }
 
   function onClickSauvegarder(){
@@ -48,13 +46,13 @@
 <form>
   <div class="administrative">
     <label for="crecheName">Nom de la crèche</label><br>
-    <input type="text" placeholder="Les p'tits Choux" bind:value={crecheName} id="crecheName" required><br>
+    <input type="text" placeholder="Les p'tits Choux" bind:value={creche.nom} id="crecheName" required><br>
 
     <label for="crecheCity">Ville</label><br>
-    <input type="text" placeholder="Leuven" bind:value={crecheCity} id="crecheCity" required><br>
+    <input type="text" placeholder="Leuven" bind:value={creche.ville} id="crecheCity" required><br>
 
     <label for="crecheStreet">Rue</label><br>
-    <input type="text" placeholder="rue des champs, 12" bind:value={crecheStreet} id="crecheStreet" required><br>
+    <input type="text" placeholder="rue des champs, 12" bind:value={creche.rue} id="crecheStreet" required><br>
   </div><br>
 
   <form class="defaultOrder">
