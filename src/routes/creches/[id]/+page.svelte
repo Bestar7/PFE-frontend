@@ -3,6 +3,8 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import Order from "$lib/Components/Order.svelte";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
 
   // TODO replace with content from GET/creche/defaultOrder (or other name)
   const idCreche = $page.params.id;
@@ -42,7 +44,7 @@
   }
 </script>
 
-
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <form>
   <div class="administrative">
@@ -66,3 +68,4 @@
   </div>
   
 </form>
+</UnauthorizedWrapper>

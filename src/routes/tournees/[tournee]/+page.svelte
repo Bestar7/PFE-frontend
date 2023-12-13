@@ -6,6 +6,8 @@
   import CrecheTableau from "$lib/Components/CrecheTableau.svelte";
   import Order from "$lib/Components/Order.svelte";
   import TourneeInfo from "$lib/Components/TourneeInfo.svelte";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
 
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
@@ -51,6 +53,7 @@
 </script>
 
 <Navbar />
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <div class="container">
   <div class="tournee-commande">
     <Order listItem={resumeTournee}/>
@@ -65,3 +68,4 @@
   </div>
   
 </div>
+</UnauthorizedWrapper>
