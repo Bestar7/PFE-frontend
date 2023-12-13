@@ -23,7 +23,7 @@
     crecheStore.set(creche)
     console.log("get", get(crecheStore))
     //document.location.href = `/api/creche/${creche.id_creche}` //TODO verifier le path
-    goto(`/creche/${creche.id_creche}`)
+    goto(`/creches/${creche.id_creche}`)
   }
 
 </script>
