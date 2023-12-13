@@ -2,7 +2,7 @@
   import Navbar from "$lib/Components/Navbar.svelte";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-    import TourneeTableau from "$lib/Components/TourneeTableau.svelte";
+  import TourneeTableau from "$lib/Components/TourneeTableau.svelte";
 
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
