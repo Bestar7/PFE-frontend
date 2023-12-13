@@ -42,10 +42,10 @@
     getInfosTournee();
     console.log("handle", tournee);
   }
-  function ouvrirDetailsCreche(idCommande) {
+  function ouvrirDetailsCreche(idCommande, idCreche) {
     //sessionStorage.setItem("idCreche", idCommande);
 
-    goto(`/commandes/${idCommande}`);
+    goto(`/tournees/${idCommande}/${idCreche}`);
   }
 
   async function supprimerCreche(idCommande) {
@@ -108,7 +108,7 @@
         {#each commandes as commande (commande.id_commande)}
           <tr>
             <td>
-              <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.creche.id_creche)}>
+              <button class="ligne-creche bouton-creche" on:click={() => ouvrirDetailsCreche(commande.id_commande, commande.creche.id_creche)}>
                 Creche: {commande.creche.nom} - Statut: {commande.statut}
               </button>
             </td>
