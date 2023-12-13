@@ -34,10 +34,9 @@
 
     selectedTab = tabs.TourneeDate;
   }
-  function handleDefault() {
+  function goToTourneesParDefaut() {
     // TODO search tournee for this date GET /Tournee/{Date.Now()}
-    selectedTab = tabs.TourneeDefault;
-    console.log("selectedTab", selectedTab);
+    window.location.href = `/tourneesParDefaut`
   }
 
   const tabs = {
@@ -77,7 +76,7 @@
       </div>
       <div class="button">
         <!--TODO Button or a:link ??-->
-        <button on:click={handleDefault}>Tournées par défaut</button>
+        <button on:click={() => goToTourneesParDefaut()}>Tournées par défaut</button>
       </div>
 
       
