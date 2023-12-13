@@ -1,5 +1,9 @@
 import { writable } from 'svelte/store';
 
+let roles = {
+  admin: "admin",
+  livreur: "livreur",
+}
 let auth = writable({})
 
 const getAuth = () => {
@@ -12,7 +16,7 @@ const getAuth = () => {
     console.log("sessionStorage", sessionStorage.getItem("auth"))
     return sessionStorage.getItem("auth")
   }
-  return {} //TODO handle this case (happen right after disconnect)
+  return null //TODO handle this case (happen right after disconnect)
 }
 
 const setAuth = (authValue, rememberMe) => {
@@ -31,4 +35,4 @@ const resetAuth = () => {
   sessionStorage.removeItem("auth")
 }
 
-export {getAuth, setAuth, resetAuth, auth}
+export {getAuth, setAuth, resetAuth, auth, roles}

@@ -4,8 +4,8 @@
   import { page } from "$app/stores";
   import Navbar from "$lib/Components/Navbar.svelte";
   import CrecheTableau from "$lib/Components/CrecheTableau.svelte";
-  import Order from "$lib/Components/Order.svelte";
-  import TourneeInfo from "$lib/Components/TourneeInfo.svelte";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
 
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
@@ -35,6 +35,7 @@
   }
 </script>
 
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar />
 <div class="container">
   
@@ -43,3 +44,4 @@
   </div>
   
 </div>
+</UnauthorizedWrapper>

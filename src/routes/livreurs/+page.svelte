@@ -2,6 +2,8 @@
   import { goto } from "$app/navigation";
 	import Navbar from "$lib/Components/Navbar.svelte";
 	import { onMount } from "svelte";
+	import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
 
 	let livreurs = ["ok","ok"];
 	onMount(async () => {
@@ -17,6 +19,7 @@
 	}
 </script>
 
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <div class="centered">
 	<h1>ceci est la page des livreurs</h1>
@@ -28,6 +31,7 @@
 
 	<button on:click={addLivreur}>Ajouter</button>
 </div>
+</UnauthorizedWrapper>
 
 <style>
 	.centered {
