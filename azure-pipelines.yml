@@ -44,7 +44,9 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: 'build'
+        rootFolderOrFile: |
+          build
+          package.json
         includeRootFolder: true
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
