@@ -1,21 +1,25 @@
 // TODO + de test (console.log du contenu du cookie) + que se passe-il si on a plusieurs cookies ??? dans connexion
 // TODO use localStorage && sessionStorage
 import { writable } from 'svelte/store';
-let authStore = writable(document.cookie);
+
+let auth = writable({})
 
 const getAuth = () => {
-  return document.cookie
+  return localStorage.getItem("auth") ?? sessionStorage.getItem("auth");
 }
 
-/** @param {string} authValue */
-const setAuth = (authValue) => {
-  document.cookie = `auth=${authValue};`
-  authStore.set(authValue)
+const setAuth = (authValue, rememberMe) => {
+  auth.set(authValue)
+  if (rememberMe)
+    localStorage.setItem("auth", authValue)
+  else
+    sessionStorage.setItem("auth", authValue)
 }
 
 const resetAuth = () => {
-  document.cookie = `auth=e ; Max-Age=-99999999;`
-  authStore.set("")
+  auth.set()
+  localStorage.removeItem("auth")
+  sessionStorage.removeItem("auth")
 }
 
-export {getAuth, setAuth, resetAuth, authStore}
+export {getAuth, setAuth, resetAuth, auth}

@@ -1,17 +1,13 @@
 <script>
-  //import {resetAuth, setAuth, authStore} from "$lib/Auth/auth"
-  import { onMount } from "svelte"
+  import { goto } from "$app/navigation";
   import Navbar from "$lib/Components/Navbar.svelte";
-  //$: auth
+  import { setAuth, resetAuth, auth } from "$lib/Auth/auth";
+  $: isAuth = $auth?.role;
   let connected;
-
-  onMount(()=>{
-    //auth = ($authStore != "")
-  })
 
   function logout(){
     resetAuth()
-    history.back()
+    goto("/")
   }
 
   /** @type {string} */
@@ -23,15 +19,17 @@
   async function login(){
 
     //setAuth(email)// TODO take the appropriate field
-    connected = await fetch("/api/utilisateurs", {
+    const response = await fetch("/api/utilisateurs", {
       method:"POST",
       body:JSON.stringify({identifiant:email, mot_de_passe:password}),
       headers: {
         "Content-Type": "application/json",
       },
     })
+
     password = ''
-    console.log("connect", connected)
+    connected = await response.json()
+    setAuth(connected)
   }
 </script>
 
@@ -52,7 +50,7 @@
   <button type="submit">Connexion</button>
 </form>
 
-{#if password}
+{#if isAuth}
   <button on:click={ logout }>Se déconnecter</button>
 {/if}
 <button on:click={() => history.back() }>Retour</button>
