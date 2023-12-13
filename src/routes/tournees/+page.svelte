@@ -45,6 +45,10 @@
     getTourneesDefault();
   }
 
+  function eventHandler() {
+   window.location.href = `/tourneesParDefaut`;
+  }
+
   /**
    * @param {Tournee} tournee
    */
@@ -64,7 +68,7 @@
 
     <div class="tab-selection">
       <input type="date" on:change={selectHistory} bind:value={datePicked} />
-      <button on:click={() => goto(`/tourneesParDefaut`)}>Tournées par défaut</button>
+      <button on:click={() => eventHandler()}>Tournées par défaut</button>
     </div>
 
     {#if selectedTab==tabs.TourneeDate}
