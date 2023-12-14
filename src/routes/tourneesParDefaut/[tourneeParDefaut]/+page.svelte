@@ -85,38 +85,7 @@
   }
   
 
-  async function addCommandeParDefaut(new_idCreche, new_ordre) {
-      try {
-        console.log("NEW ID CRECHE :" + newIdCreche);
-        console.log("NEW ORDRE: " + newOrdre);
-
-        const response = await fetch(`${host}/commandesParDefaut/tourneeParDefaut/${id_tournee_par_defaut}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            id_creche: newIdCreche,
-            ordre: new_ordre
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        console.log("Request successful!");
-
-        newCommandeParDefaut=null;
-        newOrdre=null;
-        getCrechesTourneesParDefaut();
-        // You can handle the response data here if needed.
-      } catch (error) {
-        console.error("Error:", error.message);
-      }
-    }  
-
-    async function handleSubmit(new_id_creche, new_ordre) {
+    async function addCommandeParDefaut(new_id_creche, new_ordre) {
     try {
       const response = await fetch(`http://localhost:9000/commandesParDefaut/tourneeParDefaut/${id_tournee_par_defaut}`, {
         method: "POST",
@@ -184,7 +153,7 @@
       </form>
 
         <button on:click={() => {
-            handleSubmit(newIdCreche,newOrdre),
+            addCommandeParDefaut(newIdCreche,newOrdre),
             closePopup()
         }}>Sauvegarder</button>
         <button on:click={closePopup}>Annuler</button>
