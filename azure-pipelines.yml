@@ -42,17 +42,24 @@ stages:
       displayName: 'npm install, build and test'
 
     - task: CopyFiles@2
+      displayName: 'Move /build inside /build/build (required for front to run)'
+      inputs:
+        #SourceFolder: # string. Source Folder. 
+        Contents: '$(System.DefaultWorkingDirectory)/build/*' # string. Required. Contents. Default: **.
+        TargetFolder: '$(System.DefaultWorkingDirectory)/build/build' # string. Required. Target Folder.
+
+    - task: CopyFiles@2
       displayName: 'Move package.json inside /build (required for front to run)'
       inputs:
         #SourceFolder: # string. Source Folder. 
-        Contents: 'package.json' # string. Required. Contents. Default: **.
-        TargetFolder: '.' # string. Required. Target Folder. 
+        Contents: '$(System.DefaultWorkingDirectory)/package.json' # string. Required. Contents. Default: **.
+        TargetFolder: '$(System.DefaultWorkingDirectory)/build' # string. Required. Target Folder.  
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build'
-        includeRootFolder: true
+        includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
