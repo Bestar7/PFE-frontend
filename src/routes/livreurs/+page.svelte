@@ -43,7 +43,7 @@
 		border: none;
 		background-size: 1rem 1rem;
 		cursor: pointer;
-		opacity: 0.5;
+		opacity: 100.5;
 		transition: opacity 0.2s;
 	}
 
