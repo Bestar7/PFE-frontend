@@ -13,7 +13,7 @@
   });
 
   async function getLivreur(){
-    livreur = await (await fetch(`/api/utilisateurs/${id}`)).json(); // TODO uncomment when backend endpoint done and open
+    livreur = await (await fetch(`/api/utilisateurs/${id}`)).json();
     console.log("getLivreur", livreur)
   }
 
@@ -29,7 +29,7 @@
 </script>
 
 <UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
-<Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+<Navbar />
 <h1>Hello {livreur.nom}</h1>
 <UserModify btnSendText={"Enregistrer les modification"} userInfo={livreur} handleUserSend={onSubmitChangedUser} />
 </UnauthorizedWrapper>

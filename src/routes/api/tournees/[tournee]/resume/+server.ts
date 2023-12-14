@@ -13,8 +13,7 @@ async function getOneTourneeResume(idTournee: string) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /tournees/[tournee]/resume/+server.ts", error) // TODO handle error
-    return jsonResponse("KO")
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 

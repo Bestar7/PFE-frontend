@@ -15,8 +15,7 @@ async function deleteCommandeParDefaut(id: string) {
       throw new Error(response.statusText);
     }
   } catch (error) {
-    console.log("error in /commandesParDefaut/[id]/+server.ts", error) // TODO handle error
-    return jsonResponse(null)
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 

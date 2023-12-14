@@ -13,6 +13,6 @@ export async function GET() {
             throw new Error(reponse.statusText);
         }
     } catch (error) {
-        return new Response(JSON.stringify("KO")) // TODO handle error
+        return jsonResponse('Backend error', { status: 500 })
     }
 }

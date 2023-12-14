@@ -29,7 +29,7 @@
   function cleanCommande(){
     commandes.forEach((commande)=>{ 
       if (commande.creche.id_creche == idCreche)
-      commandes = commande; // TODO PAS CORRECT DE MODIFIER List pendant son propre forEach
+        commandes = commande; // TODO PAS CORRECT DE MODIFIER List pendant son propre forEach
     })
   }
 
@@ -37,7 +37,7 @@
     if (isDefault)
       goto(`/creches/${idCreche}`)
     else
-      goto(`/commandes/${commandes.id_commande}/${idCreche}`) // TODO modifier la route
+      goto(`/commandes/${commandes.id_commande}/${idCreche}`)
   }
 
 </script>
@@ -83,7 +83,7 @@
     <div class="buttons">
       <button on:click={() => modifyOrder(isDefault)}>
         Modifier la commande {#if isDefault}par défaut{:else}du {commandes?.tournee?.date}{/if}
-      </button><!--TODO gere defaut/date avec un export boolean ?-->
+      </button>
     </div>
   {/if}
   <button on:click={() => history.back()}>Retour</button>

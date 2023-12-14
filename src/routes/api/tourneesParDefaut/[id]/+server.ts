@@ -16,8 +16,7 @@ async function deleteTournee(id: string) {
       throw new Error(response.statusText);
     }
   } catch (error) {
-    console.log("error in /tourneesParDefaut/[id]/+server.ts", error) // TODO handle error
-    return jsonResponse(null)
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 
@@ -31,8 +30,7 @@ async function getTourneesParDefaut(id: string) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /tourneesParDefaut/[id]/+server.ts", error) // TODO handle error
-    return jsonResponse(null)
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
  
