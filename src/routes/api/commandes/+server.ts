@@ -1,13 +1,12 @@
 import { json as jsonResponse } from "@sveltejs/kit";
 import { host } from "$lib/Api/config";
-import { get } from "svelte/store";
 
-const apiRoute="tournees";
+const apiRoute="/commandes";
 
 
-async function getResumeTournee(id:number){
+async function getCommandesTournee(){
     try{
-        const response = await fetch(`${host}/tournees/${id}/resume`);
+        const response = await fetch(`${host}/commandes/tournee/3`);
         if (response.ok) {
             const json = await response.json();
             return jsonResponse(json)
@@ -15,12 +14,12 @@ async function getResumeTournee(id:number){
             throw new Error(response.statusText);
           }
         } catch (error) {
-          console.log("error in tournees/resume/+server.ts", error) // TODO handle error
+          console.log("error in commandes/tournees/+server.ts", error) // TODO handle error
         }
     
 }
 
 export async function GET(){
-    return getResumeTournee(); // TODO move in./[id]
+    return getCommandesTournee();
 
 }

@@ -15,6 +15,8 @@
 
   /** @type {Tournee} */
   let tournee = [];
+  import { host } from "$lib/Api/config";
+
   let resumeTournee = [];
   let commandes = [];
   const idTournee = $page.params.tournee
@@ -42,13 +44,30 @@
   }
 
   function ouvrirDetailsCreche(idCommande, idCreche) {
-    goto(`/tournees/${idCommande}/${idCreche}`);
+    sessionStorage.setItem('idCommande', idCommande);
+    goto(`/commandes/${idCommande}`);
   }
 
   async function supprimerCreche(idCommande) {
     commandes = commandes.filter(commande => commande.id_commande !== idCommande);
     // Mettez en œuvre la logique pour supprimer la crèche avec l'ID de commande donné
     const response = await fetch(`/api/commandes/tournee/${tournee}`); // TODO delete
+  }
+
+  async function livrerCreche(idCommande){
+    commandes = commandes.filter(commande => commande.id_commande !== idCommande);
+    const options = {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    new_Statut: 'terminée',
+  }),
+};
+    const response = await fetch(`${host}/commandes/${idCommande}/modifierStatut`,options);
+    console.log("reponse du changement de statut", response);
+
   }
 </script>
 
@@ -64,7 +83,7 @@
   </div>
   
   <div class="tournee-creche">
-    <CrecheTableau {commandes} {ouvrirDetailsCreche} {supprimerCreche}/>
+    <CrecheTableau {commandes} {ouvrirDetailsCreche} {supprimerCreche} {livrerCreche}/>
   </div>
   
 </div>
