@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { getAuth } from "$lib/Auth/auth";
 
+
     onMount(()=>{
         console.log("getAuth()", getAuth())
         if (!getAuth())
