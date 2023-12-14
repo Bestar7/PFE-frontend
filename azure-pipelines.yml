@@ -39,6 +39,7 @@ stages:
         npm install
         npm run build --if-present
         npm run test --if-present
+        mkdir $(System.DefaultWorkingDirectory)/azure
         mkdir $(System.DefaultWorkingDirectory)/azure/build
         mv $(System.DefaultWorkingDirectory)/build/* $(System.DefaultWorkingDirectory)/azure/build
         mv $(System.DefaultWorkingDirectory)/package.json $(System.DefaultWorkingDirectory)/azure/
