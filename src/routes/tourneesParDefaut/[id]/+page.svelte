@@ -29,8 +29,11 @@
     goto(`/creches/${idCreche}`); // TODO route correct
   }
 
-  async function supprimerCreche(idCommande) { // TODO fetch DELETE
-    commandes = commandes.filter(commande => commande.id_commande !== idCommande);
+  async function deleteCommandeParDefaut(idCommande) {
+    const response = await fetch(`/api/commandesParDefaut/${idCommande}`, {
+      method: "DELETE",
+    });
+    console.log("deleteCommandeParDefaut", response)
   }
 </script>
 
@@ -39,7 +42,7 @@
 <div class="container">
   
   <div class="tournee-creche">
-    <CrecheTableau {commandes} {ouvrirDetailsCreche} {supprimerCreche}/>
+    <CrecheTableau {commandes} {ouvrirDetailsCreche} supprimerCreche={deleteCommandeParDefaut}/>
   </div>
   
 </div>

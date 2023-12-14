@@ -4,7 +4,7 @@ import { json as jsonResponse } from '@sveltejs/kit'
 const apiRoute = "commandesParDefaut/tourneeParDefaut";
 async function getTourneesParDefaut(id: string) {
   try {
-    const reponse = await fetch(`${host}/${apiRoute}/${id}`); // TODO remove hardcode
+    const reponse = await fetch(`${host}/${apiRoute}/${id}`);
     if (reponse.ok) {
       const json = await reponse.json();
       return jsonResponse(json)
