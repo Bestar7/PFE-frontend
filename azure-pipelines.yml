@@ -39,14 +39,15 @@ stages:
         npm install
         npm run build --if-present
         npm run test --if-present
-        mkdir $(System.DefaultWorkingDirectory)/build/build
-        mv $(System.DefaultWorkingDirectory)/build/* $(System.DefaultWorkingDirectory)/build/build
+        mkdir $(System.DefaultWorkingDirectory)/azure/build
+        mv $(System.DefaultWorkingDirectory)/build/* $(System.DefaultWorkingDirectory)/azure/build
+        mv $(System.DefaultWorkingDirectory)/package.json $(System.DefaultWorkingDirectory)/azure/
       displayName: 'npm install, build and test'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/azure'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
