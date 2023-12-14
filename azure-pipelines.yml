@@ -45,7 +45,7 @@ stages:
       displayName: 'Move /build inside /build/build (required for front to run)'
       inputs:
         #SourceFolder: # string. Source Folder. 
-        Contents: '$(System.DefaultWorkingDirectory)/build/*' # string. Required. Contents. Default: **.
+        Contents: '$(System.DefaultWorkingDirectory)/build' # string. Required. Contents. Default: **.
         TargetFolder: '$(System.DefaultWorkingDirectory)/build/build' # string. Required. Target Folder.
 
     - task: CopyFiles@2
