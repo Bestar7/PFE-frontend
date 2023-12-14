@@ -1,5 +1,6 @@
 <script>
-  export let listItem = []
+  export let listItem = [{}]
+  export let saveChanges = ()=>{ console.log("Order.svelte requires a saveChanges function") }
 </script>
 
 <form class="order">
@@ -12,13 +13,12 @@
     <tbody>
       {#each listItem as item}
       <tr>
-        <td>{item?.libelle} {item.taille ?? ""}</td>
-        <td>caisses: {item?.nb_caisses}</td>
-        <!--TODO add input inside <tr> and bind value ???
-          on:click:Sauvegarder, tout envoyer en POST en bind:value de chaque input-->
-        <td>unités : {item?.nb_unites}</td> <!--TODO la meme ici-->
+        <td><input type="text" bind:value={item.libelle}><input type="text"  bind:value={item.taille}></td>
+        <td>caisses: <input type="number" bind:value={item.nb_caisses}></td>
+        <td>unités : <input type="number" bind:value={item.nb_unites}></td>
       </tr>
       {/each}
+      <button on:click={saveChanges(listItem)}>Sauvegarder</button>
     </tbody>
   </table>
 </form>
