@@ -13,7 +13,7 @@ async function getAllArticle() {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /supplement/+server.ts", error) // TODO handle error
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 

@@ -13,8 +13,7 @@ async function getTourneesParDefaut() {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /tourneesParDefaut/+server.ts", error) // TODO handle error
-    return jsonResponse(null)
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 
@@ -34,8 +33,7 @@ async function createTourneesParDefaut(nom_par_defaut: string) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /api/tournees/[tournee]/+server.ts", error) // TODO handle error
-    return jsonResponse("KO")
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
  

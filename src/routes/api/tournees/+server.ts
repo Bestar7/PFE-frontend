@@ -16,7 +16,7 @@ async function getTourneesDate(date: String) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /tournees/+server.ts", error) // TODO handle error
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 
@@ -48,8 +48,7 @@ async function savePourcentage(id_article: number, nouvelleValeur: number) {
     }
     return response
   } catch (error) {
-    console.error("Erreur lors de la requête :", error);
-    return jsonResponse(error) // TODO handle error
+    return jsonResponse('Backend error', { status: 500 })
   }
   // Ajoutez ici la logique pour sauvegarder les modifications
 }

@@ -23,14 +23,13 @@ async function savePourcentage(id_article: number, nouvelleValeur: number) {
       throw new Error(response.statusText);
     }
   } catch (error) {
-    console.error("Erreur lors de la requête :", error);
-    return jsonResponse(error) // TODO handle error
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 
 export async function POST({ request, params }) {
   const { id_article, nouvelleValeur } = await request.json();
   if (params.id_article != id_article)
-    return jsonResponse("KO") // TODO handle error
+    return jsonResponse('params.id_article != id_article', { status: 400 })
   return savePourcentage(id_article, nouvelleValeur)
 }

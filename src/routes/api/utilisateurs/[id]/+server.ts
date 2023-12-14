@@ -12,8 +12,7 @@ async function getUser(id: string) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /utilisateurs/+server.ts", error) // TODO handle error
-    return jsonResponse(null)
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 
@@ -35,8 +34,7 @@ async function modifyUser(id: string, user: {}) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /utilisateurs/+server.ts", error) // TODO handle error
-    return jsonResponse(null)
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
  

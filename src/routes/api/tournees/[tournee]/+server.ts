@@ -18,8 +18,7 @@ async function deleteOne(idTournee: string) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /api/tournees/[tournee]/+server.ts", error) // TODO handle error
-    return jsonResponse("KO")
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 
@@ -33,8 +32,7 @@ async function getOneTournee(idTournee: string) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /api/tournees/[tournee]/+server.ts", error) // TODO handle error
-    return jsonResponse("KO")
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 
