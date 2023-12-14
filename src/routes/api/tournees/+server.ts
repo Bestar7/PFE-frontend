@@ -20,7 +20,7 @@ async function getTourneesDate(date: String) {
   }
 }
 
-async function savePourcentage(id_article: number, nouvelleValeur: number) { // TODO use or remove id_article
+async function savePourcentage(id_article: number, nouvelleValeur: number) {
   try {
     console.log(nouvelleValeur);
     const response = await fetch(`${host}/${apiRoute}/${id_article}/modifierPourcentage`,
@@ -31,7 +31,6 @@ async function savePourcentage(id_article: number, nouvelleValeur: number) { // 
         },
         body: JSON.stringify({
           new_pourcentage: nouvelleValeur,
-          // Ajoutez d'autres données si nécessaire
         }),
       },
     );

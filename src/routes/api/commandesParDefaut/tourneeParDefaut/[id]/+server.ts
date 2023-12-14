@@ -4,7 +4,22 @@ import { json as jsonResponse } from '@sveltejs/kit'
 const apiRoute = "commandesParDefaut/tourneeParDefaut";
 async function getTourneesParDefaut(id: string) {
   try {
-    const reponse = await fetch(`${host}/${apiRoute}/${id}`); // TODO remove hardcode
+    const reponse = await fetch(`${host}/${apiRoute}/${id}`);
+    if (reponse.ok) {
+      const json = await reponse.json();
+      return jsonResponse(json)
+    } else {
+      throw new Error(reponse.statusText);
+    }
+  } catch (error) {
+    console.log("error in commandesParDefaut/tourneesParDefaut/[id]/+server.ts", error) // TODO handle error
+    return jsonResponse(null)
+  }
+}
+
+async function createTourneesParDefaut(id: string) {
+  try {
+    const reponse = await fetch(`${host}/${apiRoute}/${id}`);
     if (reponse.ok) {
       const json = await reponse.json();
       return jsonResponse(json)
@@ -19,4 +34,8 @@ async function getTourneesParDefaut(id: string) {
  
 export async function GET({params}) {
   return getTourneesParDefaut(params.id);
+}
+
+export async function POST({params}) {
+  return createTourneesParDefaut(params.id);
 }
