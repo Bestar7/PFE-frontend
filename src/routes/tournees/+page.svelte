@@ -22,7 +22,7 @@
   let tournees = [];
   onMount(() => {
     getTourneesDate();
-    console.log("onMount FDPPPPP", tournees);
+    console.log("onMount", tournees);
   });
 
   async function getTourneesDate() {
@@ -48,9 +48,17 @@
 
   async function deleteTournee(id) {
     console.log("id delete", id)
-    const response = await fetch(`/api/tourneesParDefaut/${id}`, { 
-      method: 'DELETE' 
-    });
+    let response
+    if (selectedTab==tabs.TourneeDefault){
+      response = await fetch(`/api/tourneesParDefaut/${id}`, { 
+        method: 'DELETE' 
+      });
+    } else {
+      response = await fetch(`/api/tournees/${id}`, { 
+        method: 'DELETE' 
+      });
+    }
+    
     console.log("deleted", await response.json())
   }
 
