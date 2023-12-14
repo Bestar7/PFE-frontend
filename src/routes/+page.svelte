@@ -19,13 +19,16 @@
     let deferredPrompt;
 
     onMount(() => {
+        window.addEventListener("beforeinstallprompt", (event) => {
+            event.preventDefault();
+            deferredPrompt = event;
+        })
+        /*
         if ('BeforeInstallPromptEvent' in window){
                 window.addEventListener("beforeinstallprompt", (event) => {
-                // Prevent the mini-infobar from appearing on mobile
-                event.preventDefault();
-                // Stash the event so it can be triggered later.
-                deferredPrompt = event;
-            })
+                    event.preventDefault();
+                    deferredPrompt = event;
+                })
         } else {
             if (!getAuth())
                 goto("/connexion");
@@ -33,7 +36,7 @@
                 goto("/tournees"); // TODO choisir la 'page d'acceuil' d'un livreur
             else if (getAuth() == roles.admin)
                 goto("/tournees"); // TODO choisir la 'page d'acceuil' d'un admin
-        }   
+        }   */
     })
 
     // Trigger install when your custom button is clicked
