@@ -14,6 +14,8 @@
   /** @type {Tournee} */
   let commandes = [];
   const idTournee = $page.params.id
+  let newIdCreche;
+  let newOrdre;
 
   onMount(async () => {
     getTourneeDefaut(-1, idTournee);
@@ -35,6 +37,17 @@
     });
     console.log("deleteCommandeParDefaut", response)
   }
+
+  async function addCommandeParDefaut(new_id_creche, new_ordre) {
+    const response = await fetch(`/api/commandesParDefaut/${idTournee}`, {
+      method: "POST",
+      body: JSON.stringify({
+        id_creche: new_id_creche,
+        ordre: new_ordre
+      })
+    });
+    console.log("deleteCommandeParDefaut", response)
+  }
 </script>
 
 <UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
@@ -43,6 +56,18 @@
   
   <div class="tournee-creche">
     <CrecheTableau {commandes} {ouvrirDetailsCreche} supprimerCreche={deleteCommandeParDefaut}/>
+  </div>
+
+  <div class="new-commande">
+    <form on:submit|preventDefault={addCommandeParDefaut(newIdCreche,newOrdre)}>
+      <label>ID Crèche:
+        <input type="number" bind:value={newIdCreche} /><!--TODO chosir parmis la liste des creches et non id-->
+      </label>
+      <label>Ordre:
+        <input type="number" bind:value={newOrdre} />
+      </label>
+      <button type="submit">Sauvegarder</button>
+    </form>
   </div>
   
 </div>
