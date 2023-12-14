@@ -1,4 +1,4 @@
-<script>
+ <script>
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
     import { getAuth, roles } from "$lib/Auth/auth";
