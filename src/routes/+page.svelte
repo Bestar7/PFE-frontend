@@ -19,13 +19,22 @@
     let deferredPrompt;
 
     onMount(() => {
-        window.addEventListener("beforeinstallprompt", (event) => {
-            // Prevent the mini-infobar from appearing on mobile
-            event.preventDefault();
-            // Stash the event so it can be triggered later.
-            deferredPrompt = event;
-        })}
-    )
+        if ('BeforeInstallPromptEvent' in window){
+                window.addEventListener("beforeinstallprompt", (event) => {
+                // Prevent the mini-infobar from appearing on mobile
+                event.preventDefault();
+                // Stash the event so it can be triggered later.
+                deferredPrompt = event;
+            })
+        } else {
+            if (!getAuth())
+                goto("/connexion");
+            else if (getAuth() == roles.livreur)
+                goto("/tournees"); // TODO choisir la 'page d'acceuil' d'un livreur
+            else if (getAuth() == roles.admin)
+                goto("/tournees"); // TODO choisir la 'page d'acceuil' d'un admin
+        }   
+    })
 
     // Trigger install when your custom button is clicked
     function install() {
