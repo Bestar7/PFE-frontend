@@ -4,11 +4,24 @@
     import { onMount } from "svelte";
     import { GET } from "../api/tourneesParDefaut/+server";
     import { host } from "$lib/Api/config";
-        import { tourneesStore } from "../store";
+    import { tourneesStore } from "../store";
     import { goto } from "$app/navigation";
     
-    let ListTourneesParDefaut = [];
     
+    let ListTourneesParDefaut = [];
+    let newTourneeParDefaut;
+
+    //Pop-up
+    let isPopupOpen = false;
+    const openPopup = () => {
+      isPopupOpen = true;
+    };
+    const closePopup = () => {
+      isPopupOpen = false;
+    };
+
+
+
     onMount(() => {
       getTourneesParDefaut();
     });
@@ -54,10 +67,36 @@
         console.log(id_tournee_par_defaut);
        goto(`/tourneesParDefaut/${id_tournee_par_defaut}`);
       }
+
+
+      async function addTourneeParDefaut(nomParDefaut) {
+      try {
+        const response = await fetch(`${host}/tourneesParDefaut`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nom_par_defaut: nomParDefaut
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        console.log("Request successful!");
+        newTourneeParDefaut=null;
+        getTourneesParDefaut();
+        // You can handle the response data here if needed.
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    }
     
     
     // Lifecycle hook to fetch data when the component is mounted
-    
+
     </script>
     <Navbar/>
     
@@ -82,7 +121,27 @@
         </tbody>
       </table>
       {/each}
-    
+
+      <button on:click={openPopup}>Ajouter</button>
+
+      {#if isPopupOpen}
+
+        <div class="overlay" on:click={closePopup}></div>
+        <div class="popup">
+
+          <form>
+            <label for="nomTournee">Nom Tournee:</label>
+            <input type="text" id="nomTournee" bind:value={newTourneeParDefaut} />
+          </form>
+
+            <button on:click={() => {
+                addTourneeParDefaut(newTourneeParDefaut),
+                closePopup()
+            }}>Sauvegarder</button>
+            <button on:click={closePopup}>Annuler</button>
+        </div>
+      
+      {/if}
       <style>
         /* This is the style section where you can define the button's appearance */
         .x-button {
@@ -104,6 +163,8 @@
           justify-content: space-between;
           width: 500px;
         }
+
+        
       </style>
       
       <!-- This is the markup section where you define the button's HTML structure -->

@@ -48,4 +48,4 @@
 <h3>Tournee : {tourneeParDefaut.nom_par_defaut}</h3>
 <h3>Creche : {creche.nom}</h3>
 <h3>Ordre : {commandeParDefaut.ordre}</h3>
-<button on:click={() => goto(`/creches/${creche.id_creche}`)}>Click me</button>
+<button on:click={() => goto(`/creches/${creche.id_creche}`)}>Modifier les articles par defaut</button>

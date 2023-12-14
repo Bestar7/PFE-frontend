@@ -96,6 +96,8 @@
     </tbody>
   </table>
   {/each}
+  
+  <button on:click={() => addTourneeParDefaut()}>Ajouter</button>
 
 
   <style>
