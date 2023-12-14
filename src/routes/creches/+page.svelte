@@ -4,6 +4,8 @@
   import { crecheStore } from "./store";
   import { get } from 'svelte/store'
   import { goto } from "$app/navigation";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
 
   // TODO replace with content from GET/creche/defaultOrder (or other name)
 
@@ -23,12 +25,12 @@
     crecheStore.set(creche)
     console.log("get", get(crecheStore))
     //document.location.href = `/api/creche/${creche.id_creche}` //TODO verifier le path
-    goto(`/creche/${creche.id_creche}`)
+    goto(`/creches/${creche.id_creche}`)
   }
 
 </script>
 
-
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <table>
   <thead>
@@ -46,3 +48,4 @@
     {/each}
   </tbody>
 </table>
+</UnauthorizedWrapper>
