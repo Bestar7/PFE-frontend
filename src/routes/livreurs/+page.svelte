@@ -29,9 +29,6 @@
       // Parse the JSON response
       const data = await response.json();
 	  livreurs = data;
-
-      // Update the component state with the retrieved data
-      users = data;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -47,10 +44,10 @@
 <UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <div class="centered">
-	<h1>ceci est la page des livreurs</h1>
+	<h1>Livreurs</h1>
 	<ul class="livreurs">
 		{#each livreurs as livreur}
-			<li><a href="livreurs/{livreur.id_utilisateur}">{livreur.nom}</a></li>
+			<li><a href="{livreur.id_utilisateur}">{livreur.nom}</a></li>
 		{/each}
 	</ul>
 
