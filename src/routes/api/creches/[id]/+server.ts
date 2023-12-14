@@ -15,3 +15,19 @@ export async function GET({params}) {
         return jsonResponse('Backend error', { status: 500 })
     }
 }
+
+export async function DELETE({params}) {
+    try {
+        const reponse = await fetch(`${host}/${apiRoute}/${params.id}`, {
+            method: 'DELETE',
+        })
+        if (reponse.ok) {
+            const json = await reponse.json();
+            return jsonResponse(json)
+        } else {
+            throw new Error(reponse.statusText);
+        }
+    } catch (error) {
+        return jsonResponse('Backend error', { status: 500 })
+    }
+}

@@ -42,7 +42,7 @@
 </script>
 
 <UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
-<Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+<Navbar />
 <div class="centered">
 	<h1>Livreurs</h1>
 	<ul class="livreurs">
