@@ -30,7 +30,7 @@
     // Function to fetch tournees par defaut
     async function getTourneesParDefaut() {
       try {
-        const response = await fetch("http://localhost:9000/tourneesParDefaut");
+        const response = await fetch(`${host}/tourneesParDefaut`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -47,7 +47,7 @@
       // Function to delete a tournee by ID
       async function deleteTournee(id) {
         try {
-          const response = await fetch(`http://localhost:9000/tourneesParDefaut/${id}`, {
+          const response = await fetch(`${host}/tourneesParDefaut/${id}`, {
             method: 'DELETE',
           });
     

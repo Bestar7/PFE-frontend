@@ -87,7 +87,7 @@
 
     async function addCommandeParDefaut(new_id_creche, new_ordre) {
     try {
-      const response = await fetch(`http://localhost:9000/commandesParDefaut/tourneeParDefaut/${id_tournee_par_defaut}`, {
+      const response = await fetch(`${host}/commandesParDefaut/tourneeParDefaut/${id_tournee_par_defaut}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
