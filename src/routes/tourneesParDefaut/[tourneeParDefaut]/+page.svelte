@@ -9,6 +9,19 @@
     let listCreches =  [];
     let commandesParDefaut = [];
     let tourneeParDefaut;
+
+    // Ajout de commande par défaut dans tournee par defaut
+    let newIdCreche;
+    let newOrdre;
+
+    //Pop-up
+    let isPopupOpen = false;
+    const openPopup = () => {
+      isPopupOpen = true;
+    };
+    const closePopup = () => {
+      isPopupOpen = false;
+    };
     
     onMount(() => {
         getIDTourneeParDefaut(),
@@ -70,6 +83,65 @@
       console.error(`Error deleting tournee with ID ${id}:`, error.message);
     }
   }
+  
+
+  async function addCommandeParDefaut(new_idCreche, new_ordre) {
+      try {
+        console.log("NEW ID CRECHE :" + newIdCreche);
+        console.log("NEW ORDRE: " + newOrdre);
+
+        const response = await fetch(`${host}/commandesParDefaut/tourneeParDefaut/${id_tournee_par_defaut}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id_creche: newIdCreche,
+            ordre: new_ordre
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        console.log("Request successful!");
+
+        newCommandeParDefaut=null;
+        newOrdre=null;
+        getCrechesTourneesParDefaut();
+        // You can handle the response data here if needed.
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    }  
+
+    async function handleSubmit(new_id_creche, new_ordre) {
+    try {
+      const response = await fetch(`http://localhost:9000/commandesParDefaut/tourneeParDefaut/${id_tournee_par_defaut}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id_creche: new_id_creche,
+          ordre: new_ordre
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log("Request successful!");
+      newIdCreche=null;
+      newOrdre=null;
+      getCrechesTourneesParDefaut(id_tournee_par_defaut);
+      // You can handle the response data here if needed.
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  }
 
 </script>
 
@@ -88,7 +160,7 @@
     <tbody>
         <tr>
             <td>
-              <button class="x-button" on:click={() => deleteCommandeParDefaut(creche.id_creche)}>
+              <button class="x-button" on:click={() => deleteCommandeParDefaut(commande.creche.id_creche)}>
                 &#10006;
               </button>
             </td>
@@ -97,8 +169,28 @@
   </table>
   {/each}
   
-  <button on:click={() => addTourneeParDefaut()}>Ajouter</button>
+  <button on:click={openPopup}>Ajouter</button>
 
+  {#if isPopupOpen}
+
+    <div class="overlay" on:click={closePopup}></div>
+    <div class="popup">
+
+      <form>
+        <label for="newIdCreche">ID Crèche:</label>
+        <input type="number" id="newIdCreche" bind:value={newIdCreche} />
+        <label for="newOrdre">Ordre:</label>
+        <input type="number" id="newOrdre" bind:value={newOrdre} />
+      </form>
+
+        <button on:click={() => {
+            handleSubmit(newIdCreche,newOrdre),
+            closePopup()
+        }}>Sauvegarder</button>
+        <button on:click={closePopup}>Annuler</button>
+    </div>
+  
+  {/if}
 
   <style>
     /* This is the style section where you can define the button's appearance */
