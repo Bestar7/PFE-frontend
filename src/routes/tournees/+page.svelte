@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation";
   import TourneeTableau from "$lib/Components/TourneeTableau.svelte";
   import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
-    import { roles } from "$lib/Auth/auth";
+  import { roles } from "$lib/Auth/auth";
 
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
@@ -16,7 +16,7 @@
   };
   let selectedTab = tabs.TourneeDate;
   let datePicked = new Date().toLocaleDateString("en-CA"); // = date.now() avec format YYY-MM-DD comme l'input du form
-  
+  let nomTournee = ""
 
   /** @type {Tournee[]} */
   let tournees = [];
@@ -61,6 +61,18 @@
     
     console.log("deleted", await response.json())
   }
+  async function addTourneeParDefaut(nomParDefaut) {
+    const response = await fetch(`/api/tourneesParDefaut`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        nom_par_defaut: nomParDefaut
+      })
+    });
+    console.log("addTourneeParDefaut", response)
+  }
 
   /**
    * @param {Tournee} tournee
@@ -93,6 +105,16 @@
 
     <div class="show-tournees">
       <TourneeTableau {tournees} deleteOne={deleteTournee} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
+    </div>
+
+    <div class="ajouter-tournee">
+    <h3>Ajouter une tournée par défaut</h3>
+    <label for="nomTournee">Nom Tournee:
+      <input type="text" bind:value={nomTournee} />
+    </label>
+    <button on:click={() => {addTourneeParDefaut(nomTournee)}}>
+      Sauvegarder
+    </button>
     </div>
 
     <button on:click={() => history.back()}>Retour</button>
