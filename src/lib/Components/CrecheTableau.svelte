@@ -2,6 +2,7 @@
   export let commandes;
   export let ouvrirDetailsCreche;
   export let supprimerCreche;
+  export let livrerCreche;
 </script>
 
 <table>
@@ -16,6 +17,9 @@
         <td>
           <button class="bouton-creche" on:click={() => supprimerCreche(commande.id_commande)}>
             &#10006;
+          </button>
+          <button class="bouton-creche" on:click={() => livrerCreche(commande.id_commande)}>
+            Livrer
           </button>
         </td>
       </tr>
