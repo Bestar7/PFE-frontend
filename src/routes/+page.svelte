@@ -1,15 +1,18 @@
 <script>
-    import Navbar from "$lib/Components/Navbar.svelte";
+    import { goto } from "$app/navigation";
     import { onMount } from "svelte";
+    import { getAuth } from "$lib/Auth/auth";
 
 
-    let name = "loading...";
-    onMount(async () => {
-        const response = await fetch('/api/helloWorld');
-        const json = await response.json();
-        name = json.name
+    onMount(()=>{
+        console.log("getAuth()", getAuth())
+        if (!getAuth())
+            goto("/connexion")
+        else if (getAuth() == "livreur")
+            goto("/tournees") // TODO choisir la 'page d'acceuil' d'un livreur
+        else if (getAuth() == "admin")
+            goto("/tournees") // TODO choisir la 'page d'acceuil' d'un admin
     })
 </script>
 
-<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1>ERROR</h1>

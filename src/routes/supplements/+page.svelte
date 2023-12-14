@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
   /** @typedef {import("$lib/Model/Article").Article} Article */
   
   
@@ -25,6 +27,7 @@
   }
 </script>
 
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar />
 <div class="container">
   <div class="data-table">
@@ -55,6 +58,7 @@
     </table>
   </div>
 </div>
+</UnauthorizedWrapper>
 
 <style>
   table {

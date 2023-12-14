@@ -11,7 +11,11 @@
       {#if isDefault}
       <td>{tournee.nom_par_defaut}</td>
       {:else}
+      {#if tournee.prenom_livreur==undefined && tournee.nom_livreur==undefined}
+      <td>Aucun livreur</td>
+      {:else}
       <td>{tournee.prenom_livreur} {tournee.nom_livreur}</td>
+      {/if}
       <td>{tournee.date}</td>
       <td>{tournee.nom}</td>
       <td>{tournee.statut}</td>
