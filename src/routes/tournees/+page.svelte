@@ -5,6 +5,7 @@
   import TourneeTableau from "$lib/Components/TourneeTableau.svelte";
   import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
   import { roles } from "$lib/Auth/auth";
+    import { host } from "$lib/Api/config";
 
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
@@ -17,6 +18,7 @@
   let selectedTab = tabs.TourneeDate;
   let datePicked = new Date().toLocaleDateString("en-CA"); // = date.now() avec format YYY-MM-DD comme l'input du form
   let nomTournee = ""
+  let newDateTournee = new Date().toLocaleDateString("en-CA");
 
   /** @type {Tournee[]} */
   let tournees = [];
@@ -79,6 +81,30 @@
    window.location.href = `/tourneesParDefaut`;
   }
 
+
+  async function handleSubmit(date) {
+    try {
+      // Make a POST request to the backend API
+      const response = await fetch(`${host}/tournees`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({date}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Handle the response as needed
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+  }
+
   /**
    * @param {Tournee} tournee
    */
@@ -112,15 +138,11 @@
       <TourneeTableau {tournees} deleteOne={deleteTournee} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
     </div>
 
-    <div class="ajouter-tournee">
-    <h3>Ajouter une tournée par défaut</h3>
-    <label for="nomTournee">Nom Tournee:
-      <input type="text" bind:value={nomTournee} />
-    </label>
-    <button on:click={() => {addTourneeParDefaut(nomTournee)}}>
-      Sauvegarder
-    </button>
-    </div>
+    <form on:submit|preventDefault={handleSubmit(newDateTournee)}>
+      <input type="date" bind:value={newDateTournee} required />
+  
+      <button type="submit">Ajouter une tournée</button>
+    </form>
 
     <button on:click={() => history.back()}>Retour</button>
   </div>
