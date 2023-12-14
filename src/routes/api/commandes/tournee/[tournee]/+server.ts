@@ -7,7 +7,7 @@ async function getCommandesTournee(id: string) {
     const response = await fetch(`${host}/${apiRoute}/tournee/${id}`);
     if (response.ok) {
       const json = await response.json();
-      return jsonResponse(json)
+      return jsonResponse(json);
     } else {
       throw new Error(response.statusText);
     }
