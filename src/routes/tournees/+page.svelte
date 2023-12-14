@@ -22,7 +22,7 @@
   let tournees = [];
   onMount(() => {
     getTourneesDate();
-    console.log("onMount", tournees);
+    console.log("onMount FDPPPPP", tournees);
   });
 
   async function getTourneesDate() {
@@ -44,6 +44,14 @@
   function selectDefault(){
     selectedTab = tabs.TourneeDefault;
     getTourneesDefault();
+  }
+
+  async function deleteTournee(id) {
+    console.log("id delete", id)
+    const response = await fetch(`/api/tourneesParDefaut/${id}`, { 
+      method: 'DELETE' 
+    });
+    console.log("deleted", await response.json())
   }
 
   /**
@@ -76,7 +84,7 @@
     {/if}
 
     <div class="show-tournees">
-      <TourneeTableau {tournees} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
+      <TourneeTableau {tournees} deleteOne={deleteTournee} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
     </div>
 
     <button on:click={() => history.back()}>Retour</button>
