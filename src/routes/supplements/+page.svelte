@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import Navbar from "$lib/Components/Navbar.svelte";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
   /** @typedef {import("$lib/Model/Article").Article} Article */
   
   
@@ -12,27 +14,20 @@
   });
 
   async function fillListArticles(){
-    const response = await fetch("/supplements"); // aussi ok : "" si +server.ts est dans le meme dossier que cette page
-    console.log(response);
-    /** @type {Article[]}*/
-    const articles = await response.json()
-
-    articles.sort((a, b) => a.id_article - b.id_article)
-    listArticles = articles;
+    listArticles = await (await fetch("/api/supplements")).json();
+    listArticles.sort((a, b) => a.id_article - b.id_article);
+    console.log(listArticles);
   }
 
-  /**
-  * @param {number} id_article
-  * @param {number} nouvelleValeur
-  */
   function savePourcentage(id_article, nouvelleValeur) {
-    fetch("/supplements", {
+    fetch(`/api/articles/${id_article}/modifierPourcentage`, {
         method: 'POST',
         body: JSON.stringify({ id_article, nouvelleValeur }),
     })
   }
 </script>
 
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar />
 <div class="container">
   <div class="data-table">
@@ -63,6 +58,7 @@
     </table>
   </div>
 </div>
+</UnauthorizedWrapper>
 
 <style>
   table {
@@ -92,14 +88,5 @@
 
   tr:nth-child(even) {
     background-color: #f2f2f2;
-  }
-
-  body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-    align-items: center;
-    margin: 0;
   }
 </style>

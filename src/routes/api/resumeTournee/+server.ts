@@ -2,7 +2,7 @@ import { json as jsonResponse } from "@sveltejs/kit";
 import { host } from "$lib/Api/config";
 import { get } from "svelte/store";
 
-const apiRoute="/commandes";
+const apiRoute="tournees";
 
 
 async function getResumeTournee(id:number){
@@ -21,6 +21,6 @@ async function getResumeTournee(id:number){
 }
 
 export async function GET(){
-    return getResumeTournee();
+    return getResumeTournee(); // TODO move in./[id]
 
 }

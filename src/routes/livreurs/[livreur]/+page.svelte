@@ -1,53 +1,50 @@
 <script>
-  import Livreur from "$lib/Components/Livreur.svelte";
   import { onMount } from "svelte";
-
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
   import Navbar from "$lib/Components/Navbar.svelte";
+  import { page } from '$app/stores';
+  import UserModify from "$lib/Components/UserModify.svelte";
+  import { host } from "$lib/Api/config";
 
-  let name = "loadin...";
+  let livreurInfo = {}
+  const id = $page.params.livreur
+  let livreur = {};
   onMount(async () => {
-    const response = await fetch("/api/livreur");
-    const json = await response.json();
-    name = json.name;
+    getLivreur()
   });
 
-  let livreur = {
-    nom: "Nom existant",
-    login: "Login existant",
-    motDePasse: "MotDePasse existant",
-    isAdmin: false,
-  };
+  /*
+  async function getLivreurInfo(){
+    livreurs = (await fetch(`/api/livreurs/${id}`)).json(); // TODO uncomment when backend endpoint done and open
+  }
+  */
 
-  function handleSubmit() {
-    // Vous pouvez traiter les données ici (envoyer à un serveur, mettre à jour la base de données, etc.)
-    console.log("Données soumises :", livreur);
+  async function getLivreur(){
+    try {
+      // Make a GET request to the backend API
+      const response = await fetch(`${host}/utilisateurs/${id}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Parse the JSON response
+      livreur = await response.json();
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  }
+
+  function onSubmitChangedUser() {
+    //TODO fetch("/...") body = livreurInfo method = PUT/PATCH
+    console.log("Données soumises :", livreurInfo);
   }
 </script>
 
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-<Livreur {name} />
+<h1>Hello {livreur.nom}</h1>
+<UserModify btnSendText={"Enregistrer les modification"} userInfo={livreurInfo} handleUserSend={onSubmitChangedUser} />
+</UnauthorizedWrapper>
 
-<form on:submit|preventDefault={handleSubmit}>
-  <label>
-    Nom :
-    <input bind:value={livreur.nom} type="text" />
-  </label>
-
-  <label>
-    Login :
-    <input bind:value={livreur.login} type="text" />
-  </label>
-
-  <label>
-    Mot de passe :
-    <input bind:value={livreur.motDePasse} type="password" />
-  </label>
-
-  <label>
-    Admin :
-    <input type="radio" bind:group={livreur.isAdmin} value={true} /> Oui
-    <input type="radio" bind:group={livreur.isAdmin} value={false} /> Non
-  </label>
-
-  <button type="submit">Soumettre</button>
-</form>
