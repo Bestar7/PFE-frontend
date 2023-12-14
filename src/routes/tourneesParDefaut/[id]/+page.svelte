@@ -16,17 +16,16 @@
   const idTournee = $page.params.id
 
   onMount(async () => {
-    getTourneeDefaut(idTournee);
+    getTourneeDefaut(-1, idTournee);
   });
 
-
-  async function getTourneeDefaut(idTournee) {
+  async function getTourneeDefaut(idCommande, idTournee) {
     const response = await fetch(`/api/commandesParDefaut/tourneeParDefaut/${idTournee}`);
     commandes = await response.json();
     console.log("getTourneeDefaut", commandes, idTournee);
   }
 
-  function ouvrirDetailsCreche(idCreche) {
+  function ouvrirDetailsCreche(idCommande, idCreche) {
     goto(`/creches/${idCreche}`); // TODO route correct
   }
 
