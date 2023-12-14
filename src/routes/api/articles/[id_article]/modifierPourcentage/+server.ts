@@ -3,7 +3,7 @@ import { json as jsonResponse } from '@sveltejs/kit'
 
 const apiRoute = "articles"
 
-async function savePourcentage(id_article: number, nouvelleValeur: number) { // TODO use or remove id_article
+async function savePourcentage(id_article: number, nouvelleValeur: number) {
   try {
     const response = await fetch(`${host}/${apiRoute}/${id_article}/modifierPourcentage`, {
       method: "PATCH",

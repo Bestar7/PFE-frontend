@@ -1,7 +1,7 @@
 import { host } from '$lib/Api/config';
 import { json as jsonResponse } from '@sveltejs/kit'
 
-const apiRoute = "creches"; // TODO move in correct /api/folder
+const apiRoute = "creches";
 export async function GET({params}) {
     try {
         const reponse = await fetch(`${host}/${apiRoute}/${params.id}`);
