@@ -1,0 +1,11 @@
+{
+  "short_name" : "App grp 4",
+  "name" : "App grp 4",
+  "start_url" : "/",
+  "icons" : [],
+  "background_color" : "#998899",
+  "display" : "standalone",
+  "scope" : "/",
+  "theme_color" : "#998899",
+  "description" : "l'app du grp 4 magueule"
+}
