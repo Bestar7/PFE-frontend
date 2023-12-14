@@ -3,6 +3,8 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import TourneeTableau from "$lib/Components/TourneeTableau.svelte";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+    import { roles } from "$lib/Auth/auth";
 
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
@@ -63,6 +65,7 @@
 </script>
 <Navbar />
 
+<UnauthorizedWrapper roleRequis={[roles.admin, roles.livreur]}>
 <div class="container"><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
   <div class="centered">
 
@@ -84,11 +87,6 @@
     <button on:click={() => history.back()}>Retour</button>
   </div>
 </div>
+</UnauthorizedWrapper>
 
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>
+

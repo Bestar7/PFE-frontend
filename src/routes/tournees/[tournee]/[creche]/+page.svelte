@@ -3,6 +3,8 @@
   import { page } from "$app/stores";
   import Navbar from "$lib/Components/Navbar.svelte";
   import { goto } from "$app/navigation";
+  import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
+  import { roles } from "$lib/Auth/auth";
 
   export let isDefault = false;
 
@@ -40,6 +42,7 @@
 
 </script>
 
+<UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar />
 <div class="container">
   <div class="tab-infos">
@@ -85,6 +88,7 @@
   {/if}
   <button on:click={() => history.back()}>Retour</button>
 </div>
+</UnauthorizedWrapper>
 
 <style>
 

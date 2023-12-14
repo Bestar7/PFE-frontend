@@ -1,21 +1,38 @@
-// TODO + de test (console.log du contenu du cookie) + que se passe-il si on a plusieurs cookies ??? dans connexion
-// TODO use localStorage && sessionStorage
 import { writable } from 'svelte/store';
-let authStore = writable(document.cookie);
+
+let roles = {
+  admin: "admin",
+  livreur: "livreur",
+}
+let auth = writable({})
 
 const getAuth = () => {
-  return document.cookie
+  if (localStorage.getItem("auth") != null){
+    console.log("localStorage", localStorage.getItem("auth"))
+    return localStorage.getItem("auth")
+  }
+    
+  if (sessionStorage.getItem("auth") != null){
+    console.log("sessionStorage", sessionStorage.getItem("auth"))
+    return sessionStorage.getItem("auth")
+  }
+  return null //TODO handle this case (happen right after disconnect)
 }
 
-/** @param {string} authValue */
-const setAuth = (authValue) => {
-  document.cookie = `auth=${authValue};`
-  authStore.set(authValue)
+const setAuth = (authValue, rememberMe) => {
+  auth.set(authValue)
+  if (rememberMe)
+    localStorage.setItem("auth", authValue.role)
+  else {
+    sessionStorage.setItem("auth", authValue.role)
+    console.log("sessionStorage", sessionStorage.getItem("auth"))
+  }
 }
 
 const resetAuth = () => {
-  document.cookie = `auth=e ; Max-Age=-99999999;`
-  authStore.set("")
+  auth.set()
+  localStorage.removeItem("auth")
+  sessionStorage.removeItem("auth")
 }
 
-export {getAuth, setAuth, resetAuth, authStore}
+export {getAuth, setAuth, resetAuth, auth, roles}
