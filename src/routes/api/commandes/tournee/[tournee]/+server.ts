@@ -12,7 +12,7 @@ async function getCommandesTournee(id: string) {
       throw new Error(response.statusText);
     }
   } catch (error) {
-    return jsonResponse('Backend error', { status: 500 }))
+    return jsonResponse('Backend error', { status: 500 })
   }
 
 }
