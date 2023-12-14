@@ -114,7 +114,7 @@
       //POURQUOI L'idCOMMANDE EST NULL ALORS QU4ON LE PRENDS DANS LE SESSIONSTORE ??
       //console.log("l'id de la commande est", idCommande);
       //aussi hardcodé car pas de localStore avec l'id dedans
-      const response = await fetch(`${host}/commandes/2/modifier`, {
+      const response = await fetch(`${host}/commandes/${idCommande}/modifier`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@
           new_ordre: updatedCommande.ordre,
           new_statut: updatedCommande.statut,
           new_lignes_commande: updatedCommande.lignes_commande.map((ligne) => ({
-            id_commande: ligne.id_commande,
+            id_commande: lidCommande,
             //ligne.id_article undefined
             id_article: 1,
             new_nb_caisses: ligne.nb_caisses,
@@ -193,13 +193,13 @@
         </ul>
         <ul>
           <label for="statut"> Statut : </label>
-          <span id="statu"> {commande ? commande.statut : ""}</span>
+          <span id="statut"> {commande ? commande.statut : ""}</span>
         </ul>
       </div>
     </div>
 
     <div class="data-table">
-      {#if commande && commande.statut !== "terminée"}
+      {#if commande  }
         {#if commande && commande.lignes_commande}
           <table>
             <thead>
@@ -215,7 +215,7 @@
                 {#if ligne !== undefined}
                   <tr key={index}>
                     <td>
-                      {ligne.article.libelle}{ligne.article.taille || ""}
+                      {ligne.article ? ligne.article.libelle : ''}
                     </td>
                     <td>
                       <input

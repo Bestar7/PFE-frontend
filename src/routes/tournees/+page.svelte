@@ -16,7 +16,7 @@
   };
   let selectedTab = tabs.TourneeDate;
   let datePicked = new Date().toLocaleDateString("en-CA"); // = date.now() avec format YYY-MM-DD comme l'input du form
-  let nomTournee = ""
+  let nomTournee = "";
 
   /** @type {Tournee[]} */
   let tournees = [];
@@ -28,55 +28,83 @@
   async function getTourneesDate() {
     const response = await fetch(`/api/tournees/date/${datePicked}`);
     tournees = await response.json();
-    console.log("getTourneesDate", tournees)
+    console.log("getTourneesDate", tournees);
   }
   async function getTourneesDefault() {
     const response = await fetch(`/api/tourneesParDefaut`);
     tournees = await response.json();
-    console.log("getTourneesDefault", tournees)
+    console.log("getTourneesDefault", tournees);
   }
 
   function selectHistory() {
     selectedTab = tabs.TourneeDate;
     getTourneesDate();
-    console.log("handleDateChange", tournees)
+    console.log("handleDateChange", tournees);
   }
 
-  function selectDefault(){
+  function selectDefault() {
     selectedTab = tabs.TourneeDefault;
     getTourneesDefault();
   }
 
   async function deleteTournee(id) {
-    console.log("id delete", id)
-    let response
-    if (selectedTab==tabs.TourneeDefault){
-      response = await fetch(`/api/tourneesParDefaut/${id}`, { 
-        method: 'DELETE' 
+    console.log("id delete", id);
+    let response;
+    if (selectedTab == tabs.TourneeDefault) {
+      response = await fetch(`/api/tourneesParDefaut/${id}`, {
+        method: "DELETE",
       });
     } else {
-      response = await fetch(`/api/tournees/${id}`, { 
-        method: 'DELETE' 
+      response = await fetch(`/api/tournees/${id}`, {
+        method: "DELETE",
       });
     }
-    
-    console.log("deleted", await response.json())
+
+    console.log("deleted", await response.json());
+  }
+
+  async function terminerTournee(idTournee) {
+    const url = `${host}/tournees/${id}`;
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        statut: "terminee",
+      }),
+    };
+
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP! Statut : ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Réponse du serveur :", data);
+        // Faire quelque chose avec la réponse du serveur si nécessaire
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la requête:", error.message);
+      });
   }
   async function addTourneeParDefaut(nomParDefaut) {
     const response = await fetch(`/api/tourneesParDefaut`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        nom_par_defaut: nomParDefaut
-      })
+        nom_par_defaut: nomParDefaut,
+      }),
     });
-    console.log("addTourneeParDefaut", response)
+    console.log("addTourneeParDefaut", response);
   }
 
   function eventHandler() {
-   window.location.href = `/tourneesParDefaut`;
+    window.location.href = `/tourneesParDefaut`;
   }
 
   /**
@@ -86,45 +114,56 @@
     if (selectedTab == tabs.TourneeDate)
       goto(`/tournees/${tournee.id_tournee}`);
     if (selectedTab == tabs.TourneeDefault)
-      goto(`/tourneesParDefaut/${tournee.id_tournee_par_defaut}`); // TODO autre page ou pas (et remove if-else) ???
-    else
-      console.log("error in /tournees/+page.svelte")//TODO handle error
+      goto(
+        `/tourneesParDefaut/${tournee.id_tournee_par_defaut}`
+      ); // TODO autre page ou pas (et remove if-else) ???
+    else console.log("error in /tournees/+page.svelte"); //TODO handle error
   }
 </script>
+
 <Navbar />
 
 <UnauthorizedWrapper roleRequis={[roles.admin, roles.livreur]}>
-<div class="container"><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-  <div class="centered">
+  <div class="container">
+    <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+    <div class="centered">
+      <div class="tab-selection">
+        <input type="date" on:change={selectHistory} bind:value={datePicked} />
+        <button on:click={() => eventHandler()}>Tournées par défaut</button>
+      </div>
 
-    <div class="tab-selection">
-      <input type="date" on:change={selectHistory} bind:value={datePicked} />
-      <button on:click={() => eventHandler()}>Tournées par défaut</button>
+      {#if selectedTab == tabs.TourneeDate}
+        <h2>Tournée du {datePicked}</h2>
+      {:else}
+        <h2>Tournée par défaut</h2>
+      {/if}
+
+      <div class="show-tournees">
+        <TourneeTableau
+          {tournees}
+          deleteOne={deleteTournee}
+          terminerOne={terminerTournee}
+          onSelectOne={selectTournee}
+          isDefault={selectedTab == tabs.TourneeDefault}
+        />
+      </div>
+
+      <div class="ajouter-tournee">
+        <h3>Ajouter une tournée par défaut</h3>
+        <label for="nomTournee"
+          >Nom Tournee:
+          <input type="text" bind:value={nomTournee} />
+        </label>
+        <button
+          on:click={() => {
+            addTourneeParDefaut(nomTournee);
+          }}
+        >
+          Sauvegarder
+        </button>
+      </div>
+
+      <button on:click={() => history.back()}>Retour</button>
     </div>
-
-    {#if selectedTab==tabs.TourneeDate}
-    <h2>Tournée du {datePicked}</h2>
-    {:else}
-    <h2>Tournée par défaut</h2>
-    {/if}
-
-    <div class="show-tournees">
-      <TourneeTableau {tournees} deleteOne={deleteTournee} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
-    </div>
-
-    <div class="ajouter-tournee">
-    <h3>Ajouter une tournée par défaut</h3>
-    <label for="nomTournee">Nom Tournee:
-      <input type="text" bind:value={nomTournee} />
-    </label>
-    <button on:click={() => {addTourneeParDefaut(nomTournee)}}>
-      Sauvegarder
-    </button>
-    </div>
-
-    <button on:click={() => history.back()}>Retour</button>
   </div>
-</div>
 </UnauthorizedWrapper>
-
-
