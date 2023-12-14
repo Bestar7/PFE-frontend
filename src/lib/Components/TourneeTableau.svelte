@@ -2,6 +2,7 @@
   export let tournees;
   export let onSelectOne;
   export let isDefault;
+  export let deleteOne;
 </script>
 
 <table>
@@ -21,6 +22,9 @@
       <td>{tournee.statut}</td>
       {/if}
     </tr>
+    <button class="x-button" on:click={deleteOne(tournee.id_tournee_par_defaut ?? tournee.id_tournee)}>
+      &#10006;
+    </button>
     {/each}
   </tbody>
 </table>
