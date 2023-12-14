@@ -44,7 +44,8 @@
   }
 
   function ouvrirDetailsCreche(idCommande, idCreche) {
-    goto(`/tournees/${idCommande}/${idCreche}`);
+    sessionStorage.setItem('idCommande', idCommande);
+    goto(`/commandes/${idCommande}`);
   }
 
   async function supprimerCreche(idCommande) {

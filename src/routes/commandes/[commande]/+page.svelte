@@ -3,6 +3,7 @@
   import { readable } from "svelte/store";
   import Navbar from "$lib/Components/Navbar.svelte";
   import { getRequest } from "@sveltejs/kit/node";
+  import { host } from "$lib/Api/config";
   let role = "livreur";
   let commande;
   let responseUpdatedCommande;
@@ -56,10 +57,11 @@
   onMount(async () => {
     //TODO attention pour l'instant hardcodage de id car pas de page COMMANDES, faire que quand on clique sur une commande pour la modifier
     // on rajoute dans le localStrorage
-    const idCommande = sessionStorage.getItem("idCommande");
-    await getCommande(idCommande);
+     const  idCommande = sessionStorage.getItem("idCommande");
+     console.log("id recup ", idCommande);
 
-    console.log("id recup ", idCommande);
+     getCommande(idCommande);
+
   });
 
   async function getCommande(idCommande) {
