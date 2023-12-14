@@ -4,15 +4,37 @@
 	import { onMount } from "svelte";
 	import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
   import { roles } from "$lib/Auth/auth";
+    import { host } from "$lib/Api/config";
 
-	let livreurs = ["ok","ok"];
+	let livreurs = [];
 	onMount(async () => {
     getAllLivreurs()
   });
 
+  /*
   async function getAllLivreurs(){
-    //livreurs = (await fetch("/api/livreurs")).json(); // TODO uncomment when backend endpoint done and open
+    livreurs = (await fetch("/api/livreurs")).json(); // TODO uncomment when backend endpoint done and open
   }
+  */
+
+  async function getAllLivreurs(){
+	try {
+      // Make a GET request to the backend API
+      const response = await fetch(`${host}/utilisateurs/role/livreur`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Parse the JSON response
+      const data = await response.json();
+	  livreurs = data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+
 
 	function addLivreur(){
 		goto("/livreurs/add")
@@ -22,10 +44,10 @@
 <UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
 <Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
 <div class="centered">
-	<h1>ceci est la page des livreurs</h1>
+	<h1>Livreurs</h1>
 	<ul class="livreurs">
 		{#each livreurs as livreur}
-			<li><a href="livreurs/1">nom </a> tournee</li>
+			<li><a href="{livreur.id_utilisateur}">{livreur.nom}</a></li>
 		{/each}
 	</ul>
 
