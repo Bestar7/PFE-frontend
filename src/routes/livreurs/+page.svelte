@@ -47,7 +47,7 @@
 	<h1>Livreurs</h1>
 	<ul class="livreurs">
 		{#each livreurs as livreur}
-			<li><a href="{livreur.id_utilisateur}">{livreur.nom}</a></li>
+			<li><a href="/livreurs/{livreur.id_utilisateur}">{livreur.nom}</a></li>
 		{/each}
 	</ul>
 
