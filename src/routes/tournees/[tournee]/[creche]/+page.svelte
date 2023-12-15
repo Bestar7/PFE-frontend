@@ -61,10 +61,7 @@
     </div>
     <div class="right-column">
 
-      <ul>
-        <label for="date"> Date : </label>
-        <span id="date"> {commandes?.tournee?.date ?? ""}</span>
-      </ul>
+      
 
       <ul>
         <label for="ordre"> Ordre : </label>

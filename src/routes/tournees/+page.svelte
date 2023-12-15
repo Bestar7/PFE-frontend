@@ -201,12 +201,7 @@ const response = await fetch(`${host}/tournees/${idTournee}/modifierLivreur`, op
         />
       </div>
 
-      <form on:submit|preventDefault={handleSubmit(newDateTournee)}>
-        <input type="date" bind:value={newDateTournee} required />
-
-        <button type="submit">Ajouter une tournée</button>
-      </form>
-
+      
       <button on:click={() => history.back()}>Retour</button>
     </div>
   </div></UnauthorizedWrapper
