@@ -89,6 +89,8 @@
     };
 
     const response = await fetch(`${host}/tournees/${idTournee}`, options);
+     getTourneesDate();
+
     console.log("reponse du changement de statut de la tournee", response);
 
   }
@@ -167,7 +169,7 @@
     {/if}
 
     <div class="show-tournees">
-      <TourneeTableau {tournees} deleteOne={deleteTournee} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
+      <TourneeTableau {tournees} deleteOne={deleteTournee}  onSelectOne={selectTournee} terminerTournee = {terminerTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
     </div>
 
     <form on:submit|preventDefault={handleSubmit(newDateTournee)}>
