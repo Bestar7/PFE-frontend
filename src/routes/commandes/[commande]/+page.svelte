@@ -64,9 +64,9 @@
 
   });
 
-  async function getCommande(idCommande) {
+  async function getCommande(id_Commande) {
     try {
-      const response = await fetch(`${host}/commandes/${idCommande}`);
+      const response = await fetch(`${host}/commandes/${id_Commande}`);
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
@@ -83,12 +83,12 @@
     }
   }
 
-  function displayRequest(updatedCommande, idCommande) {
+  function displayRequest(updatedCommande, id_Commande) {
     const requestPayload = {
       new_ordre: updatedCommande.ordre,
       new_statut: updatedCommande.statut,
       new_lignes_commande: updatedCommande.lignes_commande.map((ligne) => ({
-        id_commande: ligne.id_commande,
+        id_commande: id_Commande,
         id_article: ligne.id_article,
         new_nb_caisses: ligne.nb_caisses,
         new_nb_unites: ligne.nb_caisses,
@@ -104,7 +104,7 @@
     });
 
     // Appelez la fonction updateCommande pour envoyer réellement la requête
-    updateCommande(updatedCommande, idCommande);
+    updateCommande(updatedCommande, id_Commande);
   }
   /**
    * modification d'une commande.
@@ -112,9 +112,10 @@
   async function updateCommande(updatedCommande, recu) {
     try {
       //POURQUOI L'idCOMMANDE EST NULL ALORS QU4ON LE PRENDS DANS LE SESSIONSTORE ??
-      //console.log("l'id de la commande est", idCommande);
+      console.log("l'id de la commande est", recu);
+
       //aussi hardcodé car pas de localStore avec l'id dedans
-      const response = await fetch(`${host}/commandes/${idCommande}/modifier`, {
+   const response = await fetch(`${host}/commandes/${recu}/modifier`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -123,11 +124,11 @@
           new_ordre: updatedCommande.ordre,
           new_statut: updatedCommande.statut,
           new_lignes_commande: updatedCommande.lignes_commande.map((ligne) => ({
-            id_commande: lidCommande,
+            id_commande: 18,
             //ligne.id_article undefined
-            id_article: 1,
+            id_article: ligne.id_article,
             new_nb_caisses: ligne.nb_caisses,
-            new_nb_unites: ligne.nb_caisses,
+            new_nb_unites: ligne.nb_unites,
           })),
         }),
       });
@@ -199,7 +200,7 @@
     </div>
 
     <div class="data-table">
-      {#if commande  }
+      {#if commande && commande.statut !== "terminée" }
         {#if commande && commande.lignes_commande}
           <table>
             <thead>
@@ -237,7 +238,8 @@
               <button
                 on:click={() => /*todo modifier la commande*/ {
                   console.log("la nouvelle commande est : ", updatedCommande);
-                  displayRequest(updatedCommande, 0);
+
+                  displayRequest(updatedCommande, sessionStorage.getItem('idCommande'));
                 }}
               >
                 Update

@@ -111,6 +111,7 @@
    * @param {Tournee} tournee
    */
   function selectTournee(tournee) {
+    console.log ("ici",selectedTab);
     if (selectedTab == tabs.TourneeDate)
       goto(`/tournees/${tournee.id_tournee}`);
     if (selectedTab == tabs.TourneeDefault)
