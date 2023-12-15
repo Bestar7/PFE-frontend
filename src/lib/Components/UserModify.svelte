@@ -4,23 +4,24 @@
   export let userInfo = {};
 
   // TODO si on modifie un utilisateur, recup les info dans +page et les donner en param ici (via export let...)
+  console.log("userrrr", userInfo)
 </script>
 
 <form on:submit|preventDefault={handleUserSend}>
   <label>
-    Nom : <input type="text" bind:value={userInfo.lastname} required>
+    Nom : <input type="text" bind:value={userInfo.nom} required>
   </label>
 
   <label>
-    Prénom : <input type="text" bind:value={userInfo.firstname} required>
+    Prénom : <input type="text" bind:value={userInfo.prenom} required>
   </label>
 
   <label>
-    Login : <input type="text" bind:value={userInfo.login} required>
+    Login : <input type="text" bind:value={userInfo.identifiant} required>
   </label>
   <label>
 
-    Mot de passe : <input type="password" bind:value={userInfo.password} required>
+    Mot de passe : <input type="password" bind:value={userInfo.mot_de_passe} required>
   </label>
 
   <label>

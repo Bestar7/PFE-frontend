@@ -5,46 +5,32 @@
   import Navbar from "$lib/Components/Navbar.svelte";
   import { page } from '$app/stores';
   import UserModify from "$lib/Components/UserModify.svelte";
-  import { host } from "$lib/Api/config";
 
-  let livreurInfo = {}
   const id = $page.params.livreur
   let livreur = {};
   onMount(async () => {
     getLivreur()
   });
 
-  /*
-  async function getLivreurInfo(){
-    livreurs = (await fetch(`/api/livreurs/${id}`)).json(); // TODO uncomment when backend endpoint done and open
-  }
-  */
-
   async function getLivreur(){
-    try {
-      // Make a GET request to the backend API
-      const response = await fetch(`${host}/utilisateurs/${id}`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      // Parse the JSON response
-      livreur = await response.json();
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
+    livreur = await (await fetch(`/api/utilisateurs/${id}`)).json();
+    console.log("getLivreur", livreur)
   }
 
-  function onSubmitChangedUser() {
-    //TODO fetch("/...") body = livreurInfo method = PUT/PATCH
-    console.log("Données soumises :", livreurInfo);
+  async function onSubmitChangedUser() {
+    const response = await fetch(`/api/utilisateurs/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        ...livreur
+      })
+    });
+    console.log("Données soumises :", livreur, response);
   }
 </script>
 
 <UnauthorizedWrapper roles={[roles.admin, roles.livreur]}>
-<Navbar /><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+<Navbar />
 <h1>Hello {livreur.nom}</h1>
-<UserModify btnSendText={"Enregistrer les modification"} userInfo={livreurInfo} handleUserSend={onSubmitChangedUser} />
+<UserModify btnSendText={"Enregistrer les modification"} userInfo={livreur} handleUserSend={onSubmitChangedUser} />
 </UnauthorizedWrapper>
 
