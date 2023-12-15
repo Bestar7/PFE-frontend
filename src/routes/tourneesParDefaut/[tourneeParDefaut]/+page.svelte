@@ -123,7 +123,7 @@
 <table class="tab-infos">
   <div class="left-column" on:click={() =>goto(`/commandesParDefaut/${commande.id_commande_par_defaut}`)}>
     <ul class="flex-container">
-      <span id="nom"> {commande.creche.nom}</span>
+      <span id="nom"> {commande.creche.nom} : {commande.ordre}</span>
     </ul>
   </div>
     <tbody>
