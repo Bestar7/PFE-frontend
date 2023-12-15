@@ -5,7 +5,7 @@
   import TourneeTableau from "$lib/Components/TourneeTableau.svelte";
   import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
   import { roles } from "$lib/Auth/auth";
-
+  import { host } from "$lib/Api/config";
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
    */
@@ -63,32 +63,30 @@
     console.log("deleted", await response.json());
   }
 
-  async function terminerTournee(idTournee) {
-    const url = `${host}/tournees/${id}`;
+
+
+
+ 
+
+
+  async function terminerTournee(idTournee, nomTournee) {
+    tournees= tournees.filter(tournee=> tournee.id_tournee !== idTournee);
+
+    const url = `${host}/tournees/${idTournee}`;
     const options = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        statut: "terminee",
+        nom : nomTournee,
+        statut: 'terminée',
       }),
     };
 
-    fetch(url, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erreur HTTP! Statut : ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Réponse du serveur :", data);
-        // Faire quelque chose avec la réponse du serveur si nécessaire
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la requête:", error.message);
-      });
+    const response = await fetch(`${host}/tournees/${idTournee}`, options);
+    console.log("reponse du changement de statut de la tournee", response);
+
   }
   async function addTourneeParDefaut(nomParDefaut) {
     const response = await fetch(`/api/tourneesParDefaut`, {
@@ -143,7 +141,7 @@
         <TourneeTableau
           {tournees}
           deleteOne={deleteTournee}
-          terminerOne={terminerTournee}
+          terminerTournee={terminerTournee}
           onSelectOne={selectTournee}
           isDefault={selectedTab == tabs.TourneeDefault}
         />
