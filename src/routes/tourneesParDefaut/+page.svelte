@@ -8,8 +8,10 @@
     import { goto } from "$app/navigation";
     
     
-    let ListTourneesParDefaut = [];
+    let ListTourneesParDefaut = [[]];
     let newTourneeParDefaut;
+    let i = 1;
+    
 
     //Pop-up
     let isPopupOpen = false;
@@ -37,7 +39,7 @@
         const tourneesResponse = await response.json();
     
         ListTourneesParDefaut = tourneesResponse;
-        
+        console.log("Tournees pas defaut : " + ListTourneesParDefaut)
     
       } catch (error) {
         console.error("Error fetching tournees par defaut:", error.message);
