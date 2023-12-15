@@ -6,6 +6,7 @@
   import UnauthorizedWrapper from "$lib/Components/UnauthorizedWrapper.svelte";
   import { roles } from "$lib/Auth/auth";
   import { host } from "$lib/Api/config";
+
   /**
    * @typedef {import("$lib/Model/Tournee").Tournee} Tournee
    */
@@ -16,7 +17,10 @@
   };
   let selectedTab = tabs.TourneeDate;
   let datePicked = new Date().toLocaleDateString("en-CA"); // = date.now() avec format YYY-MM-DD comme l'input du form
-  let nomTournee = "";
+
+  let nomTournee = ""
+  let newDateTournee = new Date().toLocaleDateString("en-CA");
+
 
   /** @type {Tournee[]} */
   let tournees = [];
@@ -105,6 +109,30 @@
     window.location.href = `/tourneesParDefaut`;
   }
 
+
+  async function handleSubmit(date) {
+    try {
+      // Make a POST request to the backend API
+      const response = await fetch(`${host}/tournees`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({date}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Handle the response as needed
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+  }
+
   /**
    * @param {Tournee} tournee
    */
@@ -123,46 +151,31 @@
 <Navbar />
 
 <UnauthorizedWrapper roleRequis={[roles.admin, roles.livreur]}>
-  <div class="container">
-    <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-    <div class="centered">
-      <div class="tab-selection">
-        <input type="date" on:change={selectHistory} bind:value={datePicked} />
-        <button on:click={() => eventHandler()}>Tournées par défaut</button>
-      </div>
 
-      {#if selectedTab == tabs.TourneeDate}
-        <h2>Tournée du {datePicked}</h2>
-      {:else}
-        <h2>Tournée par défaut</h2>
-      {/if}
+<div class="container"><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+  <div class="centered">
 
-      <div class="show-tournees">
-        <TourneeTableau
-          {tournees}
-          deleteOne={deleteTournee}
-          terminerTournee={terminerTournee}
-          onSelectOne={selectTournee}
-          isDefault={selectedTab == tabs.TourneeDefault}
-        />
-      </div>
-
-      <div class="ajouter-tournee">
-        <h3>Ajouter une tournée par défaut</h3>
-        <label for="nomTournee"
-          >Nom Tournee:
-          <input type="text" bind:value={nomTournee} />
-        </label>
-        <button
-          on:click={() => {
-            addTourneeParDefaut(nomTournee);
-          }}
-        >
-          Sauvegarder
-        </button>
-      </div>
-
-      <button on:click={() => history.back()}>Retour</button>
+    <div class="tab-selection">
+      <input type="date" on:change={selectHistory} bind:value={datePicked} />
+      <button on:click={() => eventHandler()}>Tournées par défaut</button>
     </div>
+
+    {#if selectedTab==tabs.TourneeDate}
+    <h2>Tournée du {datePicked}</h2>
+    {:else}
+    <h2>Tournée par défaut</h2>
+    {/if}
+
+    <div class="show-tournees">
+      <TourneeTableau {tournees} deleteOne={deleteTournee} onSelectOne={selectTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
+    </div>
+
+    <form on:submit|preventDefault={handleSubmit(newDateTournee)}>
+      <input type="date" bind:value={newDateTournee} required />
+  
+      <button type="submit">Ajouter une tournée</button>
+    </form>
+
+    <button on:click={() => history.back()}>Retour</button>
   </div>
 </UnauthorizedWrapper>

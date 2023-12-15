@@ -13,7 +13,7 @@ async function getLivreurInfo(id: string){
         throw new Error(reponse.statusText);
     }
   } catch (error) {
-      return jsonResponse("KO") // TODO handle error
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
 

@@ -12,8 +12,7 @@ async function getCommandesTournee(id: string) {
       throw new Error(response.statusText);
     }
   } catch (error) {
-    console.log("error in commandes/tournee/[tournee]/+server.ts", error) // TODO handle error
-    return jsonResponse("KO")
+    return jsonResponse('Backend error', { status: 500 })
   }
 
 }

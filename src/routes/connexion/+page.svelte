@@ -15,10 +15,8 @@
   /** @type {string} */
   let password
   /** @type {boolean} */
-  let rememberMe = false // TODO : true => localStorage / false => sessionStorage
+  let rememberMe = false // true => localStorage / false => sessionStorage
   async function login(){
-
-    //setAuth(email)// TODO take the appropriate field
     const response = await fetch("/api/utilisateurs", {
       method:"POST",
       body:JSON.stringify({identifiant:email, mot_de_passe:password}),
@@ -33,7 +31,7 @@
   }
 </script>
 
-<Navbar /> <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+<Navbar />
 <form on:submit|preventDefault={login}>
   <label>Login
     <input type="text" bind:value={email} required>

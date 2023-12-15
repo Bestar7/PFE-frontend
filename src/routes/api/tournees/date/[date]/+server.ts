@@ -12,8 +12,7 @@ async function getTourneesDate(date: string) {
       throw new Error(reponse.statusText);
     }
   } catch (error) {
-    console.log("error in /tournees/+server.ts", error) // TODO handle error
-    return jsonResponse(null)
+    return jsonResponse('Backend error', { status: 500 })
   }
 }
  
