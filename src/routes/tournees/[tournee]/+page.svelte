@@ -69,6 +69,7 @@
 };
     const response = await fetch(`${host}/commandes/${idCommande}/modifierStatut`,options);
     console.log("reponse du changement de statut", response);
+    getCommandesTournee(idTournee);
 
   }
 </script>
