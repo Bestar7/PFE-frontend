@@ -57,11 +57,11 @@
   onMount(async () => {
     //TODO attention pour l'instant hardcodage de id car pas de page COMMANDES, faire que quand on clique sur une commande pour la modifier
     // on rajoute dans le localStrorage
-     const  idCommande = sessionStorage.getItem("idCommande");
-     console.log("id recup ", idCommande);
+    const idCommande = sessionStorage.getItem("idCommande");
+    console.log("id recup ", idCommande);
 
-     getCommande(idCommande);
-
+    getCommande(idCommande);
+    console.log(getCommande(idCommande));
   });
 
   async function getCommande(id_Commande) {
@@ -115,7 +115,7 @@
       console.log("l'id de la commande est", recu);
 
       //aussi hardcodé car pas de localStore avec l'id dedans
-   const response = await fetch(`${host}/commandes/${recu}/modifier`, {
+      const response = await fetch(`${host}/commandes/${recu}/modifier`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -200,7 +200,7 @@
     </div>
 
     <div class="data-table">
-      {#if commande && commande.statut !== "terminée" }
+      {#if commande && commande.statut !== "terminée"}
         {#if commande && commande.lignes_commande}
           <table>
             <thead>
@@ -216,8 +216,13 @@
                 {#if ligne !== undefined}
                   <tr key={index}>
                     <td>
-                      {ligne.article ? ligne.article.libelle : ''}
+                      
+                      {updatedCommande.lignes_commande[index]
+                        .libelle} {updatedCommande.lignes_commande[index]
+                        .taille? updatedCommande.lignes_commande[index]
+                        .taille : '' } 
                     </td>
+                    
                     <td>
                       <input
                         type="number"
@@ -239,7 +244,10 @@
                 on:click={() => /*todo modifier la commande*/ {
                   console.log("la nouvelle commande est : ", updatedCommande);
 
-                  displayRequest(updatedCommande, sessionStorage.getItem('idCommande'));
+                  displayRequest(
+                    updatedCommande,
+                    sessionStorage.getItem("idCommande")
+                  );
                 }}
               >
                 Update
@@ -264,76 +272,3 @@
   </div>
 </body>
 
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulaire avec mise en page</title>
-    <style>
-    table {
-    border-collapse: collapse;
-    width: 400px;
-    margin: 20px;
-  }
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .data-table{
-    margin-bottom:20px;
-  }
-
-  th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-
-  th {
-    background-color: #333;
-    color: #fff;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  .buttons {
-    display: flex;
-    justify-content: space-around; /* Ajustement de l'espacement entre les boutons */
-
-    margin-top: 20px; /* Ajout d'une marge en haut des boutons */
-  }
-
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      height: 100vh;
-      align-items:center
-      margin: 0;
-    }
-
-    .tab-infos {
-      display: flex;
-      
-      width: 400px;
-    }
-
-    .left-column, .right-column {
-      width: 100%;
-      margin-top: 10px; /* Ajout d'une marge entre les colonnes */
-
-
-    }
-    
-
-    .date-input {
-      width: 100%;
-    }
-    label, span {
-      display: inline-block;
-      margin-bottom: 8px;
-    }
-    </style>
-  </head>
-</html>
