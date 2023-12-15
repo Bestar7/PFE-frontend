@@ -45,6 +45,7 @@
       <td>{creche.rue}</td>
       <td>{creche.ville}</td>
     </tr>
+    
     {/each}
   </tbody>
 </table>

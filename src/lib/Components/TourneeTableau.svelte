@@ -4,6 +4,7 @@
   export let isDefault;
   export let deleteOne;
   export let terminerTournee;
+  export let prendreTournee;
 </script>
 
 <table>
@@ -35,6 +36,12 @@
       on:click={() => terminerTournee(tournee.id_tournee_par_defaut ?? tournee.id_tournee,tournee.nom)}
     >
       terminer
+    </button>
+    <button
+      class="x-button"
+      on:click={() => prendreTournee(tournee.id_tournee_par_defaut ?? tournee.id_tournee)}
+    >
+      Prendre
     </button>
   </tr>
 {/each}

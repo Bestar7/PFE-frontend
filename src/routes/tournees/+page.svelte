@@ -148,36 +148,66 @@
       ); // TODO autre page ou pas (et remove if-else) ???
     else console.log("error in /tournees/+page.svelte"); //TODO handle error
   }
+
+  async function prendreTournee(idTournee){
+    tournees= tournees.filter(tournee=> tournee.id_tournee !== idTournee);
+
+const options = {
+  method: "PATCH",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    "id_livreur":3
+  }),
+};
+
+const response = await fetch(`${host}/tournees/${idTournee}/modifierLivreur`, options);
+
+
+ getTourneesDate(); 
+ console.log("reponse du changement de livreur de la tournee", response);
+
+
+
+  }
 </script>
 
 <Navbar />
 
 <UnauthorizedWrapper roleRequis={[roles.admin, roles.livreur]}>
+  <div class="container">
+    <!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
+    <div class="centered">
+      <div class="tab-selection">
+        <input type="date" on:change={selectHistory} bind:value={datePicked} />
+        <button on:click={() => eventHandler()}>Tournées par défaut</button>
+      </div>
 
-<div class="container"><!--TODO au lieu de mettre dans chaque pages, le mettre UNE fois dans le +- main-->
-  <div class="centered">
+      {#if selectedTab == tabs.TourneeDate}
+        <h2>Tournée du {datePicked}</h2>
+      {:else}
+        <h2>Tournée par défaut</h2>
+      {/if}
 
-    <div class="tab-selection">
-      <input type="date" on:change={selectHistory} bind:value={datePicked} />
-      <button on:click={() => eventHandler()}>Tournées par défaut</button>
+      <div class="show-tournees">
+        <TourneeTableau
+          {tournees}
+          deleteOne={deleteTournee}
+          {prendreTournee}
+          onSelectOne={selectTournee}
+          {terminerTournee}
+          isDefault={selectedTab == tabs.TourneeDefault}
+        />
+      </div>
+
+      <form on:submit|preventDefault={handleSubmit(newDateTournee)}>
+        <input type="date" bind:value={newDateTournee} required />
+
+        <button type="submit">Ajouter une tournée</button>
+      </form>
+
+      <button on:click={() => history.back()}>Retour</button>
     </div>
-
-    {#if selectedTab==tabs.TourneeDate}
-    <h2>Tournée du {datePicked}</h2>
-    {:else}
-    <h2>Tournée par défaut</h2>
-    {/if}
-
-    <div class="show-tournees">
-      <TourneeTableau {tournees} deleteOne={deleteTournee}  onSelectOne={selectTournee} terminerTournee = {terminerTournee} isDefault={selectedTab==tabs.TourneeDefault}/>
-    </div>
-
-    <form on:submit|preventDefault={handleSubmit(newDateTournee)}>
-      <input type="date" bind:value={newDateTournee} required />
-  
-      <button type="submit">Ajouter une tournée</button>
-    </form>
-
-    <button on:click={() => history.back()}>Retour</button>
-  </div>
-</UnauthorizedWrapper>
+  </div></UnauthorizedWrapper
+>

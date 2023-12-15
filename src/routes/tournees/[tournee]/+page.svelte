@@ -86,7 +86,7 @@
   </div>
   
   <div class="tournee-creche">
-    <CrecheTableau {commandes} {ouvrirDetailsCreche} {supprimerCreche} {livrerCreche}/>
+    <CrecheTableau {commandes} {ouvrirDetailsCreche}  {supprimerCreche} {livrerCreche}/>
   </div>
   
 </div>
